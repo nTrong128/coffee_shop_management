@@ -80,7 +80,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input required placeholder="Enter username" {...field} />
+                  <Input autoFocus required placeholder="Enter username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
