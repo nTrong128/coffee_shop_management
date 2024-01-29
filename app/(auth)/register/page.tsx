@@ -7,31 +7,32 @@ import {CardWrapper} from "@/components/auth/card-wrapper";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {LoginSchema} from "@/schemas";
+import {RegisterSchema} from "@/schemas";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
-import {login} from "@/action/login";
+import {register} from "@/action/register";
 import {useState, useTransition} from "react";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
+      register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -39,11 +40,24 @@ export const LoginForm = () => {
   };
 
   return (
-    <CardWrapper headerLabel="Đăng nhập" backButtonLabel="Chưa có tài khoản?" backButtonLink="/register">
+    <CardWrapper headerLabel="Đăng ký tài khoản" backButtonLabel="Đã có tài khoản?" backButtonLink="/login">
       {/* forget Password Route should be here */}
       <div className="flex flex-col items-center justify-between">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-md w-full flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Tên</FormLabel>
+                  <FormControl>
+                    <Input disabled={isPendding} {...field} placeholder="Nhật Trọng" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -51,7 +65,7 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input disabled={isPendding} {...field} placeholder="Username128@email.com" />
+                    <Input autoComplete="off" type="emaail" disabled={isPendding} {...field} placeholder="Username128@email.com" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,7 +87,7 @@ export const LoginForm = () => {
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPendding} className="w-full" type="submit">
-              ĐĂNG NHẬP
+              ĐĂNG KÝ
             </Button>
           </form>
         </Form>
@@ -82,4 +96,4 @@ export const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
