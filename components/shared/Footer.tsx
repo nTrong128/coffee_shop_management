@@ -9,28 +9,28 @@ export default function Footer() {
         <div className="flex flex-wrap justify-center">
           <ul className="flex items-center space-x-4">
             <li>
-              <Link href={"/"}>Home</Link>
+              <Link href={"/login"}>Home</Link>
             </li>
             <li>
-              <Link href={"/about"}>About</Link>
+              <Link href={"/login"}>About</Link>
             </li>
             <li>
-              <Link href={"/contact"}>Contact US</Link>
+              <Link href={"/login"}>Contact US</Link>
             </li>
             {/* <li>
               <Link href={"/terms"}>Terms & Condition</Link>
             </li> */}
           </ul>
         </div>
-        <div className="flex justify-center space-x-4 mt-4 lg:mt-0 text-2xl">
-          <Link href={"https://www.facebook.com/n.trong128"}>
+        <div className="flex justify-center space-x-4 mt-4 lg:mt-0 text-4xl">
+          <Link className="px-4" target="_blank" href={"https://www.facebook.com/n.trong128"}>
             <FaFacebookSquare />
           </Link>
 
-          <Link href={"https://www.linkedin.com/in/ntrong128/"}>
+          <Link className="px-4" target="_blank" href={"https://www.linkedin.com/in/ntrong128/"}>
             <FaLinkedin />
           </Link>
-          <Link href={"https://github.com/nTrong128"}>
+          <Link className="px-4" target="_blank" href={"https://github.com/nTrong128"}>
             <FaGithub />
           </Link>
         </div>
