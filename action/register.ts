@@ -8,7 +8,7 @@ import { getUserByEmail } from '@/data/user';
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = RegisterSchema.safeParse(values);
     if (!validatedFields.success) {
-        return {error: "Thông tin đăng nhâp không hợp lệ."}
+        return {error: "Thông tin đăng ký không hợp lệ."}
     }
 
     const { email, password, name } = validatedFields.data;
