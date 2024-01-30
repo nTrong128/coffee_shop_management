@@ -13,7 +13,7 @@ import {FormSuccess} from "@/components/auth/success-form";
 import {login} from "@/action/login";
 import {useState, useTransition} from "react";
 
-export const LoginForm = () => {
+const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();

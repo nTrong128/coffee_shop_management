@@ -13,7 +13,7 @@ import {FormSuccess} from "@/components/auth/success-form";
 import {register} from "@/action/register";
 import {useState, useTransition} from "react";
 
-export const RegisterForm = () => {
+const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
