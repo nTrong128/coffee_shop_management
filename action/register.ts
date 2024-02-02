@@ -1,31 +1,30 @@
 "use server";
-import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/prisma';
-import * as z from 'zod';
-import { RegisterSchema } from '@/schemas';
-import { getUserByEmail } from '@/data/user';
+import bcrypt from "bcryptjs";
+import {prisma} from "@/lib/prisma";
+import * as z from "zod";
+import {RegisterSchema} from "@/schemas";
+import {getUserByUsername} from "@/data/user";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
-    const validatedFields = RegisterSchema.safeParse(values);
-    if (!validatedFields.success) {
-        return {error: "Thông tin đăng ký không hợp lệ."}
-    }
+  const validatedFields = RegisterSchema.safeParse(values);
+  if (!validatedFields.success) {
+    return {error: "Thông tin đăng ký không hợp lệ."};
+  }
 
-    const { email, password, name } = validatedFields.data;
-    const hasedPassword = await bcrypt.hash(password, 10); 
-    const existingUser = await getUserByEmail(email);
-    if (existingUser) {
-        return {error: "Email đã được sử dụng."}
-    }
+  const {email, password, name} = validatedFields.data;
+  const hasedPassword = await bcrypt.hash(password, 10);
+  const existingUser = await getUserByUsername(email);
+  if (existingUser) {
+    return {error: "Email đã được sử dụng."};
+  }
 
-    await prisma.user.create({
-        data: {
-            name,
-            email, // TODO: Change this to a real email
-            password: hasedPassword,    
-        }
-    });
+  await prisma.account.create({
+    data: {
+      username: email, // TODO: Change this to a real email
+      password: hasedPassword,
+    },
+  });
 
-    // TODO: Send email to user
-    return {success: "Đăng ký thành công."}
-}
+  // TODO: Send email to user
+  return {success: "Đăng ký thành công."};
+};
