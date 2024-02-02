@@ -10,12 +10,13 @@ export const {
   signOut,
 } = NextAuth({
   callbacks: {
-    async session({token, session}) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
-      return session;
-    },
+    // async session({token, session}) {
+    //   if (token.sub && session.user) {
+    //     session.user.id = token.sub;
+    //   }
+    //   return session;
+    // },
+    //TODO fix this later
     async jwt({token}) {
       console.log({token});
       token.customField = "customValue";
