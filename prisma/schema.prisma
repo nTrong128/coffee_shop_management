@@ -1,132 +1,48 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "mongodb"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_DATABASE_URL")
+    provider  = "mongodb"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_DATABASE_URL")
 }
 
-model Staff {
-  staff_id        String          @id @default(cuid()) @map("_id")
-  staff_name      String?
-  staff_email     String?         @unique
-  staff_position  String?         @unique
-  staff_image     String? // image url
-  staff_phone     String?         @unique
-  staff_wage_rate Float?
-  staff_birthday  DateTime?
-  Account         Account?
-  Staff_Position  Staff_Position? @relation(fields: [staff_position], references: [staff_position_id])
-  Order           Order[]
+enum UserRole {
+    ADMIN
+    USER
+}
+
+model User {
+    id       String   @id @default(cuid()) @map("_id")
+    name     String?
+    username String?  @unique
+    email    String?  @unique
+    image    String? // image url
+    password String?
+    role     UserRole @default(USER)
+
+    account Account?
+    //   Staff_Position  Staff_Position? @relation(fields: [staff_position], references: [staff_position_id])
+    //   Order           Order[]
+    //   Spending        Spending[]
 }
 
 model Account {
-  account_id   String  @id @default(cuid()) @map("_id")
-  username     String  @unique
-  staff_acc_id String? @unique
-  password     String
+    id                String  @id @default(cuid()) @map("_id")
+    userId            String  @unique
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
 
-  staff Staff? @relation(fields: [staff_acc_id], references: [staff_id])
-}
+    user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Staff_Position {
-  staff_position_id String @id @default(cuid()) @map("_id")
-  staff_position    String
-  Staff             Staff?
-}
-
-model Product {
-  product_id    String  @id @default(cuid()) @map("_id")
-  product_name  String
-  product_price Float?
-  product_image String? // image url
-  product_desc  String?
-  product_type  String?
-
-  Prodcut_Type Prodcut_Type?  @relation(fields: [product_type], references: [product_type_id])
-  Order_Detail Order_Detail[]
-}
-
-model Prodcut_Type {
-  product_type_id String    @id @default(cuid()) @map("_id")
-  product_type    String
-  Product         Product[]
-}
-
-model Table {
-  table_id     String @id @default(cuid()) @map("_id")
-  table_name   String
-  table_status String
-
-  Table_Statue Table_Statue? @relation(fields: [table_status], references: [table_status_id])
-}
-
-model Table_Statue {
-  table_status_id String  @id @default(cuid()) @map("_id")
-  table_status    String
-  Table           Table[]
-}
-
-model Customer {
-  customer_id      String  @id @default(cuid()) @map("_id")
-  customer_name    String
-  customer_phone   String
-  customer_email   String?
-  customer_address String?
-  customer_point   Int?
-  customer_order   Order[]
-}
-
-model Order {
-  order_id       String   @id @default(cuid()) @map("_id")
-  order_date     DateTime
-  order_total    Float?
-  order_receive  Float?
-  order_discount String?
-  order_point    Int?
-  order_note     String?
-  order_type     String?
-  order_staff    String
-  order_customer String?
-
-  // Order_Status   Order_Status?   @relation(fields: [order_status], references: [order_status_id])
-  // order_status        String
-  // Order_Payment  Order_Payment?  @relation(fields: [order_payment], references: [order_payment_id])
-  // order_payment       String?
-
-  Order_discount Discount?      @relation(fields: [order_discount], references: [discount_id])
-  Order_Staff    Staff?         @relation(fields: [order_staff], references: [staff_id])
-  Customer       Customer?      @relation(fields: [order_customer], references: [customer_id])
-  Order_Detail   Order_Detail[]
-}
-
-model Order_Detail {
-  order_detail_id      String  @id @default(cuid()) @map("_id")
-  order_detail_qty     Int?
-  order_detail_price   Float?
-  order_detail_product String?
-  order_detail_order   String?
-
-  Order_Detail_Product Product? @relation(fields: [order_detail_product], references: [product_id])
-  Order_Detail_Order   Order?   @relation(fields: [order_detail_order], references: [order_id])
-}
-
-model Discount {
-  discount_id         String           @id @default(cuid()) @map("_id")
-  discount_name       String
-  discount_value      Float?
-  discount_desc       String?
-  discount_time_start DateTime?
-  discount_time_end   DateTime?
-  discount_status     String?
-  Order               Order[]
-  Discount_Status     Discount_Status? @relation(fields: [discount_status], references: [discount_status_id])
-}
-
-model Discount_Status {
-  discount_status_id String     @id @default(cuid()) @map("_id")
-  discount_status    String
-  Discount           Discount[]
+    @@unique([provider, providerAccountId])
 }

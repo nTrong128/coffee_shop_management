@@ -1,29 +1,7 @@
-import NextAuth from "next-auth";
-import {PrismaAdapter} from "@auth/prisma-adapter";
-import authConfig from "@/auth.config";
-import {prisma} from "@/lib/prisma";
+import {auth} from "@/auth";
 
-export const {
-  handlers: {GET, POST},
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
-  callbacks: {
-    // async session({token, session}) {
-    //   if (token.sub && session.user) {
-    //     session.user.id = token.sub;
-    //   }
-    //   return session;
-    // },
-    //TODO fix this later
-    async jwt({token}) {
-      console.log({token});
-      token.customField = "customValue";
-      return token;
-    },
-  },
-  adapter: PrismaAdapter(prisma),
-  session: {strategy: "jwt"},
-  ...authConfig,
-});
+export const CurrentUser = async () => {
+  const session = await auth();
+
+  return session?.user;
+};

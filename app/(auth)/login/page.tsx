@@ -21,7 +21,7 @@ const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -46,17 +46,18 @@ const LoginForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-md w-full flex flex-col gap-4">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Tên tài khoản</FormLabel>
                   <FormControl>
-                    <Input disabled={isPendding} {...field} placeholder="Username128@email.com" />
+                    <Input disabled={isPendding} {...field} placeholder="Username128" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="password"

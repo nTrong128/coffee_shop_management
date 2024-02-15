@@ -1,14 +1,15 @@
-import * as z from 'zod';
+import * as z from "zod";
 
-export const RegisterSchema = z.object({
+export const RegisterSchema = z
+  .object({
     email: z.string().email().min(6, {
       message: "Tài khoản phải từ 6 ký tự.",
     }),
-
-  password: z.string(),
-  name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
-  }),
+    username: z.string().min(6),
+    password: z.string(),
+    name: z.string().min(4, {
+      message: "Tên phải từ 4 ký tự.",
+    }),
   })
   .superRefine((data, ctx) => {
     if (data.password.length < 8) {
@@ -49,10 +50,10 @@ export const RegisterSchema = z.object({
   });
 
 export const LoginSchema = z.object({
-    email: z.string().email().min(1,{
-        message: "Vui lòng nhập email.",
-    }),
-    password: z.string().min(1,{
-        message: "Vui lòng nhập mật khẩu.",
-    }),
-})
+  username: z.string().min(1, {
+    message: "Vui lòng nhập tài khoản.",
+  }),
+  password: z.string().min(1, {
+    message: "Vui lòng nhập mật khẩu.",
+  }),
+});

@@ -47,6 +47,19 @@ const RegisterForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-md w-full flex flex-col gap-4">
             <FormField
               control={form.control}
+              name="username"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input disabled={isPendding} {...field} placeholder="username123" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="name"
               render={({field}) => (
                 <FormItem>
@@ -77,6 +90,19 @@ const RegisterForm = () => {
               render={({field}) => (
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
+                  <FormControl>
+                    <Input {...field} disabled={isPendding} autoComplete="off" placeholder="********" type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>Nhập lại mật khẩu</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={isPendding} autoComplete="off" placeholder="********" type="password" />
                   </FormControl>
