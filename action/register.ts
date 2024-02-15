@@ -13,14 +13,14 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   const {username, name, email, password} = validatedFields.data;
   const hasedPassword = await bcrypt.hash(password, 10);
-  const existingUser = await getUserByUsername(email);
+  const existingUser = await getUserByUsername(username);
   if (existingUser) {
     return {error: "Email đã được sử dụng."};
   }
 
   await prisma.user.create({
     data: {
-      username: username,
+      username,
       password: hasedPassword,
       email, // TODO: Change this to a real email
       name,
