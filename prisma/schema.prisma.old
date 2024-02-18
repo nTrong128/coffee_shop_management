@@ -23,20 +23,9 @@ model Staff {
   Spending        Spending[]
 }
 
-model User {
-  account_id   String  @id @default(cuid()) @map("_id")
-  username     String  @unique
-  id_staff_acc String? @unique
-  password     String
 
-  Staff Staff? @relation(fields: [id_staff_acc], references: [staff_id])
-}
 
-model Staff_Position {
-  staff_position_id String @id @default(cuid()) @map("_id")
-  staff_position    String
-  Staff             Staff?
-}
+
 
 model Product {
   product_id    String  @id @default(cuid()) @map("_id")

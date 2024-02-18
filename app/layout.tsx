@@ -9,10 +9,16 @@ export const metadata: Metadata = {
   description: "Coffee Shop Management System",
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html className="" lang="en">
-      <body className={`${inter.className} bg-[#80a4b3]`}>{children}</body>
+      <body className={`${inter.className}`}>
+        {children}
+      </body>
     </html>
   );
 }

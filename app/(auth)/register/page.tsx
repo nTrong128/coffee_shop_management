@@ -5,17 +5,28 @@ import * as z from "zod";
 
 import {CardWrapper} from "@/components/auth/card-wrapper";
 import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {RegisterSchema} from "@/schemas";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
-import {register} from "@/action/register";
+import {register} from "@/actions/register";
 import {useState, useTransition} from "react";
 
 const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>(
+    ""
+  );
+  const [success, setSuccess] = useState<
+    string | undefined
+  >("");
   const [isPendding, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -27,7 +38,9 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (
+    values: z.infer<typeof RegisterSchema>
+  ) => {
     setError("");
     setSuccess("");
 
@@ -40,11 +53,16 @@ const RegisterForm = () => {
   };
 
   return (
-    <CardWrapper headerLabel="Đăng ký tài khoản" backButtonLabel="Đã có tài khoản?" backButtonLink="/login">
+    <CardWrapper
+      headerLabel="Đăng ký tài khoản"
+      backButtonLabel="Đã có tài khoản?"
+      backButtonLink="/login">
       {/* forget Password Route should be here */}
       <div className="flex flex-col items-center justify-between">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-md w-full flex flex-col gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="max-w-md w-full flex flex-col gap-4">
             <FormField
               control={form.control}
               name="username"
@@ -52,7 +70,11 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input disabled={isPendding} {...field} placeholder="username123" />
+                    <Input
+                      disabled={isPendding}
+                      {...field}
+                      placeholder="username123"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -65,7 +87,11 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Tên</FormLabel>
                   <FormControl>
-                    <Input disabled={isPendding} {...field} placeholder="Nhật Trọng" />
+                    <Input
+                      disabled={isPendding}
+                      {...field}
+                      placeholder="Nhật Trọng"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -78,7 +104,13 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input autoComplete="off" type="emaail" disabled={isPendding} {...field} placeholder="Username128@email.com" />
+                    <Input
+                      autoComplete="off"
+                      type="emaail"
+                      disabled={isPendding}
+                      {...field}
+                      placeholder="Username128@email.com"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +123,13 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPendding} autoComplete="off" placeholder="********" type="password" />
+                    <Input
+                      {...field}
+                      disabled={isPendding}
+                      autoComplete="off"
+                      placeholder="********"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,7 +142,13 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Nhập lại mật khẩu</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPendding} autoComplete="off" placeholder="********" type="password" />
+                    <Input
+                      {...field}
+                      disabled={isPendding}
+                      autoComplete="off"
+                      placeholder="********"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,7 +156,10 @@ const RegisterForm = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button disabled={isPendding} className="w-full" type="submit">
+            <Button
+              disabled={isPendding}
+              className="w-full"
+              type="submit">
               ĐĂNG KÝ
             </Button>
           </form>

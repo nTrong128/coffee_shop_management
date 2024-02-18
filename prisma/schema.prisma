@@ -13,15 +13,18 @@ enum UserRole {
 }
 
 model User {
-    id       String   @id @default(cuid()) @map("_id")
-    name     String?
-    username String?  @unique
-    email    String?  @unique
-    image    String? // image url
-    password String?
-    role     UserRole @default(USER)
-
-    account Account?
+    id           String    @id @default(cuid()) @map("_id")
+    name         String?
+    username     String?   @unique
+    email        String?   @unique
+    image        String? // image url
+    password     String?
+    role         UserRole  @default(USER)
+    user_phone   String?
+    user_address String?
+    user_birth   DateTime?
+    wage_rate    Float?    @default(1.0)
+    account      Account?
     //   Staff_Position  Staff_Position? @relation(fields: [staff_position], references: [staff_position_id])
     //   Order           Order[]
     //   Spending        Spending[]
@@ -44,4 +47,48 @@ model Account {
     user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+}
+
+model Product {
+    product_id    String  @id @default(cuid()) @map("_id")
+    product_name  String
+    product_price Float?
+    product_image String?
+    product_desc  String?
+    product_type  String?
+
+    Product_Type Product_Type? @relation(fields: [product_type], references: [product_type_id])
+}
+
+model Product_Type {
+    product_type_id   String @id @default(cuid()) @map("_id")
+    product_type_name String
+
+    product_type Product[]
+}
+
+model Table_Status {
+    table_status_id   String  @id @default(cuid()) @map("_id")
+    table_status_name String
+    table_status_desc String?
+
+    Table Table[]
+}
+
+model Table {
+    table_id     String  @id @default(cuid()) @map("_id")
+    table_name   String
+    table_desc   String?
+    table_status String
+
+    Table_Status Table_Status? @relation(fields: [table_status], references: [table_status_id])
+}
+
+model Customer {
+    customer_id      String  @id @default(cuid()) @map("_id")
+    customer_name    String
+    customer_phone   String?
+    customer_email   String?
+    customer_address String?
+    customer_point   Int     @default(0)
 }

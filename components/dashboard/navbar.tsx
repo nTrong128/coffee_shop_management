@@ -32,7 +32,7 @@ export const NavBar = () => {
               ? "default"
               : "outline"
           }>
-          <Link href="/transaction">Giao Dịch</Link>
+          <Link href="/transaction">Quản Lý Đơn</Link>
         </Button>
         <Button
           asChild

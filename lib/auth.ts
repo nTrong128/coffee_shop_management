@@ -5,3 +5,8 @@ export const CurrentUser = async () => {
 
   return session?.user;
 };
+
+export const isAdmin = async () => {
+  const isAdmin = (await CurrentUser())?.role === "ADMIN";
+  return isAdmin;
+};

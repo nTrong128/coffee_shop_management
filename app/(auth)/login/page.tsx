@@ -5,17 +5,28 @@ import * as z from "zod";
 
 import {CardWrapper} from "@/components/auth/card-wrapper";
 import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {LoginSchema} from "@/schemas";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
-import {login} from "@/action/login";
+import {login} from "@/actions/login";
 import {useState, useTransition} from "react";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>(
+    ""
+  );
+  const [success, setSuccess] = useState<
+    string | undefined
+  >("");
   const [isPendding, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -26,7 +37,9 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (
+    values: z.infer<typeof LoginSchema>
+  ) => {
     setError("");
     setSuccess("");
 
@@ -39,11 +52,16 @@ const LoginForm = () => {
   };
 
   return (
-    <CardWrapper headerLabel="Đăng nhập" backButtonLabel="Chưa có tài khoản?" backButtonLink="/register">
+    <CardWrapper
+      headerLabel="Đăng nhập"
+      backButtonLabel="Chưa có tài khoản?"
+      backButtonLink="/register">
       {/* forget Password Route should be here */}
       <div className="flex flex-col items-center justify-between">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-md w-full flex flex-col gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="max-w-md w-full flex flex-col gap-4">
             <FormField
               control={form.control}
               name="username"
@@ -51,7 +69,11 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Tên tài khoản</FormLabel>
                   <FormControl>
-                    <Input disabled={isPendding} {...field} placeholder="Username128" />
+                    <Input
+                      disabled={isPendding}
+                      {...field}
+                      placeholder="Username128"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -65,7 +87,13 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPendding} autoComplete="off" placeholder="********" type="password" />
+                    <Input
+                      {...field}
+                      disabled={isPendding}
+                      autoComplete="off"
+                      placeholder="********"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,7 +101,10 @@ const LoginForm = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button disabled={isPendding} className="w-full" type="submit">
+            <Button
+              disabled={isPendding}
+              className="w-full"
+              type="submit">
               ĐĂNG NHẬP
             </Button>
           </form>
