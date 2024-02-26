@@ -1,8 +1,15 @@
-"use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import {FaUser} from "react-icons/fa";
 import {useCurrentUser} from "@/hooks/use-current-user";
 import {LogOutButton} from "@/components/auth/logout-button";

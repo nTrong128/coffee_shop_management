@@ -1,4 +1,5 @@
 import {auth} from "@/auth";
+import {EdgeStoreProvider} from "@/lib/edgestore";
 import type {Metadata} from "next";
 import {SessionProvider} from "next-auth/react";
 import {Inter} from "next/font/google";
@@ -20,13 +21,14 @@ export default async function DashBoardLayout({
 
   return (
     <SessionProvider session={session}>
-      <html className="" lang="en">
-        <body className={`${inter.className}`}>
-          <NavBar />
-
-          {children}
-        </body>
-      </html>
+      <EdgeStoreProvider>
+        <html className="" lang="en">
+          <body className={`${inter.className}`}>
+            <NavBar />
+            {children}
+          </body>
+        </html>
+      </EdgeStoreProvider>
     </SessionProvider>
   );
 }

@@ -29,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import {Role} from "@/types";
 import {useForm} from "react-hook-form";
 import {AddUserSchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -38,12 +39,8 @@ import {addNewUser} from "@/actions/addUser";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
 const AddUserDialog = () => {
-  const [error, setError] = useState<string | undefined>(
-    ""
-  );
-  const [success, setSuccess] = useState<
-    string | undefined
-  >("");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof AddUserSchema>>({
@@ -61,9 +58,7 @@ const AddUserDialog = () => {
     },
   });
   const [open, setOpen] = useState(false);
-  const onSubmit = (
-    values: z.infer<typeof AddUserSchema>
-  ) => {
+  const onSubmit = (values: z.infer<typeof AddUserSchema>) => {
     setError("");
     setSuccess("");
 
@@ -77,10 +72,6 @@ const AddUserDialog = () => {
       });
     });
   };
-  enum Role {
-    ADMIN = "ADMIN",
-    USER = "USER",
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -91,8 +82,7 @@ const AddUserDialog = () => {
         <DialogHeader>
           <DialogTitle>Thêm nhân viên mới</DialogTitle>
           <DialogDescription>
-            Nhập thông tin người dùng để thêm họ vào hệ
-            thống
+            Nhập thông tin người dùng để thêm họ vào hệ thống
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -171,9 +161,7 @@ const AddUserDialog = () => {
                 name="user_birth"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>
-                      Ngày tháng năm sinh
-                    </FormLabel>
+                    <FormLabel>Ngày tháng năm sinh</FormLabel>
                     <FormControl>
                       <Input
                         type="date"
@@ -191,9 +179,7 @@ const AddUserDialog = () => {
                 name="password"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel className="hidden">
-                      Mật khẩu
-                    </FormLabel>
+                    <FormLabel className="hidden">Mật khẩu</FormLabel>
                     <FormControl>
                       <Input
                         className="hidden"
@@ -230,9 +216,7 @@ const AddUserDialog = () => {
                 name="wage_rate"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel className="hidden">
-                      Hệ số lương
-                    </FormLabel>
+                    <FormLabel className="hidden">Hệ số lương</FormLabel>
                     <FormControl>
                       <Input
                         className="hidden"
@@ -256,21 +240,15 @@ const AddUserDialog = () => {
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger
-                          disabled={isPendding}
-                          {...field}>
+                        <SelectTrigger disabled={isPendding} {...field}>
                           <SelectValue placeholder="Chọn chức vụ" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Chức vụ</SelectLabel>
-                          <SelectItem value={Role.ADMIN}>
-                            Quản lý
-                          </SelectItem>
-                          <SelectItem value={Role.USER}>
-                            Nhân viên
-                          </SelectItem>
+                          <SelectItem value={Role.ADMIN}>Quản lý</SelectItem>
+                          <SelectItem value={Role.USER}>Nhân viên</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
