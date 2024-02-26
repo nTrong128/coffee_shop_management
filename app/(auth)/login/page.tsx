@@ -21,12 +21,8 @@ import {login} from "@/actions/login";
 import {useState, useTransition} from "react";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string | undefined>(
-    ""
-  );
-  const [success, setSuccess] = useState<
-    string | undefined
-  >("");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -37,16 +33,14 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (
-    values: z.infer<typeof LoginSchema>
-  ) => {
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        setError(data?.error);
+        setSuccess(data?.success);
       });
     });
   };
@@ -101,10 +95,7 @@ const LoginForm = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button
-              disabled={isPendding}
-              className="w-full"
-              type="submit">
+            <Button disabled={isPendding} className="w-full" type="submit">
               ĐĂNG NHẬP
             </Button>
           </form>
