@@ -21,12 +21,8 @@ import {register} from "@/actions/register";
 import {useState, useTransition} from "react";
 
 const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>(
-    ""
-  );
-  const [success, setSuccess] = useState<
-    string | undefined
-  >("");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -35,12 +31,11 @@ const RegisterForm = () => {
       email: "",
       password: "",
       name: "",
+      retype_password: "",
     },
   });
 
-  const onSubmit = (
-    values: z.infer<typeof RegisterSchema>
-  ) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
 
@@ -137,7 +132,7 @@ const RegisterForm = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="retype_password"
               render={({field}) => (
                 <FormItem>
                   <FormLabel>Nhập lại mật khẩu</FormLabel>
@@ -156,10 +151,7 @@ const RegisterForm = () => {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button
-              disabled={isPendding}
-              className="w-full"
-              type="submit">
+            <Button disabled={isPendding} className="w-full" type="submit">
               ĐĂNG KÝ
             </Button>
           </form>

@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+    provider     = "mongodb"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 enum UserRole {
@@ -24,6 +25,7 @@ model User {
     user_address String?
     user_birth   DateTime?
     wage_rate    Float?    @default(1.0)
+    user_status  String?   @default("active")
     account      Account?
     //   Staff_Position  Staff_Position? @relation(fields: [staff_position], references: [staff_position_id])
     //   Order           Order[]
@@ -91,4 +93,5 @@ model Customer {
     customer_email   String?
     customer_address String?
     customer_point   Int     @default(0)
+    mer_email        String?
 }

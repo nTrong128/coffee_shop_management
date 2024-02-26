@@ -7,6 +7,7 @@ export const RegisterSchema = z
     }),
     username: z.string().min(6),
     password: z.string(),
+    retype_password: z.string(),
     name: z.string().min(4, {
       message: "Tên phải từ 4 ký tự.",
     }),
@@ -43,9 +44,15 @@ export const RegisterSchema = z
     if (!data.password.match(/[^A-Za-z0-9]/)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          "Mật khẩu phải có ít nhất 1 ký tự đặc biệt.",
+        message: "Mật khẩu phải có ít nhất 1 ký tự đặc biệt.",
         path: ["password"],
+      });
+    }
+    if (data.password !== data.retype_password) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Mật khẩu không khớp.",
+        path: ["retype_password"],
       });
     }
   });

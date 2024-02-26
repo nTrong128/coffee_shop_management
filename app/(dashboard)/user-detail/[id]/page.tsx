@@ -28,7 +28,7 @@ export default async function Post({params}: {params: {id: string}}) {
   if (!user) {
     return <p>User not found</p>;
   }
-  const user_detail = user.data as User;
+  const user_detail = user as User;
   // return <p>{JSON.stringify(user)}</p>;
   return (
     <Card className="m-10">
