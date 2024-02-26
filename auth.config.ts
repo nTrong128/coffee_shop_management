@@ -14,10 +14,13 @@ export default {
         if (validatedFields.success) {
           const {username, password} = validatedFields.data;
           const user = await getUserByUsername(username);
-          if (!user || !user.password) return null;
-          const passwordMatch = await bcrypt.compare(password, user.password);
+          if (!user || !user.data?.password) return null;
+          const passwordMatch = await bcrypt.compare(
+            password,
+            user.data?.password
+          );
 
-          if (passwordMatch) return user;
+          if (passwordMatch) return user.data;
         }
         return null;
       },
