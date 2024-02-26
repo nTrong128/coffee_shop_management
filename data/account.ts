@@ -7,10 +7,7 @@ export const getUserByUsername = async (username: string) => {
         username: username,
       },
     });
-    return {
-      data: user,
-      message: "users fetched by username successfully",
-    };
+    return user;
   } catch {
     return null;
   }
@@ -23,14 +20,8 @@ export const getUserById = async (id: string) => {
         id,
       },
     });
-    return {
-      data: user,
-      message: "users fetched by id successfully",
-    };
+    return user;
   } catch {
-    return {
-      data: null,
-      message: "users fetched by id failed",
-    };
+    return null;
   }
 };

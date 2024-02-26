@@ -5,16 +5,13 @@ import * as z from "zod";
 import {RegisterSchema} from "@/schemas";
 import {getUserByUsername} from "@/data/account";
 
-export const register = async (
-  values: z.infer<typeof RegisterSchema>
-) => {
+export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
   if (!validatedFields.success) {
     return {error: "Thông tin đăng ký không hợp lệ."};
   }
 
-  const {username, name, email, password} =
-    validatedFields.data;
+  const {username, name, email, password} = validatedFields.data;
   const hasedPassword = await bcrypt.hash(password, 10);
   const existingUser = await getUserByUsername(username);
   if (existingUser) {

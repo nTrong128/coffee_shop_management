@@ -49,9 +49,8 @@ export const {
       if (!existingUser) {
         return token;
       }
-      if (existingUser.data && existingUser.data.role) {
-        token.role = existingUser.data.role;
-      }
+
+      token.role = existingUser.role;
       return token;
     },
   },
