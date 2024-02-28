@@ -8,6 +8,11 @@ import {getUserByUsername} from "@/data/account";
 export default {
   providers: [
     credentials({
+      name: "Credentials",
+      credentials: {
+        username: {label: "Username"},
+        password: {label: "Password", type: "password"},
+      },
       async authorize(credentials) {
         const validatedFields = LoginSchema.safeParse(credentials);
 

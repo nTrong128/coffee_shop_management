@@ -13,7 +13,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   // return {success: "Đăng nhập thành công."}
   const {username, password} = validatedFields.data;
   try {
-    await signIn("credentials", {username, password, redirectTo: DEFAULT_LOGIN_REDIRECT});
+    await signIn("credentials", {
+      username,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
