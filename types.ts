@@ -4,7 +4,7 @@ enum Role {
 }
 export {Role};
 
-type User = {
+type UserType = {
   id: string;
   name?: string;
   username?: string;
@@ -17,4 +17,4 @@ type User = {
   user_birth?: Date;
   wage_rate?: number;
 };
-export type {User};
+export type {UserType};
