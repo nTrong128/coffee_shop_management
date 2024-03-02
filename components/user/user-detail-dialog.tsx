@@ -1,9 +1,5 @@
 import {Button} from "@/components/ui/button";
-import {
-  DialogTrigger,
-  DialogContent,
-  Dialog,
-} from "@/components/ui/dialog";
+import {DialogTrigger, DialogContent, Dialog} from "@/components/ui/dialog";
 import {
   CardTitle,
   CardDescription,
@@ -35,43 +31,39 @@ export default function UserDetail() {
           <CardHeader>
             <CardTitle>Thông tin người dùng</CardTitle>
             <CardDescription>
-              ADMIN có thể chỉnh sửa chi tiết thông tin
-              người dùng
+              ADMIN có thể chỉnh sửa chi tiết thông tin người dùng
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" value="Jared Palmer" />
+                <Input name="name" value="Jared Palmer" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
-                <Input id="username" value="@jaredpalmer" />
+                <Input name="username" value="@jaredpalmer" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="image">Image</Label>
-                <Input id="image" placeholder="Image" />
+                <Input name="image" placeholder="Image" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" placeholder="Address" />
+                <Input name="address" placeholder="Address" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  placeholder="Phone Number"
-                />
+                <Input name="phone" placeholder="Phone Number" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="birthday">Birthday</Label>
-                <Input id="birthday" type="date" />
+                <Input name="birthday" type="date" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="wage">Wage Rate</Label>
-                <Input id="wage" placeholder="Wage Rate" />
+                <Input name="wage" placeholder="Wage Rate" />
               </div>
             </div>
           </CardContent>

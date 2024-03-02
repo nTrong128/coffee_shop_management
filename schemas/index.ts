@@ -92,3 +92,25 @@ export const AddUserSchema = z.object({
   wage_rate: z.number(),
   password: z.string(),
 });
+
+export const UpdateUserSchema = z.object({
+  name: z.string().min(4, {
+    message: "Tên phải từ 4 ký tự.",
+  }),
+  email: z.string().email().min(6, {
+    message: "Email phải từ 6 kí tự.",
+  }),
+  role: z.enum(["USER", "ADMIN"]),
+  user_phone: z
+    .string()
+    .startsWith("0", {
+      message: "Số điện thoại phải bắt đầu bằng số 0.",
+    })
+    .min(10, {
+      message: "Số điện thoại phải là 10 ký tự.",
+    }),
+  user_address: z.string().min(5, {
+    message: "Địa chỉ phải từ 5 ký tự.",
+  }),
+  user_birth: z.string(),
+});

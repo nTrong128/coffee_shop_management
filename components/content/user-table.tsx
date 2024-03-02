@@ -27,6 +27,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import AddUserDialog from "@/components/user/add-user-dialog";
+import EditUserDialog from "@/components/user/edit-detail-dialog";
 import {CheckCircle, User as UserIcon} from "lucide-react";
 import {getAllUser} from "@/actions/getAllUser";
 import {UserType} from "@/types";
@@ -39,11 +40,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {Badge} from "@/components/ui/badge";
 import Image from "next/image";
 import formatDate from "@/lib/formatDate";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {FaUser} from "react-icons/fa";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import UpdateAvatarForm from "@/components/shared/AvatarUpdateForm";
 
 export function UserTable() {
   const rowsPerPage = 4;
@@ -55,7 +66,6 @@ export function UserTable() {
     try {
       const response = await getAllUser();
       const data = response.data as UserType[];
-      console.log(38, data);
       setData(data);
     } catch (error) {
       console.log("Error fetcghing data", error);
@@ -92,6 +102,7 @@ export function UserTable() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className=" text-center"></TableHead>
                 <TableHead className=" text-center">Name</TableHead>
                 <TableHead className="text-center">Email</TableHead>
                 <TableHead className="text-center">Chức vụ</TableHead>
@@ -102,6 +113,33 @@ export function UserTable() {
             <TableBody>
               {data.slice(startIndex, endIndex).map((user) => (
                 <TableRow key={user.id}>
+                  <TableCell>
+                    <Dialog>
+                      <TooltipProvider delayDuration={200}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <DialogTrigger asChild>
+                              <Avatar>
+                                <AvatarImage src={user?.image || ""} />
+                                <AvatarFallback className="bg-sky-500">
+                                  <FaUser className="text-white" />
+                                </AvatarFallback>
+                              </Avatar>
+                            </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Ấn vào để đổi avatar</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <DialogContent>
+                        <UpdateAvatarForm
+                          oldImageUrl={user.image || ""}
+                          username={user.username || ""}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
                   <TableCell className="text-center">{user.name}</TableCell>
 
                   <TableCell className="text-center">{user.email}</TableCell>
@@ -126,7 +164,8 @@ export function UserTable() {
                         }}>
                         Chi tiết
                       </Button>
-                      <Button>Chỉnh sửa</Button>
+                      <EditUserDialog user={user} />
+                      {/* //TODO Add revalidate data */}
                     </div>
                   </TableCell>
                 </TableRow>

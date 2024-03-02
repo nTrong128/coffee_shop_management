@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['media.contra.com'],
+        domains: ['files.edgestore.dev'],
+    },
+    logging: {
+        fetches: {
+            fullUrl: true,
+            
+        }
     }
 }
 
