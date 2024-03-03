@@ -10,34 +10,23 @@ export const NavBar = () => {
       <div className="flex gap-x-2">
         <Button
           asChild
-          variant={
-            pathname === "/dashboard"
-              ? "default"
-              : "outline"
-          }>
+          variant={pathname === "/dashboard" ? "default" : "outline"}>
           <Link href="/dashboard">Tổng Quan</Link>
         </Button>
-        <Button
-          asChild
-          variant={
-            pathname === "/table" ? "default" : "outline"
-          }>
+        <Button asChild variant={pathname === "/table" ? "default" : "outline"}>
           <Link href="/table">Bàn</Link>
         </Button>
         <Button
           asChild
-          variant={
-            pathname === "/transaction"
-              ? "default"
-              : "outline"
-          }>
-          <Link href="/transaction">Quản Lý Đơn</Link>
+          variant={pathname === "/transaction" ? "default" : "outline"}>
+          <Link href="/transaction">Quản Lý Món / Tạo Đơn</Link>
         </Button>
         <Button
           asChild
-          variant={
-            pathname === "/user" ? "default" : "outline"
-          }>
+          variant={pathname === "/productType" ? "default" : "outline"}>
+          <Link href="/productType">Quản Lý Loại</Link>
+        </Button>
+        <Button asChild variant={pathname === "/user" ? "default" : "outline"}>
           <Link href="/user">Nhân Viên</Link>
         </Button>
       </div>

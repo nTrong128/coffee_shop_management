@@ -7,6 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 
 import {Input} from "@/components/ui/input";
@@ -28,41 +29,41 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import {Role, UserType} from "@/types";
+import {Role} from "@/types";
 import {useForm} from "react-hook-form";
-import {UpdateUserSchema} from "@/schemas";
+import {AddUserSchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import React, {useState, useTransition} from "react";
 import {addNewUser} from "@/actions/addUser";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
-import formatDate from "@/lib/formatDate";
-import {UpdateUser} from "@/actions/updateUser";
-import {FileEditIcon} from "lucide-react";
-const EditUserDialog = ({user}: {user: UserType}) => {
+const AddProductTypeDialog = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof UpdateUserSchema>>({
-    resolver: zodResolver(UpdateUserSchema),
+  const form = useForm<z.infer<typeof AddUserSchema>>({
+    resolver: zodResolver(AddUserSchema),
     defaultValues: {
-      name: user.name,
-      user_phone: user.user_phone,
-      user_address: user.user_address,
-      user_birth: user.user_birth?.toISOString(),
-      email: user.email,
-      role: user.role,
+      username: "",
+      name: "",
+      email: "",
+      wage_rate: 1.0,
+      role: "USER",
+      user_address: "",
+      user_birth: "",
+      user_phone: "",
+      password: "123ABCxyz@",
     },
   });
   const [open, setOpen] = useState(false);
-  const onSubmit = (values: z.infer<typeof UpdateUserSchema>) => {
+  const onSubmit = (values: z.infer<typeof AddUserSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      UpdateUser(values, user.username ?? "").then((data) => {
+      addNewUser(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
         if (data.success) {
@@ -75,26 +76,35 @@ const EditUserDialog = ({user}: {user: UserType}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="rounded-full text-blue-700 bg-blue-100"
-          size="icon"
-          variant="secondary">
-          <FileEditIcon className="w-6 h-6" />
-        </Button>
+        <Button>Tạo người dùng mới</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
+          <DialogTitle>Thêm nhân viên mới</DialogTitle>
           <DialogDescription>
-            Nhập thông tin người dùng cần chỉnh sửa
+            Nhập thông tin người dùng để thêm họ vào hệ thống
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="my-4">
-                Tên tài khoản:<b> {user.username}</b>
-              </div>
+              <FormField
+                control={form.control}
+                name="username"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPendding}
+                        {...field}
+                        placeholder="username123444"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="name"
@@ -105,7 +115,7 @@ const EditUserDialog = ({user}: {user: UserType}) => {
                       <Input
                         disabled={isPendding}
                         {...field}
-                        placeholder="Lê Nhật Trọng"
+                        placeholder="Nguyễn Văn A"
                       />
                     </FormControl>
                     <FormMessage />
@@ -153,13 +163,36 @@ const EditUserDialog = ({user}: {user: UserType}) => {
                   <FormItem>
                     <FormLabel>Ngày tháng năm sinh</FormLabel>
                     <FormControl>
-                      <Input type="date" disabled={isPendding} {...field} />
+                      <Input
+                        type="date"
+                        disabled={isPendding}
+                        {...field}
+                        placeholder="01/01/2000"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="password"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="hidden">Mật khẩu</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="hidden"
+                        type="password"
+                        disabled={isPendding}
+                        {...field}
+                        placeholder="********"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -178,7 +211,25 @@ const EditUserDialog = ({user}: {user: UserType}) => {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="wage_rate"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="hidden">Hệ số lương</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="hidden"
+                        type="number"
+                        disabled={isPendding}
+                        {...field}
+                        placeholder="1.0"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="role"
@@ -190,7 +241,7 @@ const EditUserDialog = ({user}: {user: UserType}) => {
                       defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger disabled={isPendding} {...field}>
-                          <SelectValue />
+                          <SelectValue placeholder="Chọn chức vụ" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -212,7 +263,7 @@ const EditUserDialog = ({user}: {user: UserType}) => {
                 type="submit"
                 size="lg"
                 className=" mt-6 w-full">
-                Cập nhật
+                Thêm
               </Button>
             </form>
           </Form>
@@ -221,4 +272,4 @@ const EditUserDialog = ({user}: {user: UserType}) => {
     </Dialog>
   );
 };
-export default EditUserDialog;
+export default AddProductTypeDialog;

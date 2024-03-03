@@ -28,7 +28,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import AddUserDialog from "@/components/user/add-user-dialog";
 import EditUserDialog from "@/components/user/edit-detail-dialog";
-import {CheckCircle, User as UserIcon} from "lucide-react";
+import {
+  CheckCircle,
+  CircleUser,
+  FileEditIcon,
+  Info,
+  TrashIcon,
+  User as UserIcon,
+} from "lucide-react";
 import {getAllUser} from "@/actions/getAllUser";
 import {UserType} from "@/types";
 import {useEffect, useState} from "react";
@@ -68,7 +75,7 @@ export function UserTable() {
       const data = response.data as UserType[];
       setData(data);
     } catch (error) {
-      console.log("Error fetcghing data", error);
+      console.log("Error fetching data", error);
     }
   };
   useEffect(() => {
@@ -87,7 +94,7 @@ export function UserTable() {
     setOpenDialog(true);
   };
   return (
-    <div className="m-y-4 mx-10 flex flex-col">
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <Card className="flex-1">
         <CardHeader className="flex flex-col md:flex-row md:items-start md:gap-4 bg-gray-200 rounded-t-lg">
           <div className="flex items-center gap-2 ">
@@ -102,12 +109,14 @@ export function UserTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className=" text-center"></TableHead>
-                <TableHead className=" text-center">Name</TableHead>
-                <TableHead className="text-center">Email</TableHead>
-                <TableHead className="text-center">Chức vụ</TableHead>
-                <TableHead className="text-center">Trạng thái</TableHead>
-                <TableHead className="text-center"></TableHead>
+                <TableHead className="pl-6">
+                  <UserIcon className="scale-125" />
+                </TableHead>
+                <TableHead className="">Họ và Tên</TableHead>
+                <TableHead className="">Email</TableHead>
+                <TableHead className="">Chức Vụ</TableHead>
+                <TableHead className="">Trạng Thái</TableHead>
+                <TableHead className="">Tác Vụ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -140,31 +149,33 @@ export function UserTable() {
                       </DialogContent>
                     </Dialog>
                   </TableCell>
-                  <TableCell className="text-center">{user.name}</TableCell>
-
-                  <TableCell className="text-center">{user.email}</TableCell>
-
-                  <TableCell className="text-center">{user.role}</TableCell>
-                  <TableCell className="text-center flex justify-center">
+                  <TableCell className="">{user.name}</TableCell>
+                  <TableCell className="">{user.email}</TableCell>
+                  <TableCell className="">{user.role}</TableCell>
+                  <TableCell className="pl-10">
                     <CheckCircle className="text-green-500"></CheckCircle>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="w-[100px]">
                     <div className="flex items-center gap-x-2">
                       <Button
-                        className="bg-red-500 text-white hover:bg-red-600"
-                        onClick={() => {
-                          handleDeleteDialog(user);
-                        }}>
-                        Xóa
-                      </Button>
-                      <Button
-                        className=""
+                        className="rounded-full text-blue-700 bg-blue-100"
+                        size="icon"
+                        variant="secondary"
                         onClick={() => {
                           handleDetailDialog(user);
                         }}>
-                        Chi tiết
+                        <Info className="w-6 h-6" />
                       </Button>
                       <EditUserDialog user={user} />
+                      <Button
+                        className="rounded-full text-red-700 bg-red-100"
+                        size="icon"
+                        variant="secondary"
+                        onClick={() => {
+                          handleDeleteDialog(user);
+                        }}>
+                        <TrashIcon className="w-6 h-6" />
+                      </Button>
                       {/* //TODO Add revalidate data */}
                     </div>
                   </TableCell>
@@ -172,130 +183,6 @@ export function UserTable() {
               ))}
             </TableBody>
           </Table>
-          <AlertDialog
-            open={open}
-            onOpenChange={(isOpen) => {
-              if (isOpen === true) return;
-              setSelected(null);
-              setOpen(false);
-            }}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Bạn có chắc muốn xoá người dùng này?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Hành động này sẽ xoá vĩnh viễn người dùng{" "}
-                  <span className="font-bold text-stone-800 italic">
-                    {selected?.name}
-                  </span>
-                  . Bạn có chắc chắn muốn tiếp tục?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="hover:bg-gray-700 hover:text-gray-50">
-                  Hủy
-                </AlertDialogCancel>
-                <AlertDialogAction className="bg-red-700 hover:bg-red-800">
-                  Xác nhận
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <Dialog
-            open={openDialog}
-            onOpenChange={(isOpen) => {
-              if (isOpen === true) return;
-              setSelected(null);
-              setOpenDialog(false);
-            }}>
-            <DialogContent className="sm:max-w-3xl">
-              <DialogHeader>
-                <div />
-                <DialogTitle className="text-2xl">{selected?.name}</DialogTitle>
-                <DialogDescription>
-                  Thông tin chi tiết của {selected?.name}.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex items-center gap-4 py-2">
-                <Image
-                  alt="User profile image"
-                  className="rounded-full"
-                  height="96"
-                  src={
-                    selected?.image || "/public/images/placeholderAvatar.jpg"
-                  }
-                  style={{
-                    aspectRatio: "96/96",
-                    objectFit: "cover",
-                  }}
-                  width="96"
-                />
-                <div className="grid gap-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-medium">{selected?.name}</h3>
-                    <Badge>{selected?.role}</Badge>
-                  </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {selected?.username}
-                  </p>
-                </div>
-              </div>
-              <div className="border-t border-b border-gray-200 dark:border-gray-800">
-                <div className="grid grid-cols-2 gap-6 p-6">
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="name">
-                      Họ và Tên
-                    </Label>
-                    <p>{selected?.name}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="username">
-                      Tên tài khoản
-                    </Label>
-                    <p>{selected?.username}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="role">
-                      Chức vụ
-                    </Label>
-                    <p>{selected?.role}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="address">
-                      Địa chỉ
-                    </Label>
-                    <p>{selected?.user_address}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="phone">
-                      Số điện thoại
-                    </Label>
-                    <p>{selected?.user_phone}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="birthday">
-                      Ngày tháng năm sinh
-                    </Label>
-                    <p>{formatDate(selected?.user_birth)}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm" htmlFor="wage-rate">
-                      Hệ số lương
-                    </Label>
-                    <p>{selected?.wage_rate}</p>
-                  </div>
-                </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button>Đóng</Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-          {/* DIALOG  */}
-
           <Pagination>
             <PaginationContent>
               <PaginationItem>
@@ -333,6 +220,126 @@ export function UserTable() {
           </Pagination>
         </CardContent>
       </Card>
-    </div>
+      <AlertDialog
+        open={open}
+        onOpenChange={(isOpen) => {
+          if (isOpen === true) return;
+          setSelected(null);
+          setOpen(false);
+        }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Bạn có chắc muốn xoá người dùng này?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Hành động này sẽ xoá vĩnh viễn người dùng{" "}
+              <span className="font-bold text-stone-800 italic">
+                {selected?.name}
+              </span>
+              . Bạn có chắc chắn muốn tiếp tục?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="hover:bg-gray-700 hover:text-gray-50">
+              Hủy
+            </AlertDialogCancel>
+            <AlertDialogAction className="bg-red-700 hover:bg-red-800">
+              Xác nhận
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Dialog
+        open={openDialog}
+        onOpenChange={(isOpen) => {
+          if (isOpen === true) return;
+          setSelected(null);
+          setOpenDialog(false);
+        }}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <div />
+            <DialogTitle className="text-2xl">{selected?.name}</DialogTitle>
+            <DialogDescription>
+              Thông tin chi tiết của {selected?.name}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center gap-4 py-2">
+            <Image
+              alt="User profile image"
+              className="rounded-full"
+              height="96"
+              src={selected?.image || "/public/images/placeholderAvatar.jpg"}
+              style={{
+                aspectRatio: "96/96",
+                objectFit: "cover",
+              }}
+              width="96"
+            />
+            <div className="grid gap-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-medium">{selected?.name}</h3>
+                <Badge>{selected?.role}</Badge>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {selected?.username}
+              </p>
+            </div>
+          </div>
+          <div className="border-t border-b border-gray-200 dark:border-gray-800">
+            <div className="grid grid-cols-2 gap-6 p-6">
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="name">
+                  Họ và Tên
+                </Label>
+                <p>{selected?.name}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="username">
+                  Tên tài khoản
+                </Label>
+                <p>{selected?.username}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="role">
+                  Chức vụ
+                </Label>
+                <p>{selected?.role}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="address">
+                  Địa chỉ
+                </Label>
+                <p>{selected?.user_address}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="phone">
+                  Số điện thoại
+                </Label>
+                <p>{selected?.user_phone}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="birthday">
+                  Ngày tháng năm sinh
+                </Label>
+                <p>{formatDate(selected?.user_birth)}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="wage-rate">
+                  Hệ số lương
+                </Label>
+                <p>{selected?.wage_rate}</p>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button>Đóng</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </main>
   );
 }
