@@ -5,9 +5,7 @@ import * as z from "zod";
 import {AddUserSchema} from "@/schemas";
 import {getUserByUsername} from "@/data/account";
 
-export const addNewUser = async (
-  values: z.infer<typeof AddUserSchema>
-) => {
+export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
   const validatedFields = AddUserSchema.safeParse(values);
   if (!validatedFields.success) {
     return {error: "Thông tin không hợp lệ."};

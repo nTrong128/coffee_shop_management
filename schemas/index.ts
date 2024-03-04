@@ -114,3 +114,12 @@ export const UpdateUserSchema = z.object({
   }),
   user_birth: z.string(),
 });
+
+export const AddProductTypeSchema = z.object({
+  name: z.string().min(4, {
+    message: "Tên phải từ 4 ký tự.",
+  }),
+  desc: z.string().min(10, {
+    message: "Mô tả phải từ 10 ký tự.",
+  }),
+});

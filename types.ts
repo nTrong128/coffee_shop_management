@@ -18,3 +18,11 @@ type UserType = {
   wage_rate?: number;
 };
 export type {UserType};
+
+type ProductType_Type = {
+  product_type_id: string;
+  product_type_name?: string;
+  product_type_desc?: string;
+};
+
+export type {ProductType_Type};
