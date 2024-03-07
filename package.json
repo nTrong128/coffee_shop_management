@@ -14,8 +14,6 @@
     "@edgestore/react": "^0.1.6",
     "@edgestore/server": "^0.1.6",
     "@hookform/resolvers": "^3.3.4",
-    "@nivo/bar": "^0.84.0",
-    "@nivo/line": "^0.84.0",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",

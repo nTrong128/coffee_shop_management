@@ -1,16 +1,8 @@
 "use client";
-import {CardTitle, CardHeader, CardContent, Card} from "@/components/ui/card";
+import {CardTitle, CardHeader, Card} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {
-  Table,
-  TableHeader,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@/components/ui/table";
-import {FileEditIcon, List, TrashIcon} from "lucide-react";
-import {getAllProductTypes} from "@/actions/getAllProductType";
+
+import {List} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,8 +14,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {useEffect, useRef, useState, useTransition} from "react";
-import {ProductType_Type} from "@/types";
-import {DeleteProdcutType} from "@/actions/deleteProductType";
+import {Product, ProductType_Type} from "@/types";
+import {DeleteProduct} from "@/actions/deleteProduct";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
 import {
@@ -38,27 +30,31 @@ import {Input} from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import {AddProductTypeSchema} from "@/schemas";
+import {AddProductSchema} from "@/schemas";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {set, z} from "zod";
-import {EditProductType} from "@/actions/editProductType";
+import {z} from "zod";
 import {Textarea} from "@/components/ui/textarea";
-import {addProductType} from "@/actions/addProductType";
-const Transaction = () => {
+import {CoffeeCard} from "@/components/content/coffee-card";
+import {getAllProducts} from "@/actions/getProduct";
+import {addProduct} from "@/actions/addProduct";
+import {EditProduct} from "@/actions/EditProduct";
+import {getAllProductTypes} from "@/actions/getProductType";
+const Product = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
-  const [data, setData] = useState<ProductType_Type[]>([]);
+  const [data, setData] = useState<Product[]>([]);
+  const [data_type, setData_type] = useState<ProductType_Type[]>([]);
   const getData = async () => {
     try {
-      const response = await getAllProductTypes();
-      const data = response.data as ProductType_Type[];
+      const response = await getAllProducts();
+      const data = response.data as Product[];
+      const response_type = await getAllProductTypes();
+      const data_type = response_type.data;
       setData(data);
     } catch (error) {
       console.log("Error fetching data", error);
@@ -69,25 +65,25 @@ const Transaction = () => {
   }, []);
   const [open, setOpen] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [openAddTypeDialog, setOpenAddTypeDialog] = useState(false);
-  const [selected, setSelected] = useState<ProductType_Type | null>(null);
-  const handleDeleteDialog = (ProductType: ProductType_Type) => {
+  const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
+  const [selected, setSelected] = useState<Product | null>(null);
+  const handleDeleteDialog = (ProductType: Product) => {
     setSelected(ProductType);
     setOpen(true);
   };
-  const handleEditDialog = (ProductType: ProductType_Type) => {
+  const handleEditDialog = (ProductType: Product) => {
     setSelected(ProductType);
     setOpenEditDialog(true);
   };
-  const handleAddTypeDialog = () => {
-    setOpenAddTypeDialog(true);
+  const handleAddProductDialog = () => {
+    setOpenAddProductDialog(true);
   };
-  const handleDeleteProductType = async (id: string) => {
+  const handleDeleteProduct = async (id: string) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      DeleteProdcutType(id).then((data) => {
+      DeleteProduct(id).then((data) => {
         setError(data.error);
         setSuccess(data.success);
 
@@ -102,62 +98,78 @@ const Transaction = () => {
     });
   };
 
-  const form = useForm<z.infer<typeof AddProductTypeSchema>>({
-    resolver: zodResolver(AddProductTypeSchema),
+  const form = useForm<z.infer<typeof AddProductSchema>>({
+    resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      name: selected?.product_type_name || "",
-      desc: selected?.product_type_desc || "",
+      product_name: selected?.product_name,
+      product_desc: selected?.product_desc,
+      product_price: selected?.product_price,
+      product_type: selected?.product_type,
     },
   });
-  const formAddType = useForm<z.infer<typeof AddProductTypeSchema>>({
-    resolver: zodResolver(AddProductTypeSchema),
+  const formAddType = useForm<z.infer<typeof AddProductSchema>>({
+    resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      name: "",
-      desc: "",
+      product_name: "",
+      product_price: 0,
+      product_desc: "",
+      product_type: "",
     },
   });
-  const onSubmitAddTypeDialog = (
-    values: z.infer<typeof AddProductTypeSchema>
-  ) => {
+  const onSubmitAddTypeDialog = (values: z.infer<typeof AddProductSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      addProductType(values).then((data) => {
+      addProduct(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
         if (data.success) {
-          setOpenAddTypeDialog(false);
+          setOpenAddProductDialog(false);
           getData();
-          formAddType.reset({name: "", desc: ""});
+          setError("");
+          setSuccess("");
+          formAddType.reset({
+            product_name: "",
+            product_desc: "",
+            product_price: 0,
+            product_type: "",
+          });
         }
       });
     });
   };
   useEffect(() => {
     if (selected) {
-      // Update form values only when selected product type is available
-      form.setValue("name", selected.product_type_name || "");
-      form.setValue("desc", selected.product_type_desc || "");
+      // Update form values only when selected product is available
+      form.setValue("product_name", selected.product_name || "");
+      form.setValue("product_desc", selected.product_desc || "");
+      form.setValue("product_price", selected.product_price || 0);
+      form.setValue("product_type", selected.product_type || "");
     } else {
       // Clear form values when no product type is selected
-      form.reset({name: "", desc: ""});
+      form.reset({
+        product_name: "",
+        product_desc: "",
+        product_price: 0,
+        product_type: "",
+      });
     }
   }, [form, selected]);
-  const onsubmit = (values: z.infer<typeof AddProductTypeSchema>) => {
+  const onsubmit = (values: z.infer<typeof AddProductSchema>) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      EditProductType(values, selected?.product_type_id as string).then(
-        (data) => {
-          setError(data.error);
-          setSuccess(data.success);
-          if (data.success) {
-            setOpenEditDialog(false);
-            getData();
-          }
+      EditProduct(values, selected?.product_id as string).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+        if (data.success) {
+          setOpenEditDialog(false);
+          getData();
+          setError("");
+          setSuccess("");
         }
-      );
+      });
     });
   };
 
@@ -167,55 +179,19 @@ const Transaction = () => {
         <CardHeader className="flex flex-col md:flex-row md:items-start md:gap-4 bg-gray-200 rounded-t-lg">
           <div className="flex items-center gap-2 ">
             <List />
-            <CardTitle>Quản lý loại món</CardTitle>
+            <CardTitle>Quản lý món</CardTitle>
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
-            {/* <AddProductTypeDialog /> */}
-            <Button onClick={handleAddTypeDialog}>Thêm loại món</Button>
+            <Button onClick={handleAddProductDialog}>Thêm món</Button>
           </div>
         </CardHeader>
-        <CardContent className="p-0 overflow-y-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Tên Loại</TableHead>
-                <TableHead>Mô tả</TableHead>
-                <TableHead className="w-[250px]">Tác Vụ</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((product_type) => (
-                <TableRow key={product_type.product_type_id}>
-                  <TableCell>{product_type.product_type_name}</TableCell>
-                  <TableCell>{product_type.product_type_desc}</TableCell>
-                  <TableCell className="flex gap-2">
-                    <Button
-                      className="rounded-full text-blue-700 bg-blue-100"
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        handleEditDialog(product_type);
-                      }}>
-                      <FileEditIcon className="w-6 h-6" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
-                    <Button
-                      className="rounded-full text-red-700 bg-red-100"
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        handleDeleteDialog(product_type);
-                      }}>
-                      <TrashIcon className="w-6 h-6" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
       </Card>
+      <div className="flex gap-2 flex-wrap ">
+        <CoffeeCard />
+        <CoffeeCard />
+        <CoffeeCard />
+        <CoffeeCard />
+      </div>
 
       <AlertDialog
         open={open}
@@ -224,6 +200,7 @@ const Transaction = () => {
           setSelected(null);
           setOpen(false);
         }}>
+        {/* DELETE PRODUCT DIALOG */}
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
@@ -232,7 +209,7 @@ const Transaction = () => {
             <AlertDialogDescription>
               Hành động này sẽ xoá vĩnh viễn loại{" "}
               <span className="font-bold text-stone-800 italic">
-                {selected?.product_type_name}
+                {selected?.product_name}
               </span>
               . Bạn có chắc chắn muốn tiếp tục?
             </AlertDialogDescription>
@@ -245,7 +222,7 @@ const Transaction = () => {
               <Button
                 disabled={isPendding}
                 onClick={() =>
-                  handleDeleteProductType(selected?.product_type_id as string)
+                  handleDeleteProduct(selected?.product_id as string)
                 }
                 className="bg-red-700 hover:bg-red-800">
                 Xác nhận
@@ -256,6 +233,7 @@ const Transaction = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {/* EDIT PRODUCT DIALOG */}
       <Dialog
         open={openEditDialog}
         onOpenChange={(isOpen) => {
@@ -271,12 +249,12 @@ const Transaction = () => {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onsubmit)}>
                 <div className="my-4">
-                  Tên loại:<b>{selected?.product_type_name}</b>
+                  Tên loại:<b>{selected?.product_name}</b>
                 </div>
 
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="product_name"
                   render={({field}) => (
                     <FormItem>
                       <FormLabel>Tên loại</FormLabel>
@@ -293,7 +271,42 @@ const Transaction = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="desc"
+                  name="product_price"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Tên loại</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          disabled={isPendding}
+                          {...field}
+                          placeholder="20.000"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="product_type"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Tên loại</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPendding}
+                          {...field}
+                          placeholder="Cà phê"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="product_desc"
                   render={({field}) => (
                     <FormItem>
                       <FormLabel>Mô tả loại</FormLabel>
@@ -322,25 +335,68 @@ const Transaction = () => {
           </div>
         </DialogContent>
       </Dialog>
-      <Dialog open={openAddTypeDialog} onOpenChange={setOpenAddTypeDialog}>
+      {/* ADD PRODUCT DIALOG */}
+      <Dialog
+        open={openAddProductDialog}
+        onOpenChange={setOpenAddProductDialog}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Thêm loại món mới</DialogTitle>
+            <DialogTitle>Thêm món mới</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <Form {...formAddType}>
               <form onSubmit={formAddType.handleSubmit(onSubmitAddTypeDialog)}>
                 <FormField
-                  control={formAddType.control}
-                  name="name"
+                  control={form.control}
+                  name="product_name"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Tên loại món</FormLabel>
+                      <FormLabel>Tên sản phẩm</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isPendding}
                           {...field}
-                          placeholder="Tên loại món"
+                          placeholder="Cà Phê đen"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="product_price"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Giá tiền</FormLabel>
+                      <FormControl>
+                        <div className="flex text-center justify-center items-center">
+                          <Input
+                            className="mr-4"
+                            type="number"
+                            step="1000"
+                            disabled={isPendding}
+                            {...field}
+                            placeholder="20.000"
+                          />
+                          <span> VND </span>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="product_type"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Tên loại</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPendding}
+                          {...field}
+                          placeholder="Cà phê"
                         />
                       </FormControl>
                       <FormMessage />
@@ -349,15 +405,15 @@ const Transaction = () => {
                 />
                 <FormField
                   control={formAddType.control}
-                  name="desc"
+                  name="product_desc"
                   render={({field}) => (
                     <FormItem className="mt-4">
-                      <FormLabel>Mô tả loại món</FormLabel>
+                      <FormLabel>Mô tả món</FormLabel>
                       <FormControl>
                         <Textarea
                           disabled={isPendding}
                           {...field}
-                          placeholder="Mô tả loại món"
+                          placeholder="Mô tả món"
                         />
                       </FormControl>
                       <FormMessage />
@@ -383,4 +439,4 @@ const Transaction = () => {
   );
 };
 
-export default Transaction;
+export default Product;

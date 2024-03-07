@@ -20,11 +20,11 @@ export const NavBar = () => {
         <Button
           asChild
           variant={pathname === "/transaction" ? "default" : "outline"}>
-          <Link href="/transaction">Giao Dịch</Link>
+          <Link href="/transaction">Quản lý món ăn</Link>
         </Button>
         <Button
           asChild
-          variant={pathname === "/transaction" ? "default" : "outline"}>
+          variant={pathname === "/productType" ? "default" : "outline"}>
           <Link href="/productType">Quản lý loại</Link>
         </Button>
         <Button asChild variant={pathname === "/user" ? "default" : "outline"}>

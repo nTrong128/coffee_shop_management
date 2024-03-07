@@ -26,3 +26,15 @@ type ProductType_Type = {
 };
 
 export type {ProductType_Type};
+
+type Product = {
+  product_id: string;
+  product_name: string;
+  product_desc: string;
+  product_price: number;
+  product_type: string;
+  product_image: string;
+  product_deleted: boolean;
+};
+
+export type {Product};

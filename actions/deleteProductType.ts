@@ -12,7 +12,7 @@ export async function DeleteProdcutType(product_type_id: string) {
       product_type_id,
     },
     data: {
-      product_deleted: true,
+      product_type_deleted: true,
     },
   });
   return {success: "Đã xóa thành công."};

@@ -123,3 +123,30 @@ export const AddProductTypeSchema = z.object({
     message: "Mô tả phải từ 10 ký tự.",
   }),
 });
+
+export const AddProductSchema = z.object({
+  product_name: z.string().min(4, {
+    message: "Tên phải từ 4 ký tự.",
+  }),
+  product_price: z.number().min(1000, {
+    message: "Giá phải từ 1000đ.",
+  }),
+  product_desc: z.string().min(10, {
+    message: "Mô tả phải từ 10 ký tự.",
+  }),
+  product_type: z.string(),
+});
+
+export const AddCustomerSchema = z.object({
+  customer_name: z.string().min(4, {
+    message: "Tên phải từ 4 ký tự.",
+  }),
+  customer_phone: z
+    .string()
+    .startsWith("0", {
+      message: "Số điện thoại phải bắt đầu bằng số 0.",
+    })
+    .min(10, {
+      message: "Số điện thoại phải là 10 ký tự.",
+    }),
+});

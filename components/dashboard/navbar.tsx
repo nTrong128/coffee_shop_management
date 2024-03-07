@@ -13,18 +13,18 @@ export const NavBar = () => {
           variant={pathname === "/dashboard" ? "default" : "outline"}>
           <Link href="/dashboard">Tổng Quan</Link>
         </Button>
-        <Button asChild variant={pathname === "/table" ? "default" : "outline"}>
+        {/* <Button asChild variant={pathname === "/table" ? "default" : "outline"}>
           <Link href="/table">Bàn</Link>
+        </Button> */}
+        <Button
+          asChild
+          variant={pathname === "/product" ? "default" : "outline"}>
+          <Link href="/product">Quản Lý Món / Tạo Đơn</Link>
         </Button>
         <Button
           asChild
-          variant={pathname === "/transaction" ? "default" : "outline"}>
-          <Link href="/transaction">Quản Lý Món / Tạo Đơn</Link>
-        </Button>
-        <Button
-          asChild
-          variant={pathname === "/productType" ? "default" : "outline"}>
-          <Link href="/productType">Quản Lý Loại</Link>
+          variant={pathname === "/product-type" ? "default" : "outline"}>
+          <Link href="/product-type">Quản Lý Loại</Link>
         </Button>
         <Button asChild variant={pathname === "/user" ? "default" : "outline"}>
           <Link href="/user">Nhân Viên</Link>
