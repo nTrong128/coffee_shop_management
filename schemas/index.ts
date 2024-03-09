@@ -116,7 +116,7 @@ export const UpdateUserSchema = z.object({
 });
 
 export const AddProductTypeSchema = z.object({
-  name: z.string().min(4, {
+  name: z.string().min(3, {
     message: "Tên phải từ 4 ký tự.",
   }),
   desc: z.string().min(10, {
@@ -128,13 +128,25 @@ export const AddProductSchema = z.object({
   product_name: z.string().min(4, {
     message: "Tên phải từ 4 ký tự.",
   }),
-  product_price: z.number().min(1000, {
-    message: "Giá phải từ 1000đ.",
-  }),
-  product_desc: z.string().min(10, {
-    message: "Mô tả phải từ 10 ký tự.",
-  }),
+  product_price: z.preprocess(
+    (val) => {
+      if (typeof val === "string") {
+        return parseFloat(val);
+      }
+      return val;
+    },
+    z.number().min(1000, {
+      message: "Giá sản phẩm phải từ 1000đ.",
+    })
+  ),
+  product_desc: z
+    .string()
+    .min(10, {
+      message: "Mô tả phải từ 10 ký tự.",
+    })
+    .or(z.string().optional()),
   product_type: z.string(),
+  product_image: z.string().optional(),
 });
 
 export const AddCustomerSchema = z.object({

@@ -44,7 +44,7 @@ import {
 import {AddProductTypeSchema} from "@/schemas";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {set, z} from "zod";
+import {z} from "zod";
 import {EditProductType} from "@/actions/editProductType";
 import {Textarea} from "@/components/ui/textarea";
 import {addProductType} from "@/actions/addProductType";

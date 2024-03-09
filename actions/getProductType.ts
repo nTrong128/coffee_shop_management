@@ -26,3 +26,31 @@ export async function getAllProductTypes() {
     data,
   };
 }
+
+export async function getAllProductTypeWithProducts() {
+  const data = await prisma.product_Type.findMany({
+    select: {
+      product_type_id: true,
+      product_type_name: true,
+      product_list: {
+        select: {
+          product_id: true,
+          product_name: true,
+          product_price: true,
+          product_image: true,
+          product_desc: true,
+        },
+        where: {
+          product_deleted: false,
+        },
+      },
+    },
+    orderBy: {product_type_name: "asc"},
+    where: {
+      product_type_deleted: false,
+    },
+  });
+  return {
+    data,
+  };
+}

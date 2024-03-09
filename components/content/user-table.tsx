@@ -63,7 +63,7 @@ import {
 } from "@/components/ui/tooltip";
 import UpdateAvatarForm from "@/components/shared/AvatarUpdateForm";
 
-export function UserTable() {
+export function UserPage() {
   const rowsPerPage = 4;
   const [data, setData] = useState<UserType[]>([]);
   const [startIndex, setStartIndex] = useState(0);

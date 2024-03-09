@@ -14,9 +14,7 @@ export const metadata: Metadata = {
 interface DashBoardLayoutPros {
   children: React.ReactNode;
 }
-export default async function DashBoardLayout({
-  children,
-}: DashBoardLayoutPros) {
+export default async function DashBoardLayout({children}: DashBoardLayoutPros) {
   const session = await auth();
 
   return (
@@ -25,7 +23,9 @@ export default async function DashBoardLayout({
         <html className="" lang="en">
           <body className={`${inter.className}`}>
             <NavBar />
-            {children}
+            <main className=" text-slate-900 bg-cover bg-center bg-no-repeat">
+              {children}
+            </main>
           </body>
         </html>
       </EdgeStoreProvider>

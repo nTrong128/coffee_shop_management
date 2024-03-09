@@ -1,8 +1,7 @@
 "use client";
 import {CardTitle, CardHeader, Card} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-
-import {List} from "lucide-react";
+import {FileEditIcon, List, TrashIcon} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,9 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {useEffect, useRef, useState, useTransition} from "react";
-import {Product, ProductType_Type} from "@/types";
-import {DeleteProduct} from "@/actions/deleteProduct";
+
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
 import {
@@ -33,28 +30,49 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableRow,
+  TableCell,
+  TableHead,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+} from "@/components/ui/select";
+import {Checkbox} from "@/components/ui/checkbox";
 import {AddProductSchema} from "@/schemas";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {Textarea} from "@/components/ui/textarea";
-import {CoffeeCard} from "@/components/content/coffee-card";
-import {getAllProducts} from "@/actions/getProduct";
 import {addProduct} from "@/actions/addProduct";
 import {EditProduct} from "@/actions/EditProduct";
-import {getAllProductTypes} from "@/actions/getProductType";
+import {getAllProductTypeWithProducts} from "@/actions/getProductType";
+import {useEffect, useState, useTransition} from "react";
+import {Product, Type_ListProduct} from "@/types";
+import {DeleteProduct} from "@/actions/deleteProduct";
+import {formatCurrency} from "@/lib/formatCurrency";
+import Image from "next/image";
+import {useEdgeStore} from "@/lib/edgestore";
+
 const Product = () => {
+  const {edgestore} = useEdgeStore();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
-  const [data, setData] = useState<Product[]>([]);
-  const [data_type, setData_type] = useState<ProductType_Type[]>([]);
+  const [data, setData] = useState<Type_ListProduct[]>([]);
   const getData = async () => {
     try {
-      const response = await getAllProducts();
-      const data = response.data as Product[];
-      const response_type = await getAllProductTypes();
-      const data_type = response_type.data;
+      const response = await getAllProductTypeWithProducts();
+      const data = response.data as Type_ListProduct[];
       setData(data);
     } catch (error) {
       console.log("Error fetching data", error);
@@ -67,6 +85,7 @@ const Product = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
+  const [selectedImage, setSelectedImage] = useState<any | File>();
   const handleDeleteDialog = (ProductType: Product) => {
     setSelected(ProductType);
     setOpen(true);
@@ -80,24 +99,18 @@ const Product = () => {
   };
   const handleDeleteProduct = async (id: string) => {
     setError("");
-    setSuccess("");
 
     startTransition(() => {
       DeleteProduct(id).then((data) => {
         setError(data.error);
-        setSuccess(data.success);
-
         if (data.success) {
           setOpen(false);
           getData();
-
           setError("");
-          setSuccess("");
         }
       });
     });
   };
-
   const form = useForm<z.infer<typeof AddProductSchema>>({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
@@ -105,36 +118,42 @@ const Product = () => {
       product_desc: selected?.product_desc,
       product_price: selected?.product_price,
       product_type: selected?.product_type,
+      product_image: selected?.product_image,
     },
   });
-  const formAddType = useForm<z.infer<typeof AddProductSchema>>({
+  const formAddProduct = useForm<z.infer<typeof AddProductSchema>>({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
       product_name: "",
       product_price: 0,
       product_desc: "",
       product_type: "",
+      product_image: "",
     },
   });
-  const onSubmitAddTypeDialog = (values: z.infer<typeof AddProductSchema>) => {
-    setError("");
-    setSuccess("");
+  const onSubmitAddProductDialog = async (
+    values: z.infer<typeof AddProductSchema>
+  ) => {
+    console.log(values, selectedImage);
 
-    startTransition(() => {
+    setError("");
+
+    startTransition(async () => {
+      if (selectedImage) {
+        const res = await edgestore.publicFiles.upload({
+          file: selectedImage as File,
+        });
+        values.product_image = res.url;
+      }
+
       addProduct(values).then((data) => {
         setError(data.error);
-        setSuccess(data.success);
         if (data.success) {
           setOpenAddProductDialog(false);
           getData();
           setError("");
-          setSuccess("");
-          formAddType.reset({
-            product_name: "",
-            product_desc: "",
-            product_price: 0,
-            product_type: "",
-          });
+          formAddProduct.reset();
+          setSelectedImage(null);
         }
       });
     });
@@ -173,6 +192,12 @@ const Product = () => {
     });
   };
 
+  const imageChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <Card className="flex-1">
@@ -186,13 +211,66 @@ const Product = () => {
           </div>
         </CardHeader>
       </Card>
-      <div className="flex gap-2 flex-wrap ">
-        <CoffeeCard />
-        <CoffeeCard />
-        <CoffeeCard />
-        <CoffeeCard />
-      </div>
-
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              <Checkbox />
+            </TableHead>
+            <TableHead></TableHead>
+            <TableHead className="">Sản phẩm</TableHead>
+            <TableHead>Mô tả</TableHead>
+            <TableHead>Loại</TableHead>
+            <TableHead>Giá</TableHead>
+            <TableHead className="w-[250px]">Tác vụ</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((productType) =>
+            productType.product_list.map((product) => (
+              <TableRow key={product.product_id}>
+                <TableCell>
+                  <Checkbox />
+                </TableCell>
+                <TableCell>
+                  {(product.product_image && (
+                    <Image
+                      src={product.product_image}
+                      alt="Product Image"
+                      width={40}
+                      height={40}
+                    />
+                  )) || <p>Không có ảnh</p>}
+                </TableCell>
+                <TableCell>{product.product_name}</TableCell>
+                <TableCell>{product.product_desc}</TableCell>
+                <TableCell>{productType.product_type_name}</TableCell>
+                <TableCell>{formatCurrency(product.product_price)}</TableCell>
+                <TableCell className="flex gap-2">
+                  <Button
+                    className="rounded-full text-blue-700 bg-blue-100"
+                    size="icon"
+                    variant="ghost">
+                    <FileEditIcon
+                      className="w-6 h-6"
+                      onClick={() => handleEditDialog(product)}
+                    />
+                    <span className="sr-only">Edit</span>
+                  </Button>
+                  <Button
+                    className="rounded-full text-red-700 bg-red-100"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleDeleteDialog(product)}>
+                    <TrashIcon className="w-6 h-6" />
+                    <span className="sr-only">Delete</span>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
       <AlertDialog
         open={open}
         onOpenChange={(isOpen) => {
@@ -204,10 +282,10 @@ const Product = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Bạn có chắc muốn xoá loại sản phẩm này?
+              Bạn có chắc muốn xoá sản phẩm này?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Hành động này sẽ xoá vĩnh viễn loại{" "}
+              Hành động này sẽ xoá vĩnh viễn sản phẩm{" "}
               <span className="font-bold text-stone-800 italic">
                 {selected?.product_name}
               </span>
@@ -249,7 +327,7 @@ const Product = () => {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onsubmit)}>
                 <div className="my-4">
-                  Tên loại:<b>{selected?.product_name}</b>
+                  Tên món:<b>{selected?.product_name}</b>
                 </div>
 
                 <FormField
@@ -257,7 +335,7 @@ const Product = () => {
                   name="product_name"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Tên loại</FormLabel>
+                      <FormLabel>Tên món</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isPendding}
@@ -274,7 +352,7 @@ const Product = () => {
                   name="product_price"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Tên loại</FormLabel>
+                      <FormLabel>Giá tiền</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
@@ -344,10 +422,13 @@ const Product = () => {
             <DialogTitle>Thêm món mới</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <Form {...formAddType}>
-              <form onSubmit={formAddType.handleSubmit(onSubmitAddTypeDialog)}>
+            <Form {...formAddProduct}>
+              <form
+                onSubmit={formAddProduct.handleSubmit(
+                  onSubmitAddProductDialog
+                )}>
                 <FormField
-                  control={form.control}
+                  control={formAddProduct.control}
                   name="product_name"
                   render={({field}) => (
                     <FormItem>
@@ -364,7 +445,7 @@ const Product = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formAddProduct.control}
                   name="product_price"
                   render={({field}) => (
                     <FormItem>
@@ -377,7 +458,7 @@ const Product = () => {
                             step="1000"
                             disabled={isPendding}
                             {...field}
-                            placeholder="20.000"
+                            placeholder="20000"
                           />
                           <span> VND </span>
                         </div>
@@ -387,24 +468,38 @@ const Product = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formAddProduct.control}
                   name="product_type"
                   render={({field}) => (
                     <FormItem>
                       <FormLabel>Tên loại</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={isPendding}
-                          {...field}
-                          placeholder="Cà phê"
-                        />
-                      </FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger disabled={isPendding} {...field}>
+                            <SelectValue placeholder="Chọn loại món" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Loại món</SelectLabel>
+                            {data.map((type) => (
+                              <SelectItem
+                                key={type.product_type_id}
+                                value={type.product_type_id}>
+                                {type.product_type_name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
-                  control={formAddType.control}
+                  control={formAddProduct.control}
                   name="product_desc"
                   render={({field}) => (
                     <FormItem className="mt-4">
@@ -420,7 +515,32 @@ const Product = () => {
                     </FormItem>
                   )}
                 />
-
+                <FormField
+                  control={formAddProduct.control}
+                  name="product_image"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Giá tiền</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          disabled={isPendding}
+                          {...field}
+                          onChange={imageChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {selectedImage && (
+                  <Image
+                    width={240}
+                    height={240}
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Product Image Preview"
+                  />
+                )}
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <Button

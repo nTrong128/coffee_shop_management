@@ -12,6 +12,7 @@ type UserType = {
   image?: string;
   password?: string;
   role: Role;
+  user_status?: boolean;
   user_phone?: string;
   user_address?: string;
   user_birth?: Date;
@@ -38,3 +39,12 @@ type Product = {
 };
 
 export type {Product};
+
+type Type_ListProduct = {
+  product_type_id: string;
+  product_type_name?: string;
+  product_type_desc?: string;
+  product_list: Product[];
+};
+
+export type {Type_ListProduct};

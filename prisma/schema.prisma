@@ -25,7 +25,7 @@ model User {
     user_birth   DateTime?
     wage_rate    Float?    @default(1.0)
     user_deleted Boolean?  @default(false)
-    user_status  String?   @default("active")
+    user_status  Boolean?  @default(true)
     account      Account?
     createAt     DateTime  @default(now())
     updateAt     DateTime  @updatedAt
@@ -63,6 +63,7 @@ model Product {
     product_image   String?
     product_desc    String?
     product_type    String?
+    product_status  Boolean? @default(true)
     product_deleted Boolean? @default(false)
     createAt        DateTime @default(now())
     updateAt        DateTime @updatedAt
@@ -78,7 +79,7 @@ model Product_Type {
 
     createAt     DateTime  @default(now())
     updateAt     DateTime  @updatedAt
-    product_type Product[]
+    product_list Product[]
 }
 
 model Table_Status {

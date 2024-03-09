@@ -6,7 +6,7 @@ import ProductImg from "@/public/products/Cappuchino.png";
 
 export function CoffeeCard() {
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full">
       <CardContent className=" p-6">
         <Image
           alt="Cappuccino"

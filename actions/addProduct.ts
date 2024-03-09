@@ -10,8 +10,13 @@ export const addProduct = async (values: z.infer<typeof AddProductSchema>) => {
     return {error: "Thông tin không hợp lệ."};
   }
 
-  const {product_name, product_desc, product_price, product_type} =
-    validatedFields.data;
+  const {
+    product_name,
+    product_desc,
+    product_price,
+    product_type,
+    product_image,
+  } = validatedFields.data;
 
   await prisma.product.create({
     data: {
@@ -19,6 +24,7 @@ export const addProduct = async (values: z.infer<typeof AddProductSchema>) => {
       product_desc,
       product_price,
       product_type,
+      product_image,
     },
   });
 
