@@ -90,8 +90,8 @@ const Product = () => {
     setSelected(ProductType);
     setOpen(true);
   };
-  const handleEditDialog = (ProductType: Product) => {
-    setSelected(ProductType);
+  const handleEditDialog = (Product: Product) => {
+    setSelected(Product);
     setOpenEditDialog(true);
   };
   const handleAddProductDialog = () => {
@@ -165,14 +165,10 @@ const Product = () => {
       form.setValue("product_desc", selected.product_desc || "");
       form.setValue("product_price", selected.product_price || 0);
       form.setValue("product_type", selected.product_type || "");
+      console.log(selected);
     } else {
       // Clear form values when no product type is selected
-      form.reset({
-        product_name: "",
-        product_desc: "",
-        product_price: 0,
-        product_type: "",
-      });
+      form.reset();
     }
   }, [form, selected]);
   const onsubmit = (values: z.infer<typeof AddProductSchema>) => {
@@ -229,7 +225,7 @@ const Product = () => {
           {data.map((productType) =>
             productType.product_list.map((product) => (
               <TableRow key={product.product_id}>
-                <TableCell>
+                <TableCell className="items-center">
                   <Checkbox />
                 </TableCell>
                 <TableCell>
@@ -237,8 +233,8 @@ const Product = () => {
                     <Image
                       src={product.product_image}
                       alt="Product Image"
-                      width={40}
-                      height={40}
+                      width={160}
+                      height={160}
                     />
                   )) || <p>Không có ảnh</p>}
                 </TableCell>
@@ -246,9 +242,9 @@ const Product = () => {
                 <TableCell>{product.product_desc}</TableCell>
                 <TableCell>{productType.product_type_name}</TableCell>
                 <TableCell>{formatCurrency(product.product_price)}</TableCell>
-                <TableCell className="flex gap-2">
+                <TableCell>
                   <Button
-                    className="rounded-full text-blue-700 bg-blue-100"
+                    className="rounded-full text-blue-700 bg-blue-100 mx-2"
                     size="icon"
                     variant="ghost">
                     <FileEditIcon
