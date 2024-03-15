@@ -1,7 +1,7 @@
 "use client";
 import {CardTitle, CardHeader, Card} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {FileEditIcon, List, TrashIcon} from "lucide-react";
+import {FileEditIcon, List, Trash2, TrashIcon, X} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -86,17 +86,7 @@ const Product = () => {
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<any | File>();
-  const handleDeleteDialog = (ProductType: Product) => {
-    setSelected(ProductType);
-    setOpen(true);
-  };
-  const handleEditDialog = (Product: Product) => {
-    setSelected(Product);
-    setOpenEditDialog(true);
-  };
-  const handleAddProductDialog = () => {
-    setOpenAddProductDialog(true);
-  };
+
   const handleDeleteProduct = async (id: string) => {
     setError("");
 
@@ -134,8 +124,6 @@ const Product = () => {
   const onSubmitAddProductDialog = async (
     values: z.infer<typeof AddProductSchema>
   ) => {
-    console.log(values, selectedImage);
-
     setError("");
 
     startTransition(async () => {
@@ -144,6 +132,7 @@ const Product = () => {
           file: selectedImage as File,
         });
         values.product_image = res.url;
+        console.log(res.url);
       }
 
       addProduct(values).then((data) => {
@@ -165,7 +154,6 @@ const Product = () => {
       form.setValue("product_desc", selected.product_desc || "");
       form.setValue("product_price", selected.product_price || 0);
       form.setValue("product_type", selected.product_type || "");
-      console.log(selected);
     } else {
       // Clear form values when no product type is selected
       form.reset();
@@ -174,15 +162,21 @@ const Product = () => {
   const onsubmit = (values: z.infer<typeof AddProductSchema>) => {
     setError("");
     setSuccess("");
-    startTransition(() => {
+    startTransition(async () => {
+      if (selectedImage) {
+        const res = await edgestore.publicFiles.upload({
+          file: selectedImage as File,
+        });
+        values.product_image = res.url;
+        console.log(res.url);
+      }
       EditProduct(values, selected?.product_id as string).then((data) => {
         setError(data.error);
-        setSuccess(data.success);
         if (data.success) {
           setOpenEditDialog(false);
           getData();
           setError("");
-          setSuccess("");
+          form.reset();
         }
       });
     });
@@ -203,7 +197,9 @@ const Product = () => {
             <CardTitle>Quản lý món</CardTitle>
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
-            <Button onClick={handleAddProductDialog}>Thêm món</Button>
+            <Button onClick={() => setOpenAddProductDialog(true)}>
+              Thêm món
+            </Button>
           </div>
         </CardHeader>
       </Card>
@@ -249,7 +245,10 @@ const Product = () => {
                     variant="ghost">
                     <FileEditIcon
                       className="w-6 h-6"
-                      onClick={() => handleEditDialog(product)}
+                      onClick={() => {
+                        setSelected(product);
+                        setOpenEditDialog(true);
+                      }}
                     />
                     <span className="sr-only">Edit</span>
                   </Button>
@@ -257,7 +256,10 @@ const Product = () => {
                     className="rounded-full text-red-700 bg-red-100"
                     size="icon"
                     variant="ghost"
-                    onClick={() => handleDeleteDialog(product)}>
+                    onClick={() => {
+                      setSelected(product);
+                      setOpen(true);
+                    }}>
                     <TrashIcon className="w-6 h-6" />
                     <span className="sr-only">Delete</span>
                   </Button>
@@ -315,7 +317,7 @@ const Product = () => {
           setSelected(null);
           setOpenEditDialog(false);
         }}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg overflow-y-scroll max-h-screen">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
           </DialogHeader>
@@ -367,13 +369,27 @@ const Product = () => {
                   render={({field}) => (
                     <FormItem>
                       <FormLabel>Tên loại</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={isPendding}
-                          {...field}
-                          placeholder="Cà phê"
-                        />
-                      </FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger disabled={isPendding} {...field}>
+                            <SelectValue placeholder="Chọn loại món" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Loại món</SelectLabel>
+                            {data.map((type) => (
+                              <SelectItem
+                                key={type.product_type_id}
+                                value={type.product_type_id}>
+                                {type.product_type_name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -395,6 +411,41 @@ const Product = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="product_image"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Ảnh sản phẩm</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          disabled={isPendding}
+                          {...field}
+                          onChange={imageChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="relative">
+                  {selectedImage && (
+                    <div className="flex flexr-row justify-around items-center">
+                      <Image
+                        width={240}
+                        height={240}
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Product Image Preview"
+                      />
+                      <Button
+                        className="text-red-700 bg-red-100 hover:text-red-800 hover:bg-red-200"
+                        onClick={() => setSelectedImage(undefined)}>
+                        <Trash2 className="mr-2" /> Xóa ảnh này
+                      </Button>
+                    </div>
+                  )}
+                </div>
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <Button
@@ -413,7 +464,7 @@ const Product = () => {
       <Dialog
         open={openAddProductDialog}
         onOpenChange={setOpenAddProductDialog}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg overflow-y-scroll max-h-screen">
           <DialogHeader>
             <DialogTitle>Thêm món mới</DialogTitle>
           </DialogHeader>
@@ -516,7 +567,7 @@ const Product = () => {
                   name="product_image"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Giá tiền</FormLabel>
+                      <FormLabel>Ảnh sản phẩm</FormLabel>
                       <FormControl>
                         <Input
                           type="file"
@@ -530,12 +581,19 @@ const Product = () => {
                   )}
                 />
                 {selectedImage && (
-                  <Image
-                    width={240}
-                    height={240}
-                    src={URL.createObjectURL(selectedImage)}
-                    alt="Product Image Preview"
-                  />
+                  <div className="flex flexr-row justify-around items-center">
+                    <Image
+                      width={240}
+                      height={240}
+                      src={URL.createObjectURL(selectedImage)}
+                      alt="Product Image Preview"
+                    />
+                    <Button
+                      className="text-red-700 bg-transparent hover:text-red-800 hover:bg-red-100 rounded-full"
+                      onClick={() => setSelectedImage(undefined)}>
+                      <Trash2 />
+                    </Button>
+                  </div>
                 )}
                 <FormError message={error} />
                 <FormSuccess message={success} />

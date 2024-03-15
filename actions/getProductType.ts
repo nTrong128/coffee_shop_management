@@ -39,6 +39,7 @@ export async function getAllProductTypeWithProducts() {
           product_price: true,
           product_image: true,
           product_desc: true,
+          product_type: true,
         },
         where: {
           product_deleted: false,

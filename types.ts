@@ -48,3 +48,19 @@ type Type_ListProduct = {
 };
 
 export type {Type_ListProduct};
+
+type OrderItem = {
+  productId: string;
+  quantity: number;
+  price: number;
+  note?: string;
+};
+export type {OrderItem};
+
+type CartType = {
+  OrderItem: Product;
+  quantity: number;
+  note?: string;
+};
+
+export type {CartType};

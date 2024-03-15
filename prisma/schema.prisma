@@ -29,9 +29,8 @@ model User {
     account      Account?
     createAt     DateTime  @default(now())
     updateAt     DateTime  @updatedAt
-    //   Staff_Position  Staff_Position? @relation(fields: [staff_position], references: [staff_position_id])
-    //   Order           Order[]
     //   Spending        Spending[]
+    Order        Order[]
 }
 
 model Account {
@@ -57,7 +56,7 @@ model Account {
 }
 
 model Product {
-    product_id      String   @id @default(cuid()) @map("_id")
+    product_id      String   @id @default(cuid()) @map("product_id")
     product_name    String
     product_price   Float?
     product_image   String?
@@ -68,11 +67,12 @@ model Product {
     createAt        DateTime @default(now())
     updateAt        DateTime @updatedAt
 
-    Product_Type Product_Type? @relation(fields: [product_type], references: [product_type_id])
+    Product_Type Product_Type?  @relation(fields: [product_type], references: [product_type_id])
+    Order_Detail Order_Detail[]
 }
 
 model Product_Type {
-    product_type_id      String   @id @default(cuid()) @map("_id")
+    product_type_id      String   @id @default(cuid()) @map("product_type_id")
     product_type_name    String
     product_type_desc    String?
     product_type_deleted Boolean? @default(false)
@@ -83,7 +83,7 @@ model Product_Type {
 }
 
 model Table_Status {
-    table_status_id      String   @id @default(cuid()) @map("_id")
+    table_status_id      String   @id @default(cuid()) @map("table_status_id")
     table_status_name    String
     table_status_desc    String?
     table_status_deleted Boolean? @default(false)
@@ -93,7 +93,7 @@ model Table_Status {
 }
 
 model Table {
-    table_id      String   @id @default(cuid()) @map("_id")
+    table_id      String   @id @default(cuid()) @map("table_id")
     table_name    String
     table_desc    String?
     table_status  String
@@ -102,10 +102,11 @@ model Table {
     updateAt      DateTime @updatedAt
 
     Table_Status Table_Status? @relation(fields: [table_status], references: [table_status_id])
+    Order        Order[]
 }
 
 model Customer {
-    customer_id      String  @id @default(cuid()) @map("_id")
+    customer_id      String  @id @default(cuid()) @map("customer_id")
     customer_name    String
     customer_phone   String?
     customer_email   String?
@@ -115,4 +116,33 @@ model Customer {
     customer_deleted Boolean? @default(false)
     createAt         DateTime @default(now())
     updateAt         DateTime @updatedAt
+    Order            Order[]
+}
+
+model Order {
+    order_id      String         @id @default(cuid()) @map("_id")
+    order_total   Float?
+    order_deleted Boolean?       @default(false)
+    createAt      DateTime       @default(now())
+    updateAt      DateTime       @updatedAt
+    staff_id      String         @map("user_id")
+    customer_id   String?        @map("customer_id")
+    table_id      String?        @map("table_id")
+    User          User?          @relation(fields: [staff_id], references: [id])
+    Customer      Customer?      @relation(fields: [customer_id], references: [customer_id])
+    Table         Table?         @relation(fields: [table_id], references: [table_id])
+    Order_Detail  Order_Detail[]
+}
+
+model Order_Detail {
+    productId String
+    orderId   String
+    price     Float
+    quantity  Int
+    note      String?
+
+    product Product @relation(fields: [productId], references: [product_id])
+    order   Order   @relation(fields: [orderId], references: [order_id])
+
+    @@id([productId, orderId])
 }

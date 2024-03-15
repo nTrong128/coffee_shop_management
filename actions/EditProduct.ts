@@ -12,8 +12,13 @@ export const EditProduct = async (
   if (!validatedFields.success) {
     return {error: "Thông tin không hợp lệ."};
   }
-  const {product_name, product_price, product_desc, product_type} =
-    validatedFields.data;
+  const {
+    product_name,
+    product_price,
+    product_desc,
+    product_type,
+    product_image,
+  } = validatedFields.data;
 
   const existingProductType = await getProductById(product_id);
   if (!existingProductType) {
@@ -28,6 +33,7 @@ export const EditProduct = async (
       product_price,
       product_desc,
       product_type,
+      product_image,
     },
   });
   return {success: "Cập nhật thông tin thành công."};

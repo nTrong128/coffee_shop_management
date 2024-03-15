@@ -162,3 +162,8 @@ export const AddCustomerSchema = z.object({
       message: "Số điện thoại phải là 10 ký tự.",
     }),
 });
+
+export const AddOrderSchema = z.object({
+  customer_id: z.string(),
+  staff_id: z.string(),
+});

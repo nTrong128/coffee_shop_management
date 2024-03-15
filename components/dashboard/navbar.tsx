@@ -3,8 +3,10 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {usePathname} from "next/navigation";
 import {UserButton} from "@/components/auth/user-button";
+import {useCurrentUser} from "@/hooks/use-current-user";
 export const NavBar = () => {
   const pathname = usePathname();
+  const user = useCurrentUser();
   return (
     <nav className=" flex items-center p-4 shadow-sm bg-white m-2 rounded-sm justify-between border-b">
       <div className="flex gap-x-2">
@@ -30,8 +32,10 @@ export const NavBar = () => {
           <Link href="/user">Nhân Viên</Link>
         </Button>
       </div>
-
-      <UserButton />
+      <div className="flex flex-row gap-4 items-center">
+        <p>Xin chào, {user?.name}</p>
+        <UserButton />
+      </div>
     </nav>
   );
 };
