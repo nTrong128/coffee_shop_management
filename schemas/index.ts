@@ -153,6 +153,12 @@ export const AddCustomerSchema = z.object({
   customer_name: z.string().min(4, {
     message: "Tên phải từ 4 ký tự.",
   }),
+  customer_point: z.preprocess((val) => {
+    if (typeof val === "string") {
+      return parseFloat(val);
+    }
+    return val;
+  }, z.number()),
   customer_phone: z
     .string()
     .startsWith("0", {

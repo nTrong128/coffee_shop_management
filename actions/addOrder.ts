@@ -40,14 +40,6 @@ export const addOrderWithItems = async (
       staff_id,
       customer_id,
       order_total,
-    },
-  });
-
-  await prisma.order.update({
-    where: {
-      order_id: order.order_id,
-    },
-    data: {
       Order_Detail: {
         createMany: {
           data: items,

@@ -64,3 +64,11 @@ type CartType = {
 };
 
 export type {CartType};
+
+type CustomerType = {
+  customer_id: string;
+  customer_name: string;
+  customer_phone: string;
+  customer_point?: number;
+};
+export type {CustomerType};

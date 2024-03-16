@@ -31,6 +31,11 @@ export const NavBar = () => {
         <Button asChild variant={pathname === "/user" ? "default" : "outline"}>
           <Link href="/user">Nhân Viên</Link>
         </Button>
+        <Button
+          asChild
+          variant={pathname === "/customer" ? "default" : "outline"}>
+          <Link href="/customer">Khánh hàng</Link>
+        </Button>
       </div>
       <div className="flex flex-row gap-4 items-center">
         <p>Xin chào, {user?.name}</p>

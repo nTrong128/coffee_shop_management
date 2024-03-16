@@ -106,12 +106,10 @@ model Table {
 }
 
 model Customer {
-    customer_id      String  @id @default(cuid()) @map("customer_id")
-    customer_name    String
-    customer_phone   String?
-    customer_email   String?
-    customer_address String?
-    customer_point   Int     @default(0)
+    customer_id    String  @id @default(cuid()) @map("customer_id")
+    customer_name  String
+    customer_phone String?
+    customer_point Int     @default(0)
 
     customer_deleted Boolean? @default(false)
     createAt         DateTime @default(now())
@@ -120,18 +118,20 @@ model Customer {
 }
 
 model Order {
-    order_id      String         @id @default(cuid()) @map("_id")
-    order_total   Float?
-    order_deleted Boolean?       @default(false)
-    createAt      DateTime       @default(now())
-    updateAt      DateTime       @updatedAt
-    staff_id      String         @map("user_id")
-    customer_id   String?        @map("customer_id")
-    table_id      String?        @map("table_id")
-    User          User?          @relation(fields: [staff_id], references: [id])
-    Customer      Customer?      @relation(fields: [customer_id], references: [customer_id])
-    Table         Table?         @relation(fields: [table_id], references: [table_id])
-    Order_Detail  Order_Detail[]
+    order_id       String         @id @default(cuid()) @map("_id")
+    order_received Float?         @default(0)
+    order_total    Float?
+    order_note     String?
+    order_deleted  Boolean?       @default(false)
+    createAt       DateTime       @default(now())
+    updateAt       DateTime       @updatedAt
+    staff_id       String         @map("user_id")
+    customer_id    String?        @map("customer_id")
+    table_id       String?        @map("table_id")
+    User           User?          @relation(fields: [staff_id], references: [id])
+    Customer       Customer?      @relation(fields: [customer_id], references: [customer_id])
+    Table          Table?         @relation(fields: [table_id], references: [table_id])
+    Order_Detail   Order_Detail[]
 }
 
 model Order_Detail {
@@ -139,7 +139,6 @@ model Order_Detail {
     orderId   String
     price     Float
     quantity  Int
-    note      String?
 
     product Product @relation(fields: [productId], references: [product_id])
     order   Order   @relation(fields: [orderId], references: [order_id])

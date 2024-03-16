@@ -7,6 +7,8 @@ import {CartType, Product, Type_ListProduct} from "@/types";
 import {useEffect, useState} from "react";
 import {formatCurrency} from "@/lib/formatCurrency";
 import {Input} from "@/components/ui/input";
+import {Dialog} from "@/components/ui/dialog";
+import {DialogContent} from "@/components/ui/dialog";
 
 export default function OrderMenu() {
   const [data, setData] = useState<Type_ListProduct[]>([]);
@@ -43,6 +45,7 @@ export default function OrderMenu() {
       : data.filter((product) => product.product_type_name === filter);
 
   const [cart, setCart] = useState<CartType[]>([]);
+  const [cashReceived, setCashReceived] = useState<number>(0);
 
   const handleAddToCart = (product: Product) => {
     if (cart.some((item) => item.OrderItem.product_id === product.product_id)) {
@@ -102,6 +105,7 @@ export default function OrderMenu() {
       price: item.OrderItem.product_price,
     };
   });
+  const [openCreateOrder, setOpenCreateOrder] = useState(false);
 
   return (
     <main className="grid grid-cols-3 gap-8">
@@ -141,7 +145,7 @@ export default function OrderMenu() {
             className="w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
           />
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {filteredProducts.map((productType) =>
             productType.product_list.map((product) => (
               <Card key={product.product_id}>
@@ -152,7 +156,7 @@ export default function OrderMenu() {
                   <div>
                     <Image
                       alt="Product Image"
-                      className="mt-6 aspect-square object-cover border border-gray-200 rounded-lg dark:border-gray-800"
+                      className="mt-6 mx-auto aspect-square object-cover border border-gray-200 rounded-lg dark:border-gray-800"
                       height={220}
                       priority
                       src={product.product_image || "/placeholder.svg"}
@@ -216,8 +220,18 @@ export default function OrderMenu() {
         {cart.length > 0 && (
           <>
             {/* //TODO ADD CUSTOMER HERE */}
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-xl font-semibold">Tổng tiền nhận:</h3>
 
-            <div className="flex justify-between items-center mb-8">
+              <Input
+                className="text-xl text-right font-semibold w-1/3"
+                type="number"
+                onKeyUp={(e: any) => {
+                  setCashReceived(e.target.value * 1000);
+                }}
+              />
+            </div>
+            <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-semibold">Tổng cộng:</h3>
               <span className="text-xl font-bold">
                 {
@@ -232,15 +246,108 @@ export default function OrderMenu() {
                 }
               </span>
             </div>
+            {cashReceived > 0 && (
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-xl font-semibold">Tổng trả khách:</h3>
+                <span className="text-xl font-bold">
+                  {
+                    formatCurrency(
+                      cashReceived -
+                        cart.reduce(
+                          (acc, product) =>
+                            acc +
+                            product.OrderItem.product_price * product.quantity,
+                          0
+                        )
+                    ) as string
+                  }
+                </span>
+              </div>
+            )}
 
             <Button
-              onClick={() => console.table(cart)}
+              onClick={() => {
+                // console.log(orderItem);
+                setOpenCreateOrder(true);
+              }}
               className="w-full bg-green-500 text-white">
               Checkout
             </Button>
           </>
         )}
       </aside>
+      <Dialog open={openCreateOrder} onOpenChange={setOpenCreateOrder}>
+        <DialogContent>
+          <h2 className="text-2xl font-semibold">Xác nhận đơn hàng</h2>
+          <div className="grid grid-cols-3">
+            <span>Sản phẩm</span>
+            <span className="text-center">Số lượng</span>
+            <span className="text-end">Giá</span>
+          </div>
+          <div>
+            {cart.map((product) => (
+              <div
+                key={product.OrderItem.product_id}
+                className="grid grid-cols-3">
+                <span className="border">{product.OrderItem.product_name}</span>
+                <span className="text-center border">{product.quantity}</span>
+                <span className="text-end border">
+                  {formatCurrency(product.OrderItem.product_price)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h3 className="text-l">Tổng cộng:</h3>
+            <span className="text-l">
+              {
+                formatCurrency(
+                  cart.reduce(
+                    (acc, product) =>
+                      acc + product.OrderItem.product_price * product.quantity,
+                    0
+                  )
+                ) as string
+              }
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <h3 className="text-l">Tổng tiền nhận:</h3>
+            <span className="text-l">
+              {formatCurrency(cashReceived) as string}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <h3 className="text-l">Tổng tiền trả khách:</h3>
+            <span className="text-l">
+              {
+                formatCurrency(
+                  cashReceived -
+                    cart.reduce(
+                      (acc, product) =>
+                        acc +
+                        product.OrderItem.product_price * product.quantity,
+                      0
+                    )
+                ) as string
+              }
+            </span>
+          </div>
+          <div>
+            <span>Ngày: {new Date().toLocaleDateString()}, </span>
+            <span>giờ: {new Date().toLocaleTimeString()}</span>
+          </div>
+
+          <Button
+            onClick={() => {
+              // console.table(orderItem);
+            }}
+            className="w-full bg-green-500 text-white">
+            Checkout
+          </Button>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
