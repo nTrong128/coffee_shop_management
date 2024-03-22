@@ -176,7 +176,7 @@ export default function UserPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="pl-6">
+                <TableHead className="w-[54px]">
                   <UserIcon className="scale-125" />
                 </TableHead>
                 <TableHead className="">Họ và Tên</TableHead>
@@ -193,7 +193,7 @@ export default function UserPage() {
                   <TableCell className="">{customer.customer_phone}</TableCell>
                   <TableCell className="">{customer.customer_point}</TableCell>
 
-                  <TableCell className="w-[100px]">
+                  <TableCell className="w-[200px]">
                     <div className="flex items-center gap-x-2">
                       <Button
                         onClick={() => {

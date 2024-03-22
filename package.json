@@ -1,5 +1,5 @@
 {
-  "name": "coffee_shop_management_ts",
+  "name": "csm-coffee_shop_management",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --no-engine"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.4.0",
@@ -35,10 +35,10 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.311.0",
-    "next": "^14.1.0",
+    "next": "^14.1.4",
     "next-auth": "^5.0.0-beta.13",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",

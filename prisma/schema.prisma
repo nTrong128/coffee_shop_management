@@ -13,24 +13,25 @@ enum UserRole {
 }
 
 model User {
-    id           String    @id @default(cuid()) @map("_id")
+    id           String     @id @default(cuid()) @map("_id")
     name         String?
-    username     String?   @unique
-    email        String?   @unique
+    username     String?    @unique
+    email        String?    @unique
     image        String? // image url
     password     String?
-    role         UserRole  @default(USER)
+    role         UserRole   @default(USER)
     user_phone   String?
     user_address String?
     user_birth   DateTime?
-    wage_rate    Float?    @default(1.0)
-    user_deleted Boolean?  @default(false)
-    user_status  Boolean?  @default(true)
+    wage_rate    Float?     @default(1.0)
+    user_deleted Boolean?   @default(false)
+    user_status  Boolean?   @default(true)
     account      Account?
-    createAt     DateTime  @default(now())
-    updateAt     DateTime  @updatedAt
+    createAt     DateTime   @default(now())
+    updateAt     DateTime   @updatedAt
     //   Spending        Spending[]
     Order        Order[]
+    Spending     Spending[]
 }
 
 model Account {
@@ -144,4 +145,16 @@ model Order_Detail {
     order   Order   @relation(fields: [orderId], references: [order_id])
 
     @@id([productId, orderId])
+}
+
+model Spending {
+    spending_id      String   @id @default(cuid()) @map("spending_id")
+    spending_name    String
+    spending_price   Float
+    spending_staff   String
+    spending_desc    String?
+    spending_deleted Boolean? @default(false)
+    createAt         DateTime @default(now())
+    updateAt         DateTime @updatedAt
+    staff            User?    @relation(fields: [spending_staff], references: [id])
 }

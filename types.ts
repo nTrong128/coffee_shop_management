@@ -72,3 +72,14 @@ type CustomerType = {
   customer_point?: number;
 };
 export type {CustomerType};
+
+type SpendingType = {
+  spending_id: string;
+  spending_name: string;
+  spending_price: number;
+  createAt: Date;
+  spending_desc: string;
+  spending_staff: string;
+};
+
+export type {SpendingType};

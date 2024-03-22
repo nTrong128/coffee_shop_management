@@ -153,12 +153,14 @@ export const AddCustomerSchema = z.object({
   customer_name: z.string().min(4, {
     message: "Tên phải từ 4 ký tự.",
   }),
-  customer_point: z.preprocess((val) => {
-    if (typeof val === "string") {
-      return parseFloat(val);
-    }
-    return val;
-  }, z.number()),
+  customer_point: z
+    .preprocess((val) => {
+      if (typeof val === "string") {
+        return parseFloat(val);
+      }
+      return val;
+    }, z.number())
+    .optional(),
   customer_phone: z
     .string()
     .startsWith("0", {
@@ -172,4 +174,18 @@ export const AddCustomerSchema = z.object({
 export const AddOrderSchema = z.object({
   customer_id: z.string(),
   staff_id: z.string(),
+});
+
+export const AddSpendingSchema = z.object({
+  spending_name: z.string().min(1, {
+    message: "Tên chi tiêu không được để trống.",
+  }),
+  spending_price: z.preprocess((val) => {
+    if (typeof val === "string") {
+      return parseFloat(val);
+    }
+    return val;
+  }, z.number()),
+  spending_desc: z.string().optional(),
+  spending_creator: z.string().optional(),
 });

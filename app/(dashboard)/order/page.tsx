@@ -108,8 +108,8 @@ export default function OrderMenu() {
   const [openCreateOrder, setOpenCreateOrder] = useState(false);
 
   return (
-    <main className="grid grid-cols-3 gap-8">
-      <section className="col-span-2 bg-white p-8 rounded-xl shadow">
+    <main className="grid grid-cols-10 gap-8">
+      <section className="col-span-6 bg-white p-8 rounded-xl shadow">
         <h1 className="text-4xl font-bold mb-6">Tạo đơn</h1>
         <div className="flex mb-8 justify-between">
           <div className="flex gap-x-4">
@@ -178,7 +178,7 @@ export default function OrderMenu() {
           )}
         </div>
       </section>
-      <aside className="bg-white p-8 rounded-xl shadow">
+      <aside className="bg-white col-span-4 p-8 rounded-xl shadow">
         <h2 className="text-2xl font-semibold mb-4">Đơn hàng</h2>
         <div className="space-y-4 mb-8">
           {cart.length === 0 ? (
@@ -270,7 +270,7 @@ export default function OrderMenu() {
                 // console.log(orderItem);
                 setOpenCreateOrder(true);
               }}
-              className="w-full bg-green-500 text-white">
+              className="w-full bg-green-500 text-white py-8 mt-2 text-2xl">
               Checkout
             </Button>
           </>
@@ -343,8 +343,8 @@ export default function OrderMenu() {
             onClick={() => {
               // console.table(orderItem);
             }}
-            className="w-full bg-green-500 text-white">
-            Checkout
+            className="w-full bg-green-500 text-white py-8 text-xl">
+            Xác nhận đơn hàng
           </Button>
         </DialogContent>
       </Dialog>
