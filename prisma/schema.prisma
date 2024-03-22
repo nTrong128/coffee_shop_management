@@ -83,28 +83,28 @@ model Product_Type {
     product_list Product[]
 }
 
-model Table_Status {
-    table_status_id      String   @id @default(cuid()) @map("table_status_id")
-    table_status_name    String
-    table_status_desc    String?
-    table_status_deleted Boolean? @default(false)
-    Table                Table[]
-    createAt             DateTime @default(now())
-    updateAt             DateTime @updatedAt
-}
+// model Table_Status {
+//     table_status_id      String   @id @default(cuid()) @map("table_status_id")
+//     table_status_name    String
+//     table_status_desc    String?
+//     table_status_deleted Boolean? @default(false)
+//     Table                Table[]
+//     createAt             DateTime @default(now())
+//     updateAt             DateTime @updatedAt
+// }
 
-model Table {
-    table_id      String   @id @default(cuid()) @map("table_id")
-    table_name    String
-    table_desc    String?
-    table_status  String
-    table_deleted Boolean? @default(false)
-    createAt      DateTime @default(now())
-    updateAt      DateTime @updatedAt
+// model Table {
+//     table_id      String   @id @default(cuid()) @map("table_id")
+//     table_name    String
+//     table_desc    String?
+//     table_status  String
+//     table_deleted Boolean? @default(false)
+//     createAt      DateTime @default(now())
+//     updateAt      DateTime @updatedAt
 
-    Table_Status Table_Status? @relation(fields: [table_status], references: [table_status_id])
-    Order        Order[]
-}
+//     Table_Status Table_Status? @relation(fields: [table_status], references: [table_status_id])
+//     Order        Order[]
+// }
 
 model Customer {
     customer_id    String  @id @default(cuid()) @map("customer_id")
@@ -131,7 +131,6 @@ model Order {
     table_id       String?        @map("table_id")
     User           User?          @relation(fields: [staff_id], references: [id])
     Customer       Customer?      @relation(fields: [customer_id], references: [customer_id])
-    Table          Table?         @relation(fields: [table_id], references: [table_id])
     Order_Detail   Order_Detail[]
 }
 
