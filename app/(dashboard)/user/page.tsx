@@ -50,7 +50,7 @@ import {
 import {Label} from "@/components/ui/label";
 import {Badge} from "@/components/ui/badge";
 import Image from "next/image";
-import {formatDate, formatDateISO} from "@/lib/formatDate";
+import {formatDate, formatDateISO} from "@/lib/DateTime";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FaUser} from "react-icons/fa";
 import {

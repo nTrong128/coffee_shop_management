@@ -15,8 +15,8 @@ export const NavBar = () => {
           variant={pathname === "/dashboard" ? "default" : "outline"}>
           <Link href="/dashboard">Tổng Quan</Link>
         </Button>
-        <Button asChild variant={pathname === "/order" ? "default" : "outline"}>
-          <Link href="/order">Order</Link>
+        <Button asChild variant={pathname === "/menu" ? "default" : "outline"}>
+          <Link href="/menu">Tạo đơn</Link>
         </Button>
         <Button
           asChild
@@ -28,6 +28,9 @@ export const NavBar = () => {
           variant={pathname === "/product-type" ? "default" : "outline"}>
           <Link href="/product-type">Quản Lý Loại</Link>
         </Button>
+        <Button asChild variant={pathname === "/spend" ? "default" : "outline"}>
+          <Link href="/spend">Chi tiêu</Link>
+        </Button>
         <Button asChild variant={pathname === "/user" ? "default" : "outline"}>
           <Link href="/user">Nhân Viên</Link>
         </Button>
@@ -36,8 +39,8 @@ export const NavBar = () => {
           variant={pathname === "/customer" ? "default" : "outline"}>
           <Link href="/customer">Khánh hàng</Link>
         </Button>
-        <Button asChild variant={pathname === "/spend" ? "default" : "outline"}>
-          <Link href="/spend">Chi tiêu</Link>
+        <Button asChild variant={pathname === "/order" ? "default" : "outline"}>
+          <Link href="/order">Hóa đơn</Link>
         </Button>
       </div>
       <div className="flex flex-row gap-4 items-center">

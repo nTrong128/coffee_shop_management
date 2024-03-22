@@ -1,6 +1,6 @@
 import {CardTitle, CardHeader, CardContent, Card} from "@/components/ui/card";
 import {List} from "lucide-react";
-import {SpendModal} from "@/components/dashboard/modals/spend-modal";
+import {SpendModal} from "@/components/dashboard/dialogs/spend-dialog";
 import {SpendTable} from "@/components/dashboard/table/spend-table";
 import {getAllSpending} from "@/actions/spending";
 

@@ -1,5 +1,6 @@
 "use server";
 import {prisma} from "@/lib/prisma";
+import {revalidatePath} from "next/cache";
 
 export const getProductTypeById = async (product_type_id: string) => {
   try {
@@ -51,6 +52,7 @@ export async function getAllProductTypeWithProducts() {
       product_type_deleted: false,
     },
   });
+  revalidatePath("/order");
   return {
     data,
   };

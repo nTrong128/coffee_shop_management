@@ -41,6 +41,7 @@ type Product = {
 export type {Product};
 
 type Type_ListProduct = {
+  filter(arg0: (product: any) => boolean): unknown;
   product_type_id: string;
   product_type_name?: string;
   product_type_desc?: string;
@@ -83,3 +84,14 @@ type SpendingType = {
 };
 
 export type {SpendingType};
+
+type OrderType = {
+  order_id: string;
+  order_total: number;
+  order_received: number;
+  order_note: string;
+  User: UserType;
+  createAt: Date;
+  Order_Detail: OrderItem[];
+};
+export type {OrderType};

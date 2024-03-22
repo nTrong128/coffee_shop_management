@@ -28,7 +28,7 @@ export const UserButton = () => {
       <DropdownMenuContent className="w-48" align="end">
         <DropdownMenuItem>
           {/* <a href="/user">Profile</a> */}
-          <Link href={"#"} className="flex">
+          <Link href={"/profile"} className="flex">
             <User className="h-4 w-4 mr-2" />
             Trang cá nhân
           </Link>

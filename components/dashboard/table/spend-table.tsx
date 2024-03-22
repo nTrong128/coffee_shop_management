@@ -6,7 +6,7 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import {formatDate} from "@/lib/formatDate";
+import {formatDate} from "@/lib/DateTime";
 
 export function SpendTable(props: {spending: any}) {
   if (!props.spending) {
