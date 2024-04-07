@@ -63,7 +63,7 @@ import {formatCurrency} from "@/lib/formatCurrency";
 import Image from "next/image";
 import {useEdgeStore} from "@/lib/edgestore";
 
-const Product = () => {
+const ProductPage = () => {
   const {edgestore} = useEdgeStore();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -227,6 +227,7 @@ const Product = () => {
                 <TableCell>
                   {(product.product_image && (
                     <Image
+                      className="rounded-lg border"
                       src={product.product_image}
                       alt="Product Image"
                       width={160}
@@ -613,4 +614,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductPage;

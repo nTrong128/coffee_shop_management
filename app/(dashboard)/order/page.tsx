@@ -16,7 +16,7 @@ export default async function OrderPage() {
         <CardHeader className="flex flex-col md:flex-row md:items-start md:gap-4 bg-gray-200 rounded-t-lg">
           <div className="flex items-center gap-2 ">
             <List />
-            <CardTitle>Quản lý chi tiêu</CardTitle>
+            <CardTitle>Lịch sử đơn hàng</CardTitle>
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
             <Link href="/menu">

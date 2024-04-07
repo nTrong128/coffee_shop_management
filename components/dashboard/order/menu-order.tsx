@@ -8,6 +8,7 @@ import {CartType, Product, Type_ListProduct} from "@/types";
 import Image from "next/image";
 import {useState} from "react";
 import {ConfirmOrder} from "../dialogs/confirm-order-dialog";
+import {ShoppingBag} from "lucide-react";
 
 export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
   const [cart, setCart] = useState<CartType[]>([]);
@@ -88,7 +89,9 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
   return (
     <>
       <section className="col-span-6 bg-white p-8 rounded-xl shadow">
-        <h1 className="text-4xl font-bold mb-6">Tạo đơn</h1>
+        <h1 className="text-4xl font-bold mb-6 flex items-center">
+          <ShoppingBag className="scale-150" /> <p className="px-2">Tạo đơn</p>
+        </h1>
         <div className="flex mb-8 justify-between">
           <div className="flex gap-x-4">
             <Button
@@ -186,7 +189,11 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
                     +
                   </Button>
                 </div>
-
+                {/* <span className="text-end">
+                  {formatCurrency(
+                    product.OrderItem.product_price * product.quantity
+                  )}
+                </span> */}
                 <span className="text-end">
                   {formatCurrency(product.OrderItem.product_price)}
                 </span>
