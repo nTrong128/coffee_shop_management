@@ -1,10 +1,7 @@
 import {Button} from "@/components/ui/button";
 
 import Image from "next/image";
-import Link from "next/link";
 import {Input} from "@/components/ui/input";
-import Landing1 from "../../public/images/landingpage_1.jpg";
-import mrTeo from "../../public/images/mr-teo.jpg";
 
 export default function Home() {
   return (
@@ -29,7 +26,7 @@ export default function Home() {
               className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
               width={750}
               height={750}
-              src={Landing1}
+              src={"/images/landingpage_1.jpg"}
             />
           </div>
         </section>
@@ -94,7 +91,7 @@ export default function Home() {
                 alt="Avatar"
                 className="mx-auto aspect-square rounded-full overflow-hidden object-cover object-center"
                 height="100"
-                src={mrTeo}
+                src={"/images/mr-teo.jpg"}
                 width="100"
               />
               <div className="space-y-4">
