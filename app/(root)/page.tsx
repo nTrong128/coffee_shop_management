@@ -3,8 +3,8 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import {Input} from "@/components/ui/input";
-import Landing1 from "@/public/images/landingpage_1.jpg";
-import mrTeo from "@/public/images/mr-teo.jpg";
+import Landing1 from "../../public/images/landingpage_1.jpg";
+import mrTeo from "../../public/images/mr-teo.jpg";
 
 export default function Home() {
   return (
