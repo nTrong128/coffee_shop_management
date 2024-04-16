@@ -52,7 +52,7 @@ const LoginForm = () => {
       headerLabel="Đăng nhập"
       backButtonLabel="Chưa có tài khoản?"
       backButtonLink="/register">
-      {/* forget Password Route should be here */}
+      {/* //TODO: forget Password Route should be here */}
       <div className="flex flex-col items-center justify-between">
         <Form {...form}>
           <form

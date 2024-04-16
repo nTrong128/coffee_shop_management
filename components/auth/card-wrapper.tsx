@@ -11,11 +11,20 @@ interface CardWrapperProps {
   backButtonLink: string;
 }
 
-export const CardWrapper = ({children, headerLabel, backButtonLabel, backButtonLink}: CardWrapperProps) => {
+export const CardWrapper = ({
+  children,
+  headerLabel,
+  backButtonLabel,
+  backButtonLink,
+}: CardWrapperProps) => {
   return (
     <Card className="w-[400px] shadow-md">
       <CardHeader>
         <Header label={headerLabel} />
+        <span className="text-lg">
+          <span className="font-bold">Chào mừng trở lại.</span> Vui lòng đăng
+          nhập để truy cập vào hệ thống.
+        </span>
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

@@ -61,7 +61,7 @@ export function ConfirmOrder({
       <DialogContent className="gap-y-2 text-xl max-w-3xl">
         <p className="text-2xl font-semibold">Xác nhận đơn hàng</p>
         <div className="p-4">
-          <div className="grid grid-cols-3 bg-slate-400">
+          <div className="grid grid-cols-3 bg-gray-300">
             <span className="px-2 border ">Sản phẩm</span>
             <span className="px-2 border text-center">Số lượng</span>
             <span className="px-2 border text-end">Giá</span>

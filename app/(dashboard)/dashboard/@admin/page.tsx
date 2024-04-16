@@ -1,23 +1,48 @@
-"use client";
-import {Button} from "@/components/ui/button";
-import {useCurrentUser} from "@/hooks/use-current-user";
-import {signOut} from "next-auth/react";
+import {Landmark, ShoppingCart, Users} from "lucide-react";
 
-const Home = () => {
-  const user = useCurrentUser();
-
+export default function Home() {
   return (
-    <main className="text-center flex  flex-col items-center justify-center bg-cover bg-center bg-no-repeat h-screen">
-      <h1 className="text-4xl py-4">
-        Chào mừng bạn đến với Hệ Thống Quản Lý Cửa Hàng Cà Phê
-      </h1>
-      <p className="text-lg py-4">
-        Quản lý cửa hàng của bạn một cách dễ dàng, nhanh chóng!
-      </p>
-      <p className="text-lg py-4">{JSON.stringify(user)}</p>
-      <h1 className="text-9xl py-4">DASHBOARD ADMIN PAGE</h1>
+    <main>
+      {/* General Information */}
+
+      <section className="py-4 px-4 border rounded-md">
+        <h2 className="text-lg font-bold">7 ngày gần đây</h2>
+        <div className="grid lg:grid-cols-4 gap-4 rounded-md sm:grid-cols-2">
+          <div className="flex justify-between p-2 py-6 bg-blue-100 rounded ">
+            <Landmark className="text-blue-500" />
+            <div>
+              <p className="font-bold text-lg">9.245.000 VND</p>
+              <p className="text-gray-500">Doanh thu</p>
+            </div>
+          </div>
+          <div className="flex justify-between p-2 py-6 bg-red-100 rounded ">
+            <ShoppingCart className="text-red-500" />
+            <div>
+              <p className="font-bold text-lg">344</p>
+              <p className="text-gray-500">Orders</p>
+            </div>
+          </div>
+          <div className="flex justify-between p-2 py-6 bg-yellow-100 rounded ">
+            <Users className="text-yellow-500" />
+            <div>
+              <p className="font-bold text-lg">178</p>
+              <p className="text-gray-500">Khách hàng</p>
+            </div>
+          </div>
+          <div className="flex justify-between p-2 py-6 bg-green-100 rounded ">
+            <Landmark className="text-green-500" />
+            <div>
+              <p className="font-bold text-lg">2.105.000 VND</p>
+              <p className="text-gray-500">Chi tiêu</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chart Revenue */}
+      <section className="py-4 px-4 border rounded-md">
+        <h2 className="text-lg font-bold">Biểu đồ doanh thu</h2>
+      </section>
     </main>
   );
-};
-
-export default Home;
+}
