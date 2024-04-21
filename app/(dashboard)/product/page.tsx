@@ -421,6 +421,7 @@ const ProductPage = () => {
                       <FormControl>
                         <Input
                           type="file"
+                          accept="image/png, image/jpeg"
                           disabled={isPendding}
                           {...field}
                           onChange={imageChange}
@@ -572,6 +573,7 @@ const ProductPage = () => {
                       <FormControl>
                         <Input
                           type="file"
+                          accept="image/png, image/jpeg"
                           disabled={isPendding}
                           {...field}
                           onChange={imageChange}
