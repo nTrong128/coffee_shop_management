@@ -9,9 +9,11 @@ import {
 import {Label} from "@/components/ui/label";
 import {formatDate} from "@/lib/DateTime";
 import Image from "next/image";
-import {UpdateAvatar} from "../dialogs/update-avatar";
 import {DialogCustom} from "../dialogs/dialog";
-import {ChangeAvatarForm} from "../form/update-avatar";
+import {ChangePasswordDialog} from "../dialogs/change-password-dialog";
+import {UpdateAvatar} from "../dialogs/update-avatar";
+import {ChangePersonalInformation} from "../dialogs/change-personal-information";
+
 export function Profile(prop: {user: any}) {
   const user = prop.user;
   return (
@@ -27,15 +29,10 @@ export function Profile(prop: {user: any}) {
             <div className="font-semibold text-lg">{user?.name}</div>
             <div className="text-lg">{user?.username}</div>
             <div className="flex items-center space-x-4">
-              <DialogCustom
-                button={<Button>Đổi mật khẩu</Button>}
-                title="Đổi mật khẩu"
-                description="Điền thông tin để đổi mật khẩu"
-                content={<ChangeAvatarForm userImg={user.image} />}
-              />
+              <ChangePasswordDialog username={user.username} />
             </div>
             <div className="flex items-center space-x-4">
-              <UpdateAvatar userImg={user.image} />
+              <UpdateAvatar user={user} />
             </div>
           </div>
         </div>
@@ -91,6 +88,7 @@ export function Profile(prop: {user: any}) {
               <div>{user.wage_rate}</div>
             </div>
           </div>
+          <ChangePersonalInformation user={user} />
         </div>
       </CardContent>
     </Card>

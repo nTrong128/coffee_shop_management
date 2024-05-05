@@ -4,6 +4,7 @@ import type {Metadata} from "next";
 import {SessionProvider} from "next-auth/react";
 import {Inter} from "next/font/google";
 import {NavBar} from "@/components/dashboard/navbar";
+import {Toaster} from "@/components/ui/toaster";
 
 const inter = Inter({subsets: ["latin"]});
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default async function DashBoardLayout({children}: DashBoardLayoutPros) {
             <main className=" text-slate-900 bg-cover bg-center bg-no-repeat">
               {children}
             </main>
+            <Toaster />
           </body>
         </html>
       </EdgeStoreProvider>

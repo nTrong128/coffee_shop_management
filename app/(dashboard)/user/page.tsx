@@ -35,7 +35,7 @@ import {
   XCircle,
 } from "lucide-react";
 import {getAllUser} from "@/actions/getAllUser";
-import {Role, UserType} from "@/types";
+import {PositionType, Role, UserType} from "@/types";
 import {useEffect, useState, useTransition} from "react";
 import {
   Dialog,
@@ -86,17 +86,24 @@ import {addNewUser} from "@/actions/addUser";
 import {FormError} from "@/components/auth/error-form";
 import {DeleteUser} from "@/actions/deleteUser";
 import {UpdateUser} from "@/actions/editUser";
+import {getAllPosition} from "@/actions/Position";
 
 export default function UserPage() {
   const rowsPerPage = 4;
   const [data, setData] = useState<UserType[]>([]);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(rowsPerPage);
+  const [position, setPosition] = useState<PositionType[]>([]);
 
   const getData = async () => {
     try {
       const response = await getAllUser();
       const data = response.data as UserType[];
+
+      const position = await getAllPosition();
+      const positionData = position.data;
+
+      setPosition(positionData as PositionType[]);
       setData(data);
     } catch (error) {
       console.log("Error fetching data", error);
@@ -153,6 +160,8 @@ export default function UserPage() {
       );
       editDetailForm.setValue("email", selected?.email || "");
       editDetailForm.setValue("role", selected?.role || undefined);
+      editDetailForm.setValue("position_id", selected?.Position.position_id);
+      editDetailForm.setValue("wage_rate", selected?.wage_rate || 1.0);
     } else {
       // Clear form values when no product type is selected
       editDetailForm.reset();
@@ -224,48 +233,33 @@ export default function UserPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="pl-6">
-                  <UserIcon className="scale-125" />
-                </TableHead>
-                <TableHead className="">Họ và Tên</TableHead>
-                <TableHead className="">Email</TableHead>
-                <TableHead className="">Chức Vụ</TableHead>
-                <TableHead className="">Trạng Thái</TableHead>
-                <TableHead className="">Tác Vụ</TableHead>
+                <TableHead>STT</TableHead>
+                <TableHead></TableHead>
+                <TableHead>Họ và Tên</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Chức Vụ</TableHead>
+                <TableHead>Loại tài khoản</TableHead>
+                <TableHead>Trạng Thái</TableHead>
+                <TableHead>Tác Vụ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.slice(startIndex, endIndex).map((user) => (
+              {data.slice(startIndex, endIndex).map((user, index) => (
                 <TableRow key={user.id}>
+                  <TableCell>{index + 1}</TableCell>
                   <TableCell>
-                    <Dialog>
-                      <TooltipProvider delayDuration={200}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <DialogTrigger asChild>
-                              <Avatar>
-                                <AvatarImage src={user?.image || ""} />
-                                <AvatarFallback className="bg-sky-500">
-                                  <FaUser className="text-white" />
-                                </AvatarFallback>
-                              </Avatar>
-                            </DialogTrigger>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Ấn vào để đổi avatar</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <DialogContent>
-                        <UpdateAvatarForm
-                          oldImageUrl={user.image || ""}
-                          username={user.username || ""}
-                        />
-                      </DialogContent>
-                    </Dialog>
+                    <Avatar>
+                      <AvatarImage src={user.image} />
+                      <AvatarFallback>
+                        <FaUser />
+                      </AvatarFallback>
+                    </Avatar>
                   </TableCell>
                   <TableCell className="">{user.name}</TableCell>
                   <TableCell className="">{user.email}</TableCell>
+                  <TableCell className="">
+                    {user.Position ? user.Position.position_name : "Chưa có"}
+                  </TableCell>
                   <TableCell className="">{user.role}</TableCell>
                   <TableCell className="pl-10">
                     {(user.user_status && (
@@ -411,7 +405,7 @@ export default function UserPage() {
               alt="User profile image"
               className="rounded-full"
               height="96"
-              src={selected?.image || "/public/images/placeholderAvatar.jpg"}
+              src={selected?.image || "/images/placeholderAvatar.jpg"}
               style={{
                 aspectRatio: "96/96",
                 objectFit: "cover",
@@ -466,6 +460,17 @@ export default function UserPage() {
                 </Label>
 
                 <p>{formatDate(selected?.user_birth)}</p>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm" htmlFor="birthday">
+                  Chức vụ
+                </Label>
+
+                <p>
+                  {selected?.Position
+                    ? selected?.Position.position_name
+                    : "Chưa có"}
+                </p>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm" htmlFor="wage-rate">
@@ -642,7 +647,7 @@ export default function UserPage() {
                   name="role"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Chức vụ</FormLabel>
+                      <FormLabel>Loại tài khoản</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}>
@@ -653,7 +658,7 @@ export default function UserPage() {
                         </FormControl>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Chức vụ</SelectLabel>
+                            <SelectLabel>Chọn loại</SelectLabel>
                             <SelectItem value={Role.ADMIN}>Quản lý</SelectItem>
                             <SelectItem value={Role.USER}>Nhân viên</SelectItem>
                           </SelectGroup>
@@ -663,6 +668,7 @@ export default function UserPage() {
                     </FormItem>
                   )}
                 />
+                <p className="italic p-2">**Mật khẩu mặc định là: 123ABCxyz@</p>
                 <FormError message={error} />
                 <Button
                   disabled={isPendding}
@@ -744,6 +750,24 @@ export default function UserPage() {
                 />
                 <FormField
                   control={editDetailForm.control}
+                  name="wage_rate"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Hệ số lương</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPendding}
+                          {...field}
+                          type="number"
+                          step={0.1}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editDetailForm.control}
                   name="user_birth"
                   render={({field}) => (
                     <FormItem>
@@ -780,6 +804,32 @@ export default function UserPage() {
                   name="role"
                   render={({field}) => (
                     <FormItem>
+                      <FormLabel>Quyền tài khoản</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger disabled={isPendding} {...field}>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Chọn quyền</SelectLabel>
+                            <SelectItem value={Role.ADMIN}>ADMIN</SelectItem>
+                            <SelectItem value={Role.USER}>USER</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editDetailForm.control}
+                  name="position_id"
+                  render={({field}) => (
+                    <FormItem>
                       <FormLabel>Chức vụ</FormLabel>
                       <Select
                         onValueChange={field.onChange}
@@ -791,9 +841,14 @@ export default function UserPage() {
                         </FormControl>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Chức vụ</SelectLabel>
-                            <SelectItem value={Role.ADMIN}>Quản lý</SelectItem>
-                            <SelectItem value={Role.USER}>Nhân viên</SelectItem>
+                            <SelectLabel>Chon chức vụ</SelectLabel>
+                            {position.map((position: PositionType) => (
+                              <SelectItem
+                                key={position.position_id}
+                                value={position.position_id}>
+                                {position.position_name}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>

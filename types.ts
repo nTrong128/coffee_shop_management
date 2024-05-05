@@ -12,6 +12,7 @@ type UserType = {
   image?: string;
   password?: string;
   role: Role;
+  Position: PositionType;
   user_status?: boolean;
   user_phone?: string;
   user_address?: string;
@@ -95,3 +96,12 @@ type OrderType = {
   Order_Detail: OrderItem[];
 };
 export type {OrderType};
+
+type PositionType = {
+  position_id: string;
+  position_name: string;
+  position_desc: string;
+  position_deleted: boolean;
+};
+
+export type {PositionType};

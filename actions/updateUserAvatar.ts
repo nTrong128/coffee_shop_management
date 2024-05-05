@@ -16,5 +16,6 @@ export async function UpdateUserImage(username: string, image: string) {
       image,
     },
   });
+  revalidatePath("/profile");
   return {success: "Cập nhật thông tin thành công."};
 }

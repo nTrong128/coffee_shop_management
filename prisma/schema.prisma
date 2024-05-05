@@ -20,6 +20,7 @@ model User {
     image        String? // image url
     password     String?
     role         UserRole   @default(USER)
+    position     String?
     user_phone   String?
     user_address String?
     user_birth   DateTime?
@@ -29,9 +30,9 @@ model User {
     account      Account?
     createAt     DateTime   @default(now())
     updateAt     DateTime   @updatedAt
-    //   Spending        Spending[]
     Order        Order[]
     Spending     Spending[]
+    Position     Position?  @relation(fields: [position], references: [position_id])
 }
 
 model Account {
@@ -72,6 +73,16 @@ model Product {
     Order_Detail Order_Detail[]
 }
 
+model Position {
+    position_id      String   @id @default(cuid()) @map("position_id")
+    position_name    String
+    position_desc    String?
+    position_deleted Boolean? @default(false)
+    createAt         DateTime @default(now())
+    updateAt         DateTime @updatedAt
+    User             User[]
+}
+
 model Product_Type {
     product_type_id      String   @id @default(cuid()) @map("product_type_id")
     product_type_name    String
@@ -82,29 +93,6 @@ model Product_Type {
     updateAt     DateTime  @updatedAt
     product_list Product[]
 }
-
-// model Table_Status {
-//     table_status_id      String   @id @default(cuid()) @map("table_status_id")
-//     table_status_name    String
-//     table_status_desc    String?
-//     table_status_deleted Boolean? @default(false)
-//     Table                Table[]
-//     createAt             DateTime @default(now())
-//     updateAt             DateTime @updatedAt
-// }
-
-// model Table {
-//     table_id      String   @id @default(cuid()) @map("table_id")
-//     table_name    String
-//     table_desc    String?
-//     table_status  String
-//     table_deleted Boolean? @default(false)
-//     createAt      DateTime @default(now())
-//     updateAt      DateTime @updatedAt
-
-//     Table_Status Table_Status? @relation(fields: [table_status], references: [table_status_id])
-//     Order        Order[]
-// }
 
 model Customer {
     customer_id    String  @id @default(cuid()) @map("customer_id")

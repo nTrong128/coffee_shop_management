@@ -15,6 +15,10 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {ChangeEvent, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {User} from "lucide-react";
+import {useEdgeStore} from "@/lib/edgestore";
+import {UserType} from "@/types";
+import {UpdateUserImage} from "@/actions/updateUserAvatar";
+import {useToast} from "@/components/ui/use-toast";
 
 function getImageData(event: ChangeEvent<HTMLInputElement>) {
   // FileList is immutable, so we need to create a new one
@@ -31,12 +35,42 @@ function getImageData(event: ChangeEvent<HTMLInputElement>) {
   return {files, displayUrl};
 }
 
-export function ChangeAvatarForm(prop: {userImg: string}) {
-  const [preview, setPreview] = useState(prop.userImg);
+export function ChangeAvatarForm(prop: {
+  user: UserType;
+  setOpen: (open: boolean) => void;
+}) {
+  const user = prop.user;
+  const setOpen = prop.setOpen;
+  const [preview, setPreview] = useState(user.image);
   const form = useForm();
+  const {edgestore} = useEdgeStore();
+  const {toast} = useToast();
+  const [pending, setPending] = useState(false);
 
-  function submitCircleRegistration(value: any) {
-    console.log({value});
+  async function submitCircleRegistration(value: any) {
+    setPending(true);
+
+    const res = await edgestore.publicFiles.upload({
+      file: value.circle_image[0] as File,
+    });
+    console.log(res.url);
+
+    UpdateUserImage(user.username!, res.url).then((res) => {
+      if (res.success) {
+        toast({
+          title: "Thành công",
+          description: "Cập nhật ảnh đại diện thành công",
+        });
+        setOpen(false);
+        setPending(false);
+        return;
+      }
+      toast({
+        title: "Thất bại",
+        description: "Cập nhật ảnh đại diện thất bại",
+      });
+      setPending(false);
+    });
   }
 
   return (
@@ -78,7 +112,7 @@ export function ChangeAvatarForm(prop: {userImg: string}) {
               </>
             )}
           />
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={pending}>
             Cập nhật
           </Button>
         </form>

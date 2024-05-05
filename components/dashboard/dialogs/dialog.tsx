@@ -19,7 +19,7 @@ export function DialogCustom(prop: {
 
   return (
     <Dialog>
-      <DialogTrigger>{button}</DialogTrigger>
+      <DialogTrigger asChild>{button}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

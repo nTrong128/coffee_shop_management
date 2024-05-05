@@ -7,6 +7,9 @@ export async function getAllUser() {
     where: {
       user_deleted: false,
     },
+    include: {
+      Position: true,
+    },
   });
   return {
     data,

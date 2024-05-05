@@ -13,6 +13,7 @@ export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
 
   const {
     username,
+    email,
     name,
     password,
     role,
@@ -31,10 +32,12 @@ export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
 
   await prisma.user.create({
     data: {
+      email,
       username,
       password: hasedPassword,
       role,
       name,
+      position: "clvsiouzq000054jks4e0bbob",
       user_address,
       user_birth: userBirthISO,
       user_phone,

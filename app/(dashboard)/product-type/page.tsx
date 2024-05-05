@@ -181,14 +181,16 @@ const Product = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">STT</TableHead>
                 <TableHead className="w-[250px]">Tên Loại</TableHead>
                 <TableHead>Mô tả</TableHead>
                 <TableHead className="w-[250px]">Tác Vụ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((product_type) => (
+              {data.map((product_type, index) => (
                 <TableRow key={product_type.product_type_id}>
+                  <TableCell>{index + 1}</TableCell>
                   <TableCell>{product_type.product_type_name}</TableCell>
                   <TableCell>{product_type.product_type_desc}</TableCell>
                   <TableCell className="flex gap-2">

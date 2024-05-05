@@ -47,7 +47,6 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import {Checkbox} from "@/components/ui/checkbox";
 import {AddProductSchema} from "@/schemas";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -187,6 +186,7 @@ const ProductPage = () => {
       setSelectedImage(e.target.files[0]);
     }
   };
+  let index = 1;
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
@@ -206,9 +206,7 @@ const ProductPage = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>
-              <Checkbox />
-            </TableHead>
+            <TableHead className="w-[50px]">STT</TableHead>
             <TableHead></TableHead>
             <TableHead className="">Sản phẩm</TableHead>
             <TableHead>Mô tả</TableHead>
@@ -221,9 +219,8 @@ const ProductPage = () => {
           {data.map((productType) =>
             productType.product_list.map((product) => (
               <TableRow key={product.product_id}>
-                <TableCell className="items-center">
-                  <Checkbox />
-                </TableCell>
+                <TableCell className="items-center">{index++}</TableCell>
+
                 <TableCell>
                   {(product.product_image && (
                     <Image

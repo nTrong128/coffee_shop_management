@@ -1,6 +1,5 @@
 "use client";
 import {addSpending} from "@/actions/spending";
-import {auth} from "@/auth";
 import {FormError} from "@/components/auth/error-form";
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog";

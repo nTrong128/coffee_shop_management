@@ -3,13 +3,8 @@
 import {Menu, MoonStar} from "lucide-react";
 import Link from "next/link";
 import {useState} from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import Image from "next/image";
-import logo from "@/public/logo.svg";
 
 export default function Header() {
   const [state, setState] = useState(false);
@@ -23,7 +18,12 @@ export default function Header() {
         <div className="items-center justify-between px-4 md:flex md:px-8">
           <div className="flex items-center justify-between pb-3 md:pb-5 md:block">
             <Link href="/" className="flex items-center">
-              <Image alt="Logo" height={100} src={logo} width={100} />
+              <Image
+                alt="Logo"
+                height={100}
+                src={"/images/logo.svg"}
+                width={100}
+              />
               <h1 className="text-3xl font-bold text-sky-900">C M S</h1>
             </Link>
             <div>

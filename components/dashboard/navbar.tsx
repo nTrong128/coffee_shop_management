@@ -40,9 +40,6 @@ export const NavBar = () => {
           <Button asChild className={pathname === "/spend" ? green : outline}>
             <Link href="/spend">Chi tiêu</Link>
           </Button>
-          <Button asChild className={pathname === "/user" ? green : outline}>
-            <Link href="/user">Nhân Viên</Link>
-          </Button>
           <Button
             asChild
             className={pathname === "/customer" ? green : outline}>
@@ -50,6 +47,14 @@ export const NavBar = () => {
           </Button>
           <Button asChild className={pathname === "/order" ? green : outline}>
             <Link href="/order">Hóa đơn</Link>
+          </Button>
+          <Button
+            asChild
+            className={pathname === "/position" ? green : outline}>
+            <Link href="/position">Chức vụ</Link>
+          </Button>
+          <Button asChild className={pathname === "/user" ? green : outline}>
+            <Link href="/user">Nhân Viên</Link>
           </Button>
         </div>
         <UserButton />
