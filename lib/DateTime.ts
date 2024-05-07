@@ -16,7 +16,7 @@ export function formatDateTime(date: any): string {
   const hours = new Date(date).getHours().toString().padStart(2, "0");
   const minutes = new Date(date).getMinutes().toString().padStart(2, "0");
   const seconds = new Date(date).getSeconds().toString().padStart(2, "0");
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
 }
 
 export const calculateMinutes = (createAt: Date): number => {

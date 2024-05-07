@@ -86,6 +86,7 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
       )
     );
   };
+
   return (
     <>
       <section className="col-span-6 bg-white p-8 rounded-xl shadow">
@@ -160,7 +161,20 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
         </div>
       </section>
       <aside className="bg-white col-span-4 p-8 rounded-xl shadow">
-        <h2 className="text-2xl font-semibold mb-4">Đơn hàng</h2>
+        <div className="flex justify-between">
+          <span className="text-2xl font-semibold mb-4">Đơn hàng</span>
+          {cart.length > 0 && (
+            <Button
+              className="bg-green-500 text-white rounded-full  hover:bg-green-600 hover:text-white"
+              onClick={() => {
+                setCart([]);
+                setOrderNote("");
+              }}>
+              Hủy, tạo đơn mới
+            </Button>
+          )}
+        </div>
+
         <div className="space-y-4 mb-8">
           {cart.length === 0 ? (
             <p className="text-gray-500">Trống</p>

@@ -32,13 +32,36 @@ export async function CreateOrder(props: {
     },
   });
   revalidatePath("/order");
+  const order = await GetOrderById(data.order_id);
   return {
-    data,
+    order,
   };
 }
 
 export async function GetAllOrder() {
   const data = await prisma.order.findMany({
+    include: {
+      Order_Detail: {
+        include: {
+          product: true,
+        },
+      },
+      User: true,
+    },
+    orderBy: {
+      createAt: "asc",
+    },
+  });
+  return {
+    data,
+  };
+}
+
+export async function GetOrderById(id: string) {
+  const data = await prisma.order.findUnique({
+    where: {
+      order_id: id,
+    },
     include: {
       Order_Detail: {
         include: {

@@ -94,6 +94,7 @@ type OrderType = {
   User: UserType;
   createAt: Date;
   Order_Detail: OrderItem[];
+  Customer: CustomerType;
 };
 export type {OrderType};
 

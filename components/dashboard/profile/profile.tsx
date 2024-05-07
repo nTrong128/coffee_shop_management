@@ -25,7 +25,12 @@ export function Profile(prop: {user: any}) {
       <CardContent className="block gap-x-12 md:flex">
         <div className="mb-8">
           <div className="text-center space-y-4 flex flex-col items-center">
-            <Image src={user.image} alt="avatar" width={120} height={120} />
+            <Image
+              src={user.image || "/images/placeholderAvatar.jpg"}
+              alt="avatar"
+              width={120}
+              height={120}
+            />
             <div className="font-semibold text-lg">{user?.name}</div>
             <div className="text-lg">{user?.username}</div>
             <div className="flex items-center space-x-4">

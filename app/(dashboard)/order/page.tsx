@@ -20,7 +20,7 @@ export default async function OrderPage() {
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
             <Link href="/menu">
-              <Button>Tạo đơn mới</Button>
+              <Button className="">Tạo đơn mới</Button>
             </Link>
           </div>
         </CardHeader>

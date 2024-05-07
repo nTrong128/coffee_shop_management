@@ -1,3 +1,5 @@
+"use client";
+import {Button} from "@/components/ui/button";
 import {
   Table,
   TableHeader,
@@ -6,8 +8,9 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import {formatDate} from "@/lib/DateTime";
+import {formatDateTime} from "@/lib/DateTime";
 import {OrderItem, UserType} from "@/types";
+import {useRouter} from "next/navigation";
 
 type OrderType = {
   order_id: string;
@@ -20,6 +23,7 @@ type OrderType = {
 };
 
 export function OrderTable(props: {order: OrderType[]}) {
+  const router = useRouter();
   if (!props.order) {
     return (
       <div className="text-center p-4 bg-gray-100 rounded-lg">
@@ -37,6 +41,7 @@ export function OrderTable(props: {order: OrderType[]}) {
           <TableHead>Chi tiết</TableHead>
           <TableHead>Tổng cộng</TableHead>
           <TableHead>Ghi chú</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -46,7 +51,7 @@ export function OrderTable(props: {order: OrderType[]}) {
               <TableCell>
                 {order.order_id.substring(0, 5).toUpperCase()}
               </TableCell>
-              <TableCell>{formatDate(order.createAt)}</TableCell>
+              <TableCell>{formatDateTime(order.createAt)}</TableCell>
               <TableCell>{order.User.name}</TableCell>
               <TableCell>
                 {order.Order_Detail.map((item: any) => (
@@ -57,6 +62,14 @@ export function OrderTable(props: {order: OrderType[]}) {
               </TableCell>
               <TableCell>{order.order_total}</TableCell>
               <TableCell>{order.order_note}</TableCell>
+              <TableCell>
+                <Button
+                  className=" bg-green-500 text-white rounded-full  hover:bg-green-600 hover:text-white"
+                  onClick={() => router.push(`/order/${order.order_id}`)}>
+                  {" "}
+                  Xem chi tiết
+                </Button>
+              </TableCell>
             </TableRow>
           );
         })}
