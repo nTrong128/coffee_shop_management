@@ -18,7 +18,8 @@ export function ExchangeGiftDialog(props: {
   const filteredCustomers = customers.filter(
     (customers) =>
       customers.customer_name.includes(searchText) ||
-      customers.customer_phone?.includes(searchText)
+      (customers.customer_phone &&
+        customers.customer_phone.includes(searchText))
   );
 
   return (

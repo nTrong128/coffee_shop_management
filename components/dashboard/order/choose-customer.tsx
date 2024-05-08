@@ -48,7 +48,7 @@ export function ChooseCustomer(prop: {
   const filteredCustomers = customers.filter(
     (customer) =>
       customer.customer_name.includes(searchText) ||
-      customer.customer_phone.includes(searchText)
+      (customer.customer_phone && customer.customer_phone.includes(searchText))
   );
 
   const form = useForm<z.infer<typeof AddCustomerSchema>>({
