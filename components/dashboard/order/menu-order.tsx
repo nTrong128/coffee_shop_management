@@ -4,16 +4,22 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {formatCurrency} from "@/lib/formatCurrency";
-import {CartType, Product, Type_ListProduct} from "@/types";
+import {CartType, CustomerType, Product, Type_ListProduct} from "@/types";
 import Image from "next/image";
 import {useState} from "react";
 import {ConfirmOrder} from "../dialogs/confirm-order-dialog";
 import {ShoppingBag} from "lucide-react";
+import {ChooseCustomer} from "./choose-customer";
 
-export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
+export function MenuAndOrder(props: {
+  data: Type_ListProduct[];
+  customer: CustomerType[];
+}) {
+  const customer = props.customer;
   const [cart, setCart] = useState<CartType[]>([]);
   const [cashReceived, setCashReceived] = useState<number>(0);
   const [orderNote, setOrderNote] = useState<string>("");
+  const [customerOrder, setCustomerOrder] = useState<CustomerType | null>(null);
 
   const handleAddToCart = (product: Product) => {
     if (cart.some((item) => item.OrderItem.product_id === product.product_id)) {
@@ -203,11 +209,7 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
                     +
                   </Button>
                 </div>
-                {/* <span className="text-end">
-                  {formatCurrency(
-                    product.OrderItem.product_price * product.quantity
-                  )}
-                </span> */}
+
                 <span className="text-end">
                   {formatCurrency(product.OrderItem.product_price)}
                 </span>
@@ -219,6 +221,14 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
         {cart.length > 0 && (
           <>
             {/* //TODO ADD CUSTOMER HERE */}
+            <div className="flex justify-between my-2">
+              <span className="text-xl font-semibold">Khách hàng:</span>
+              <ChooseCustomer
+                customer={customer}
+                setCustomerOrder={setCustomerOrder}
+              />
+            </div>
+
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-xl font-semibold">Tổng tiền nhận:</h3>
 
@@ -276,6 +286,7 @@ export function MenuAndOrder(props: {data: Type_ListProduct[]}) {
               setCart={setCart}
               cashReceived={cashReceived}
               orderNote={orderNote}
+              customer={customerOrder}
             />
           </>
         )}

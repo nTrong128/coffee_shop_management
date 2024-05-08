@@ -100,10 +100,11 @@ model Customer {
     customer_phone String?
     customer_point Int     @default(0)
 
-    customer_deleted Boolean? @default(false)
-    createAt         DateTime @default(now())
-    updateAt         DateTime @updatedAt
-    Order            Order[]
+    customer_deleted    Boolean?              @default(false)
+    createAt            DateTime              @default(now())
+    updateAt            DateTime              @updatedAt
+    Order               Order[]
+    HistoryGiftExchange HistoryGiftExchange[]
 }
 
 model Order {
@@ -143,4 +144,30 @@ model Spending {
     createAt         DateTime @default(now())
     updateAt         DateTime @updatedAt
     staff            User?    @relation(fields: [spending_staff], references: [id])
+}
+
+model Gift {
+    gift_id             String                @id @default(cuid()) @map("gift_id")
+    gift_name           String
+    gift_price          Float
+    gift_image          String?
+    gift_desc           String?
+    gift_deleted        Boolean?              @default(false)
+    createAt            DateTime              @default(now())
+    updateAt            DateTime              @updatedAt
+    HistoryGiftExchange HistoryGiftExchange[]
+}
+
+model HistoryGiftExchange {
+    giftId          String
+    customerId      String
+    exchange_point  Int
+    history_deleted Boolean? @default(false)
+    createAt        DateTime @default(now())
+    updateAt        DateTime @updatedAt
+
+    gift     Gift     @relation(fields: [giftId], references: [gift_id])
+    customer Customer @relation(fields: [customerId], references: [customer_id])
+
+    @@id([giftId, customerId])
 }

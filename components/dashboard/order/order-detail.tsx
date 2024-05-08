@@ -26,7 +26,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
       </Button>
       <div id="invoice-details" className="shadow-md border-t p-4">
         <div className="p-4 flex justify-between">
-          <div className="space-y-4">
+          <div className="space-y-4 pt-4">
             <p className="text-2xl">
               Số hóa đơn: #{invoice.order_id.substring(0, 10).toUpperCase()}
             </p>
@@ -43,7 +43,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
           </div>
         </div>
         <div>
-          <div className=" px-4 flex gap-x-2">
+          <div className="flex gap-x-2 mb-2">
             <p>Khách hàng:</p>
             <p className="font-semibold">
               {invoice.Customer
@@ -51,11 +51,12 @@ export default function OrderDetail(props: {invoice: OrderType}) {
                 : "Khách vãng lai"}
             </p>
           </div>
-          <div>
-            {invoice.Customer
-              ? `Điểm tích lũy: ${invoice.order_total / 1000}`
-              : ""}
-          </div>
+          {invoice.Customer && (
+            <div className="space-y-2">
+              <p>Điểm tích lũy lần này: {invoice.Customer.customer_point}</p>
+              <p>Tổng điểm tích lũy: {invoice.Customer.customer_point}</p>
+            </div>
+          )}
         </div>
         <div className="p-4">
           <div>

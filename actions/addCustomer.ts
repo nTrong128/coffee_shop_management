@@ -3,6 +3,7 @@
 import {prisma} from "@/lib/prisma";
 import * as z from "zod";
 import {AddCustomerSchema} from "@/schemas";
+import {revalidatePath} from "next/cache";
 
 export const addCustomer = async (
   values: z.infer<typeof AddCustomerSchema>
@@ -20,6 +21,6 @@ export const addCustomer = async (
       customer_phone,
     },
   });
-
+  revalidatePath("/menu");
   return {success: "Tạo khách hàng mới thành công."};
 };

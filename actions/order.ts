@@ -12,10 +12,13 @@ export async function CreateOrder(props: {
   received: number;
   total: number;
   order_note: string;
+  pointValue?: number;
   staff_id: string;
+  customer_id: string;
 }) {
   const data = await prisma.order.create({
     data: {
+      customer_id: props.customer_id ? props.customer_id : null,
       order_total: props.total,
       order_received: props.received,
       order_note: props.order_note,
@@ -31,6 +34,20 @@ export async function CreateOrder(props: {
       },
     },
   });
+
+  if (props.customer_id && props.pointValue) {
+    await prisma.customer.update({
+      where: {
+        customer_id: props.customer_id,
+      },
+      data: {
+        customer_point: {
+          increment: props.pointValue,
+        },
+      },
+    });
+  }
+
   revalidatePath("/order");
   const order = await GetOrderById(data.order_id);
   return {
@@ -49,7 +66,7 @@ export async function GetAllOrder() {
       User: true,
     },
     orderBy: {
-      createAt: "asc",
+      createAt: "desc",
     },
   });
   return {
@@ -68,6 +85,7 @@ export async function GetOrderById(id: string) {
           product: true,
         },
       },
+      Customer: true,
       User: true,
     },
   });

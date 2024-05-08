@@ -1,19 +1,23 @@
 import {getAllProductTypeWithProducts} from "@/actions/getProductType";
-import {Type_ListProduct} from "@/types";
+import {CustomerType, Type_ListProduct} from "@/types";
 
 import {MenuAndOrder} from "@/components/dashboard/order/menu-order";
 import {LateLyOrder} from "@/components/dashboard/order/latetest-order";
 import {latestOrder} from "@/actions/order";
+import {getAllCustomer} from "@/actions/getCustomer";
 
 export default async function MenuPage() {
   const response = await getAllProductTypeWithProducts();
   const data = response.data as Type_ListProduct[];
   const lastestOrder = await latestOrder();
   const latestOrder_data = lastestOrder.data;
+
+  const customer = await getAllCustomer();
+  const customer_data = customer.data;
   return (
     <>
       <div className="grid grid-cols-10 gap-8">
-        <MenuAndOrder data={data} />
+        <MenuAndOrder data={data} customer={customer_data as CustomerType[]} />
       </div>
       <p
         className="text-3xl font-bold text-center w-full  my-4

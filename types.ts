@@ -42,7 +42,6 @@ type Product = {
 export type {Product};
 
 type Type_ListProduct = {
-  filter(arg0: (product: any) => boolean): unknown;
   product_type_id: string;
   product_type_name?: string;
   product_type_desc?: string;

@@ -13,7 +13,7 @@ import {
 import {useCurrentUser} from "@/hooks/use-current-user";
 import {formatDateTime} from "@/lib/DateTime";
 import {formatCurrency} from "@/lib/formatCurrency";
-import {CartType} from "@/types";
+import {CartType, CustomerType} from "@/types";
 import Image from "next/image";
 import {printDiv} from "@/lib/print-div";
 
@@ -23,6 +23,7 @@ interface ConfirmOrderProps {
   cart: CartType[];
   cashReceived: number;
   orderNote: string;
+  customer: CustomerType | null;
   setCart: (cart: CartType[]) => void;
 }
 
@@ -31,6 +32,7 @@ export function ConfirmOrder({
   cashReceived,
   orderNote,
   setCart,
+  customer,
 }: ConfirmOrderProps) {
   const [isPending, startTransition] = useTransition();
   const orderItem = cart.map((item) => {
@@ -46,6 +48,8 @@ export function ConfirmOrder({
   const onSubmit = async (print: boolean) => {
     startTransition(() => {
       CreateOrder({
+        customer_id: customer?.customer_id || "",
+        pointValue: pointValue || 0,
         items: orderItem,
         received: cashReceived,
         total: cart.reduce(
@@ -65,6 +69,13 @@ export function ConfirmOrder({
     });
   };
   const [open, setOpen] = useState(false);
+
+  const pointValue =
+    cart.reduce(
+      (acc, product) =>
+        acc + product.OrderItem.product_price * product.quantity,
+      0
+    ) / 1000;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">
@@ -96,21 +107,20 @@ export function ConfirmOrder({
               <p>Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</p>
             </div>
           </div>
-          {/* <div>
-            <div className=" px-4 flex gap-x-2">
+          <div>
+            <div className="flex gap-x-2 mb-2">
               <p>Khách hàng:</p>
               <p className="font-semibold">
-                {invoice.Customer
-                  ? invoice.Customer.customer_name
-                  : "Khách vãng lai"}
+                {customer ? customer.customer_name : "Khách vãng lai"}
               </p>
             </div>
-            <div>
-              {invoice.Customer
-                ? `Điểm tích lũy: ${invoice.order_total / 1000}`
-                : ""}
-            </div>
-          </div> */}
+            {customer && (
+              <div className="space-y-2">
+                <p>Điểm tích lũy lần này: {pointValue}</p>
+                <p>Tổng điểm tích lũy: {customer.customer_point}</p>
+              </div>
+            )}
+          </div>
           <div className="p-4">
             <div>
               <Table>
