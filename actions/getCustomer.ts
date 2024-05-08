@@ -1,5 +1,6 @@
 "use server";
 import {prisma} from "@/lib/prisma";
+import {error} from "console";
 
 export async function getAllCustomer() {
   const data = await prisma.customer.findMany({
@@ -17,6 +18,10 @@ export async function getCustomerById(customer_id: string) {
   const data = await prisma.customer.findUnique({
     where: {
       customer_id,
+    },
+    include: {
+      Order: true,
+      HistoryGiftExchange: true,
     },
   });
   return {

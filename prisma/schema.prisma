@@ -13,26 +13,27 @@ enum UserRole {
 }
 
 model User {
-    id           String     @id @default(cuid()) @map("_id")
+    id           String                @id @default(cuid()) @map("_id")
     name         String?
-    username     String?    @unique
-    email        String?    @unique
+    username     String?               @unique
+    email        String?               @unique
     image        String? // image url
     password     String?
-    role         UserRole   @default(USER)
+    role         UserRole              @default(USER)
     position     String?
     user_phone   String?
     user_address String?
     user_birth   DateTime?
-    wage_rate    Float?     @default(1.0)
-    user_deleted Boolean?   @default(false)
-    user_status  Boolean?   @default(true)
+    wage_rate    Float?                @default(1.0)
+    user_deleted Boolean?              @default(false)
+    user_status  Boolean?              @default(true)
     account      Account?
-    createAt     DateTime   @default(now())
-    updateAt     DateTime   @updatedAt
+    createAt     DateTime              @default(now())
+    updateAt     DateTime              @updatedAt
     Order        Order[]
     Spending     Spending[]
-    Position     Position?  @relation(fields: [position], references: [position_id])
+    Exchange     HistoryGiftExchange[]
+    Position     Position?             @relation(fields: [position], references: [position_id])
 }
 
 model Account {
@@ -159,15 +160,16 @@ model Gift {
 }
 
 model HistoryGiftExchange {
+    history_id      String   @id @default(cuid()) @map("history_id")
     giftId          String
     customerId      String
+    staffId         String
     exchange_point  Int
     history_deleted Boolean? @default(false)
     createAt        DateTime @default(now())
     updateAt        DateTime @updatedAt
 
+    staff    User     @relation(fields: [staffId], references: [id])
     gift     Gift     @relation(fields: [giftId], references: [gift_id])
     customer Customer @relation(fields: [customerId], references: [customer_id])
-
-    @@id([giftId, customerId])
 }

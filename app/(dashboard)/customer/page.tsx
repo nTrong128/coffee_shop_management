@@ -56,8 +56,10 @@ import {DeleteUser} from "@/actions/deleteUser";
 import {getAllCustomer} from "@/actions/getCustomer";
 import {addCustomer} from "@/actions/addCustomer";
 import {UpdateCustomer} from "@/actions/updateCustomer";
+import {useRouter} from "next/navigation";
 
 export default function UserPage() {
+  const router = useRouter();
   const rowsPerPage = 4;
   const [data, setData] = useState<CustomerType[]>([]);
   const [startIndex, setStartIndex] = useState(0);
@@ -195,6 +197,15 @@ export default function UserPage() {
 
                   <TableCell className="w-[200px]">
                     <div className="flex items-center gap-x-2">
+                      <Button
+                        onClick={() => {
+                          router.push(`/customer/${customer.customer_id}`);
+                        }}
+                        className="rounded-full text-green-700 bg-green-100"
+                        size="icon"
+                        variant="secondary">
+                        <Info className="w-6 h-6" />
+                      </Button>
                       <Button
                         onClick={() => {
                           setSelected(customer);

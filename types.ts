@@ -69,8 +69,11 @@ export type {CartType};
 type CustomerType = {
   customer_id: string;
   customer_name: string;
-  customer_phone: string;
-  customer_point?: number;
+  customer_phone?: string;
+  customer_point: number;
+  customer_deleted?: boolean;
+  createAt: Date;
+  updateAt: Date;
 };
 export type {CustomerType};
 
@@ -105,3 +108,29 @@ type PositionType = {
 };
 
 export type {PositionType};
+
+type GiftType = {
+  gift_id: string;
+  gift_name: string;
+  gift_image?: string;
+  gift_price: number;
+  gift_desc?: string;
+  gift_deleted?: boolean;
+  createAt: Date;
+  updateAt: Date;
+};
+
+export type {GiftType};
+
+type HistoryGiftExchangeType = {
+  history_id: string;
+  gift: GiftType;
+  customer: CustomerType;
+  staff: UserType;
+  exchange_point: number;
+  history_deleted: boolean;
+  createAt: Date;
+  updateAt: Date;
+};
+
+export type {HistoryGiftExchangeType};

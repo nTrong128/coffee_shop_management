@@ -306,3 +306,17 @@ export const AddPositionSchema = z.object({
     message: "Mô tả không được để trống.",
   }),
 });
+
+export const AddGiftSchema = z.object({
+  gift_name: z.string().min(1, {
+    message: "Tên quà đổi thưởng không được để trống.",
+  }),
+  gift_price: z.preprocess((val) => {
+    if (typeof val === "string") {
+      return parseFloat(val);
+    }
+    return val;
+  }, z.number()),
+  gift_image: z.string().optional(),
+  gift_desc: z.string().optional(),
+});

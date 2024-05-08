@@ -45,6 +45,11 @@ export const NavBar = () => {
             className={pathname === "/customer" ? green : outline}>
             <Link href="/customer">Khánh hàng</Link>
           </Button>
+          <Button
+            asChild
+            className={pathname === "/exchange" ? green : outline}>
+            <Link href="/exchange">Đổi thưởng</Link>
+          </Button>
           <Button asChild className={pathname === "/order" ? green : outline}>
             <Link href="/order">Hóa đơn</Link>
           </Button>
@@ -89,11 +94,7 @@ export const NavBar = () => {
             onClick={() => setState(false)}>
             <Link href="/spend">Chi tiêu</Link>
           </li>
-          <li
-            className="mx-4 hover:text-indigo-600 first:font-bold"
-            onClick={() => setState(false)}>
-            <Link href="/user">Nhân Viên</Link>
-          </li>
+
           <li
             className="mx-4 hover:text-indigo-600 first:font-bold"
             onClick={() => setState(false)}>
@@ -102,7 +103,23 @@ export const NavBar = () => {
           <li
             className="mx-4 hover:text-indigo-600 first:font-bold"
             onClick={() => setState(false)}>
+            <Link href="/exchange">Đổi thưởng</Link>
+          </li>
+          <li
+            className="mx-4 hover:text-indigo-600 first:font-bold"
+            onClick={() => setState(false)}>
             <Link href="/order">Hóa đơn</Link>
+          </li>
+          <li
+            className="mx-4 hover:text-indigo-600 first:font-bold"
+            onClick={() => setState(false)}>
+            <Link href="/position">Chức vụ</Link>
+          </li>
+
+          <li
+            className="mx-4 hover:text-indigo-600 first:font-bold"
+            onClick={() => setState(false)}>
+            <Link href="/user">Nhân Viên</Link>
           </li>
         </ul>
       </div>

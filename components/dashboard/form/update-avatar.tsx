@@ -53,7 +53,6 @@ export function ChangeAvatarForm(prop: {
     const res = await edgestore.publicFiles.upload({
       file: value.circle_image[0] as File,
     });
-    console.log(res.url);
 
     UpdateUserImage(user.username!, res.url).then((res) => {
       if (res.success) {
