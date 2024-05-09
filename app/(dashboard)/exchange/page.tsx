@@ -3,15 +3,18 @@ import {List} from "lucide-react";
 
 import {ExchangeTable} from "@/components/dashboard/exchange/exchangeTable";
 import {NewExchangeDialog} from "@/components/dashboard/exchange/new-exchange-dialog";
-import {GetAllGift} from "@/actions/gift";
-import {CustomerType, GiftType} from "@/types";
+import {GetAllGift, GetAllHistoryGiftExchange} from "@/actions/gift";
+import {CustomerType, GiftType, HistoryGiftExchangeType} from "@/types";
 import {getAllCustomer} from "@/actions/getCustomer";
+import {ExchangeHistoryTable} from "@/components/dashboard/exchange/exchange-history-table";
 
 export default async function ExchangePage() {
   const res = await GetAllGift();
   const res_customer = await getAllCustomer();
+  const res_history = await GetAllHistoryGiftExchange();
   const customers = res_customer.data;
   const gifts = res.data;
+  const history = res_history.data;
   return (
     <main className="flex flex-1 flex-col p-4 md:p-6">
       <Card className="flex-1">
@@ -30,6 +33,7 @@ export default async function ExchangePage() {
         gifts={gifts as GiftType[]}
         customers={customers as CustomerType[]}
       />
+      <ExchangeHistoryTable histories={history as any} />
     </main>
   );
 }

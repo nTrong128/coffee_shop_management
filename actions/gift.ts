@@ -60,3 +60,87 @@ export async function DeleteGiftById(id: string) {
     success: "Xóa thành công.";
   }
 }
+
+export async function ExchangeGift(values: {
+  customer_id: string;
+  gift_id: string;
+  staff_id: string;
+}) {
+  const {customer_id, gift_id, staff_id} = values;
+  const customer = await prisma.customer.findUnique({
+    where: {
+      customer_id,
+    },
+  });
+  if (!customer) {
+    return {error: "Không tìm thấy thông tin khách hàng"};
+  }
+  const gift = await prisma.gift.findUnique({
+    where: {
+      gift_id,
+    },
+  });
+  if (!gift) {
+    return {error: "Không tìm thấy thông tin quà tặng"};
+  }
+
+  if (customer.customer_point < gift.gift_price) {
+    return {error: "Khách hàng không đủ điểm để đổi quà"};
+  }
+  await prisma.customer.update({
+    data: {
+      customer_point: {
+        decrement: gift.gift_price,
+      },
+    },
+    where: {
+      customer_id,
+    },
+  });
+
+  await prisma.historyGiftExchange.create({
+    data: {
+      customerId: customer_id,
+      giftId: gift_id,
+      staffId: staff_id,
+      exchange_point: gift.gift_price,
+    },
+  });
+
+  revalidatePath("/exchange");
+  return {success: "Đổi quà thành công"};
+}
+
+export async function GetAllHistoryGiftExchange() {
+  const data = await prisma.historyGiftExchange.findMany({
+    orderBy: {
+      createAt: "desc",
+    },
+    include: {
+      gift: true,
+      customer: true,
+      staff: true,
+    },
+  });
+  return {
+    data,
+  };
+}
+
+export async function GetHistoryGiftExchangeByCustomer(customer_id: string) {
+  const data = await prisma.historyGiftExchange.findMany({
+    where: {
+      customerId: customer_id,
+    },
+    orderBy: {
+      createAt: "desc",
+    },
+    include: {
+      gift: true,
+      staff: true,
+    },
+  });
+  return {
+    data,
+  };
+}

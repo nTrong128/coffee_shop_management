@@ -16,6 +16,9 @@ export function ExchangeTable(props: {
   const [open, setOpen] = useState(false);
   return (
     <>
+      <p className="text-3xl text-center my-2 font-semibold">
+        Menu quà đổi điểm
+      </p>
       <div className="flex gap-4 flex-wrap">
         {gifts.map((gift: GiftType) => (
           <div key={gift.gift_id} className="rounded-2xl p-4 m-2 shadow-md">
@@ -55,12 +58,14 @@ export function ExchangeTable(props: {
           </div>
         ))}
       </div>
-      <ExchangeGiftDialog
-        gift={selected!}
-        open={open}
-        setOpen={setOpen}
-        customers={props.customers}
-      />
+      {selected && (
+        <ExchangeGiftDialog
+          gift={selected}
+          open={open}
+          setOpen={setOpen}
+          customers={props.customers}
+        />
+      )}
     </>
   );
 }
