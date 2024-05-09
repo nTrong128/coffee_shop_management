@@ -36,7 +36,6 @@ export default function UpdatePositionForm(prop: {
   const [error, setError] = useState<string | undefined>("");
 
   const onSubmit = async (values: z.infer<typeof AddPositionSchema>) => {
-    console.log(values);
     setError("");
 
     startTransition(async () => {

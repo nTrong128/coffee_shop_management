@@ -1,9 +1,4 @@
-import {
-  CardTitle,
-  CardHeader,
-  CardContent,
-  Card,
-} from "@/components/ui/card";
+import {CardTitle, CardHeader, CardContent, Card} from "@/components/ui/card";
 import {ResponsiveBar} from "@nivo/bar";
 import {
   TableHead,
@@ -24,15 +19,11 @@ export default function StaffDashBoard() {
         <div className="grid grid-cols-3 gap-4 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">
-                Total Sales
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
               <DollarSign />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                $12,345.67
-              </div>
+              <div className="text-2xl font-bold">$12,345.67</div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 +15.2% from last month
               </p>
@@ -60,9 +51,7 @@ export default function StaffDashBoard() {
               <User />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                12/15
-              </div>
+              <div className="text-2xl font-bold">12/15</div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Currently available
               </p>
@@ -113,7 +102,6 @@ export default function StaffDashBoard() {
             </TableRow>
           </TableBody>
         </Table>
-        N
       </div>
     </div>
   );

@@ -25,3 +25,10 @@ export const calculateMinutes = (createAt: Date): number => {
   const minutes = Math.floor(timeDifference / (1000 * 60));
   return minutes;
 };
+
+export const formatDateIntoReadable = (date: Date): string => {
+  return date.toLocaleDateString("en-US", {
+    month: "short", // abbreviated month name
+    day: "numeric", // numeric day of the month
+  });
+};

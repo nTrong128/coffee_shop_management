@@ -36,8 +36,6 @@ const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-    console.log(process.env.DATABASE_URL);
-    console.log(values);
 
     startTransition(() => {
       login(values).then((data) => {

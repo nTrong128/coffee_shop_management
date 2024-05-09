@@ -137,7 +137,6 @@ const ProductPage = () => {
           file: selectedImage as File,
         });
         values.product_image = res.url;
-        console.log(res.url);
       }
 
       addProduct(values).then((data) => {
@@ -177,7 +176,6 @@ const ProductPage = () => {
           file: selectedImage as File,
         });
         values.product_image = res.url;
-        console.log(res.url);
       }
       EditProduct(values, selected?.product_id as string).then((data) => {
         setError(data.error);

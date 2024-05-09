@@ -30,7 +30,6 @@ export function SpendModal() {
     resolver: zodResolver(AddSpendingSchema),
   });
   const onSubmit = async (values: z.infer<typeof AddSpendingSchema>) => {
-    console.log(values);
     setError("");
     if (user) {
       values.spending_creator = user.id;

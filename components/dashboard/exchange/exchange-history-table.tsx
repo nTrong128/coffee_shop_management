@@ -14,7 +14,6 @@ export function ExchangeHistoryTable(prop: {
   histories: HistoryGiftExchangeType[];
 }) {
   const {histories} = prop;
-  console.log(histories);
   return (
     <div className="m-4 p-4">
       <p className="text-3xl text-center my-2 font-semibold">Lịch sử đổi quà</p>

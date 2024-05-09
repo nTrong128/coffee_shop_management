@@ -37,7 +37,6 @@ export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
       password: hasedPassword,
       role,
       name,
-      position: "clvsiouzq000054jks4e0bbob",
       user_address,
       user_birth: userBirthISO,
       user_phone,

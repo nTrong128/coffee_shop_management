@@ -29,7 +29,6 @@ export default function AddPositionForm(prop: {
   const {toast} = useToast();
 
   const onSubmit = async (values: z.infer<typeof AddPositionSchema>) => {
-    console.log(values);
     setError("");
 
     startTransition(async () => {

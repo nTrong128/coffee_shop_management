@@ -46,7 +46,6 @@ export function ChangePersonalInformationForm(prop: {
   const onSubmit = async (
     values: z.infer<typeof UpdatePersonalInformation>
   ) => {
-    console.log(values);
     setError("");
 
     startTransition(async () => {

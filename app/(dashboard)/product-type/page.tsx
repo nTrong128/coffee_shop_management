@@ -59,7 +59,6 @@ const Product = () => {
       const response = await getAllProductTypes();
       const data = response.data as ProductType_Type[];
       setData(data);
-      console.log(data);
     } catch (error) {
       console.log("Error fetching data", error);
     }

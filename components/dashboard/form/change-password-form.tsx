@@ -32,7 +32,6 @@ export function ChangePasswordForm(prop: {
     resolver: zodResolver(ChangePasswordSchema),
   });
   const onSubmit = async (values: z.infer<typeof ChangePasswordSchema>) => {
-    console.log(values);
     setError("");
 
     startTransition(async () => {
