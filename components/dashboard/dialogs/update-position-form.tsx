@@ -4,7 +4,6 @@ import {Button} from "@/components/ui/button";
 import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
 import {DialogContent, DialogTitle} from "@/components/ui/dialog";
 import {PositionType} from "@/types";
-import EditPositionForm from "../form/edit-position-form";
 import {FileEditIcon} from "lucide-react";
 import UpdatePositionForm from "../form/edit-position-form";
 
@@ -24,7 +23,7 @@ export function UpdatePositionDialog(prop: {position: PositionType}) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-screen">
         <DialogHeader>
-          <DialogTitle>Thêm chức vụ mới vào hệ thống</DialogTitle>
+          <DialogTitle>Cập nhật chức vụ</DialogTitle>
         </DialogHeader>
         <UpdatePositionForm setOpen={setOpen} position={prop.position} />
       </DialogContent>

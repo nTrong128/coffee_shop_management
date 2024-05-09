@@ -114,7 +114,7 @@ export const AddUserSchema = z.object({
 });
 
 export const UpdateUserSchema = z.object({
-  position_id: z.string(),
+  position_id: z.string().optional(),
   name: z.string().min(4, {
     message: "Tên phải từ 4 ký tự.",
   }),

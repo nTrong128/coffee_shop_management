@@ -61,9 +61,11 @@ import {DeleteProduct} from "@/actions/deleteProduct";
 import {formatCurrency} from "@/lib/formatCurrency";
 import Image from "next/image";
 import {useEdgeStore} from "@/lib/edgestore";
+import {useToast} from "@/components/ui/use-toast";
 
 const ProductPage = () => {
   const {edgestore} = useEdgeStore();
+  const {toast} = useToast();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
@@ -96,6 +98,10 @@ const ProductPage = () => {
           setOpen(false);
           getData();
           setError("");
+          toast({
+            title: "Xóa sản phẩm",
+            description: "Xóa sản phẩm thành công.",
+          });
         }
       });
     });
@@ -142,6 +148,10 @@ const ProductPage = () => {
           setError("");
           formAddProduct.reset();
           setSelectedImage(null);
+          toast({
+            title: "Thành công",
+            description: "Thêm sản phẩm thành công",
+          });
         }
       });
     });
@@ -176,6 +186,10 @@ const ProductPage = () => {
           getData();
           setError("");
           form.reset();
+          toast({
+            title: "Thành công",
+            description: "Cập nhật sản phẩm thành công",
+          });
         }
       });
     });

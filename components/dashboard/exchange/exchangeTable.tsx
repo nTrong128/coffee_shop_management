@@ -19,11 +19,13 @@ export function ExchangeTable(props: {
       <p className="text-3xl text-center my-2 font-semibold">
         Menu quà đổi điểm
       </p>
-      <div className="flex gap-4 flex-wrap">
+      <div className="lg:grid xl:grid-cols-4 grid-cols-3 sm:block">
         {gifts.map((gift: GiftType) => (
-          <div key={gift.gift_id} className="rounded-2xl p-4 m-2 shadow-md">
+          <div
+            key={gift.gift_id}
+            className="flex flex-col justify-between rounded-2xl p-4 m-2 shadow-md">
             <div
-              className="hover:opacity-75"
+              className="flex flex-col gap-y-4 hover:opacity-75"
               onClick={() => {
                 setSelected(gift);
                 setOpen(true);
@@ -37,8 +39,8 @@ export function ExchangeTable(props: {
                     className="mx-auto"
                     alt="quà"
                     src={gift?.gift_image}
-                    width={300}
-                    height={300}
+                    width={280}
+                    height={280}
                   />
                 ) : (
                   <div>

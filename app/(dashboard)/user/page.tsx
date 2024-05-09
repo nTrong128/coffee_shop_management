@@ -87,6 +87,7 @@ import {FormError} from "@/components/auth/error-form";
 import {DeleteUser} from "@/actions/deleteUser";
 import {UpdateUser} from "@/actions/editUser";
 import {getAllPosition} from "@/actions/Position";
+import {useToast} from "@/components/ui/use-toast";
 
 export default function UserPage() {
   const rowsPerPage = 4;
@@ -112,6 +113,8 @@ export default function UserPage() {
   useEffect(() => {
     getData();
   }, []);
+
+  const {toast} = useToast();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, SetOpenEditDialog] = useState(false);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
@@ -160,7 +163,7 @@ export default function UserPage() {
       );
       editDetailForm.setValue("email", selected?.email || "");
       editDetailForm.setValue("role", selected?.role || undefined);
-      editDetailForm.setValue("position_id", selected?.Position.position_id);
+      editDetailForm.setValue("position_id", selected?.Position?.position_id);
       editDetailForm.setValue("wage_rate", selected?.wage_rate || 1.0);
     } else {
       // Clear form values when no product type is selected
@@ -178,6 +181,10 @@ export default function UserPage() {
           setOpenAddUserDialog(false);
           getData();
           setError("");
+          toast({
+            title: "Thêm người dùng thành công",
+            description: "Người dùng đã được thêm vào hệ thống.",
+          });
         }
       });
     });
@@ -193,6 +200,15 @@ export default function UserPage() {
           setOpenDeleteDialog(false);
           getData();
           setError("");
+          toast({
+            title: "Xoá người dùng thành công",
+            description: "Người dùng đã được xoá khỏi hệ thống.",
+          });
+        } else {
+          toast({
+            title: "Xoá người dùng không thành công",
+            description: data.error,
+          });
         }
       });
     });
@@ -207,6 +223,10 @@ export default function UserPage() {
           SetOpenEditDialog(false);
           getData();
           setError("");
+          toast({
+            title: "Cập nhật thông tin thành công",
+            description: "Thông tin người dùng đã được cập nhật.",
+          });
         }
       });
     });
@@ -374,12 +394,14 @@ export default function UserPage() {
               <AlertDialogCancel className="hover:bg-gray-700 hover:text-gray-50">
                 Hủy
               </AlertDialogCancel>
-              <Button
-                disabled={isPendding}
-                type="submit"
-                className="bg-red-700 hover:bg-red-800">
-                Xác nhận
-              </Button>
+              <AlertDialogAction asChild>
+                <Button
+                  disabled={isPendding}
+                  type="submit"
+                  className="bg-red-700 hover:bg-red-800">
+                  Xác nhận
+                </Button>
+              </AlertDialogAction>
             </form>
           </AlertDialogFooter>
         </AlertDialogContent>

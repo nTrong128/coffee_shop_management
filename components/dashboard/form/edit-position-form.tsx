@@ -17,12 +17,14 @@ import {UpdatePosition} from "@/actions/Position";
 import {useState, useTransition} from "react";
 import {z} from "zod";
 import {PositionType} from "@/types";
+import {useToast} from "@/components/ui/use-toast";
 export default function UpdatePositionForm(prop: {
   setOpen: (open: boolean) => void;
   position: PositionType;
 }) {
   const setOpen = prop.setOpen;
   const position = prop.position;
+  const {toast} = useToast();
   const form = useForm<z.infer<typeof AddPositionSchema>>({
     resolver: zodResolver(AddPositionSchema),
     defaultValues: {
@@ -43,6 +45,10 @@ export default function UpdatePositionForm(prop: {
         if (data.success) {
           setError("");
           setOpen(false);
+          toast({
+            title: "Cập nhật chức vụ thành công",
+            description: "Chức vụ đã được cập nhật thành công",
+          });
         }
       });
     });

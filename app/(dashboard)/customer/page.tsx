@@ -57,6 +57,8 @@ import {getAllCustomer} from "@/actions/getCustomer";
 import {addCustomer} from "@/actions/addCustomer";
 import {UpdateCustomer} from "@/actions/updateCustomer";
 import {useRouter} from "next/navigation";
+import {useToast} from "@/components/ui/use-toast";
+import {DeleteCustomer} from "@/actions/deleteCustomer";
 
 export default function UserPage() {
   const router = useRouter();
@@ -64,7 +66,7 @@ export default function UserPage() {
   const [data, setData] = useState<CustomerType[]>([]);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(rowsPerPage);
-
+  const {toast} = useToast();
   const getData = async () => {
     try {
       const response = await getAllCustomer();
@@ -123,6 +125,10 @@ export default function UserPage() {
           setOpenAddCustomerDialog(false);
           getData();
           setError("");
+          toast({
+            title: "Thành công",
+            description: "Tạo khách hàng mới thành công.",
+          });
         }
       });
     });
@@ -131,13 +137,17 @@ export default function UserPage() {
     setError("");
 
     startTransition(() => {
-      DeleteUser(userID).then((data) => {
+      DeleteCustomer(userID).then((data) => {
         setError(data.error);
         if (data.success) {
           form.reset();
           setOpenDeleteDialog(false);
-          getData();
+
           setError("");
+          toast({
+            title: "Thành công",
+            description: "Xóa khách hàng thành công.",
+          });
         }
       });
     });
@@ -152,6 +162,10 @@ export default function UserPage() {
           SetOpenEditDialog(false);
           getData();
           setError("");
+          toast({
+            title: "Thành công",
+            description: "Cập nhật khách hàng thành công.",
+          });
         }
       });
     });

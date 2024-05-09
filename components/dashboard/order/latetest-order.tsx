@@ -1,4 +1,5 @@
 "use client";
+import {Button} from "@/components/ui/button";
 import {Card} from "@/components/ui/card";
 import {
   TableHeader,
@@ -9,7 +10,8 @@ import {
   Table,
 } from "@/components/ui/table";
 import {formatDateTime, calculateMinutes} from "@/lib/DateTime";
-import {Timer} from "lucide-react";
+import {Info, Timer} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 type Order = {
   order_id: string;
@@ -27,6 +29,7 @@ type Order = {
 };
 
 export function LateLyOrder(props: {data: Order[]}) {
+  const router = useRouter();
   if (props.data.length <= 0) {
     return (
       <div className="text-center p-4 bg-gray-100 rounded-lg">
@@ -48,6 +51,7 @@ export function LateLyOrder(props: {data: Order[]}) {
             <TableHead>Người nhận đơn</TableHead>
             <TableHead>Giá trị hóa đơn</TableHead>
             <TableHead>Ghi chú</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -70,6 +74,15 @@ export function LateLyOrder(props: {data: Order[]}) {
               <TableCell>{order.User?.name}</TableCell>
               <TableCell>{order.order_total}</TableCell>
               <TableCell>{order.order_note}</TableCell>
+              <TableCell>
+                <Button
+                  className="mx-auto rounded-full text-green-700 bg-green-100"
+                  size="icon"
+                  variant="secondary"
+                  onClick={() => router.push(`/order/${order.order_id}`)}>
+                  <Info className="w-6 h-6" />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

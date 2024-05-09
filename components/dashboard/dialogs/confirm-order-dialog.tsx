@@ -1,3 +1,4 @@
+"use client";
 import {CreateOrder} from "@/actions/order";
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
@@ -18,6 +19,7 @@ import Image from "next/image";
 import {printDiv} from "@/lib/print-div";
 
 import {useState, useTransition} from "react";
+import {useToast} from "@/components/ui/use-toast";
 
 interface ConfirmOrderProps {
   cart: CartType[];
@@ -34,6 +36,7 @@ export function ConfirmOrder({
   setCart,
   customer,
 }: ConfirmOrderProps) {
+  const {toast} = useToast();
   const [isPending, startTransition] = useTransition();
   const orderItem = cart.map((item) => {
     return {
@@ -48,6 +51,7 @@ export function ConfirmOrder({
   const onSubmit = async (print: boolean) => {
     startTransition(() => {
       CreateOrder({
+        customer_old_point: customer ? customer.customer_point : 0,
         customer_id: customer?.customer_id || "",
         pointValue: pointValue || 0,
         items: orderItem,
@@ -62,6 +66,10 @@ export function ConfirmOrder({
       }).then((data) => {
         setOpen(false);
         setCart([]);
+        toast({
+          title: "Đã tạo đơn hàng",
+          description: "Đơn hàng đã được tạo thành công",
+        });
         if (print) {
           printDiv("invoice-details");
         }
@@ -78,8 +86,10 @@ export function ConfirmOrder({
     ) / 1000;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="w-full">
-        <Button className="w-full bg-green-500 text-white py-8 mt-2 text-2xl hover:bg-green-700">
+      <DialogTrigger className="w-full" asChild>
+        <Button
+          disabled={cashReceived <= 0}
+          className="w-full bg-green-500 text-white py-8 mt-2 text-2xl hover:bg-green-700">
           Thanh toán
         </Button>
       </DialogTrigger>

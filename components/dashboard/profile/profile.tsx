@@ -1,4 +1,3 @@
-import {Button} from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -9,7 +8,6 @@ import {
 import {Label} from "@/components/ui/label";
 import {formatDate} from "@/lib/DateTime";
 import Image from "next/image";
-import {DialogCustom} from "../dialogs/dialog";
 import {ChangePasswordDialog} from "../dialogs/change-password-dialog";
 import {UpdateAvatar} from "../dialogs/update-avatar";
 import {ChangePersonalInformation} from "../dialogs/change-personal-information";
@@ -83,6 +81,14 @@ export function Profile(prop: {user: any}) {
             </Label>
             <div className="flex items-center space-x-4">
               <div>{formatDate(user.user_birth)}</div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Label className="w-36" htmlFor="wage">
+              Chức vụ
+            </Label>
+            <div className="flex items-center space-x-4">
+              <div>{user.Position ? user.Position.position_name : ""}</div>
             </div>
           </div>
           <div className="flex items-center space-x-4">

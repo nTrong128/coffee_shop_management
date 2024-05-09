@@ -21,7 +21,12 @@ export async function getCustomerById(customer_id: string) {
     },
     include: {
       Order: true,
-      HistoryGiftExchange: true,
+      HistoryGiftExchange: {
+        orderBy: {createAt: "desc"},
+        include: {
+          gift: true,
+        },
+      },
     },
   });
   return {

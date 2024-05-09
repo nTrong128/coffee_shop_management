@@ -2,6 +2,7 @@
 import {Button} from "@/components/ui/button";
 import {
   Table,
+  TableBody,
   TableCell,
   TableHead,
   TableHeader,
@@ -18,7 +19,6 @@ export function CustomerDetail(prop: {customer: any}) {
       <Button size={"lg"} onClick={() => router.back()}>
         Quay lại
       </Button>
-      <p>{JSON.stringify(customer)}</p>
 
       <div className="shadow-md border-t">
         <div className="mx-4 px-4 space-y-4 border-b">
@@ -58,19 +58,27 @@ export function CustomerDetail(prop: {customer: any}) {
 
           <Table className="border my-4">
             <TableHeader>
-              <TableHead>STT</TableHead>
-              <TableHead>Số hóa đơn</TableHead>
-              <TableHead>Giá trị hóa đơn</TableHead>
-              <TableHead>Thời gian</TableHead>
-            </TableHeader>
-            {customer.Order.map((order: any, index: any) => (
-              <TableRow key={order.order_id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{order.order_id}</TableCell>
-                <TableCell>{order.order_total}</TableCell>
-                <TableCell>{formatDateTime(order.createAt)}</TableCell>
+              <TableRow>
+                <TableHead>STT</TableHead>
+                <TableHead>Số hóa đơn</TableHead>
+                <TableHead>Giá trị hóa đơn</TableHead>
+                <TableHead>Điểm tích lũy</TableHead>
+                <TableHead>Thời gian</TableHead>
               </TableRow>
-            ))}
+            </TableHeader>
+            <TableBody>
+              {customer.Order.map((order: any, index: any) => (
+                <TableRow key={order.order_id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    {String(order.order_id).substring(0, 10).toUpperCase()}
+                  </TableCell>
+                  <TableCell>{order.order_total}</TableCell>
+                  <TableCell>{order.order_total / 1000}</TableCell>
+                  <TableCell>{formatDateTime(order.createAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
         </div>
 
@@ -82,19 +90,27 @@ export function CustomerDetail(prop: {customer: any}) {
 
           <Table className="border my-4">
             <TableHeader>
-              <TableHead>STT</TableHead>
-              <TableHead>Số hóa đơn</TableHead>
-              <TableHead>Giá trị hóa đơn</TableHead>
-              <TableHead>Thời gian</TableHead>
-            </TableHeader>
-            {customer.Order.map((order: any, index: any) => (
-              <TableRow key={order.order_id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{order.order_id}</TableCell>
-                <TableCell>{order.order_total}</TableCell>
-                <TableCell>{formatDateTime(order.createAt)}</TableCell>
+              <TableRow>
+                <TableHead>STT</TableHead>
+                <TableHead>Mã đổi</TableHead>
+                <TableHead>Tên quà</TableHead>
+                <TableHead>Số điểm</TableHead>
+                <TableHead>Thời gian</TableHead>
               </TableRow>
-            ))}
+            </TableHeader>
+            <TableBody>
+              {customer.HistoryGiftExchange.map((history: any, index: any) => (
+                <TableRow key={history.history_id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    {String(history.history_id).substring(0, 10).toUpperCase()}
+                  </TableCell>
+                  <TableCell>{history.gift.gift_name}</TableCell>
+                  <TableCell>{history.exchange_point}</TableCell>
+                  <TableCell>{formatDateTime(history.createAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
         </div>
       </div>

@@ -109,18 +109,19 @@ model Customer {
 }
 
 model Order {
-    order_id       String         @id @default(cuid()) @map("_id")
-    order_received Float          @default(0)
-    order_total    Float
-    order_note     String?
-    order_deleted  Boolean?       @default(false)
-    createAt       DateTime       @default(now())
-    updateAt       DateTime       @updatedAt
-    staff_id       String         @map("user_id")
-    customer_id    String?        @map("customer_id")
-    User           User?          @relation(fields: [staff_id], references: [id])
-    Customer       Customer?      @relation(fields: [customer_id], references: [customer_id])
-    Order_Detail   Order_Detail[]
+    order_id           String         @id @default(cuid()) @map("_id")
+    order_received     Float          @default(0)
+    order_total        Float
+    order_note         String?
+    order_deleted      Boolean?       @default(false)
+    createAt           DateTime       @default(now())
+    updateAt           DateTime       @updatedAt
+    staff_id           String         @map("user_id")
+    customer_id        String?        @map("customer_id")
+    customer_old_point Int
+    User               User?          @relation(fields: [staff_id], references: [id])
+    Customer           Customer?      @relation(fields: [customer_id], references: [customer_id])
+    Order_Detail       Order_Detail[]
 }
 
 model Order_Detail {

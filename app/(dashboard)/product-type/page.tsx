@@ -48,6 +48,7 @@ import {z} from "zod";
 import {EditProductType} from "@/actions/editProductType";
 import {Textarea} from "@/components/ui/textarea";
 import {addProductType} from "@/actions/addProductType";
+import {useToast} from "@/components/ui/use-toast";
 const Product = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -66,6 +67,8 @@ const Product = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const {toast} = useToast();
   const [open, setOpen] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddTypeDialog, setOpenAddTypeDialog] = useState(false);
@@ -95,7 +98,10 @@ const Product = () => {
           getData();
 
           setError("");
-          setSuccess("");
+          toast({
+            title: "Thành công",
+            description: "Xóa loại món thành công",
+          });
         }
       });
     });
@@ -131,6 +137,10 @@ const Product = () => {
           formAddType.reset({name: "", desc: ""});
           setError("");
           setSuccess("");
+          toast({
+            title: "Thành công",
+            description: "Thêm loại món thành công",
+          });
         }
       });
     });
@@ -158,6 +168,10 @@ const Product = () => {
             getData();
             setError("");
             setSuccess("");
+            toast({
+              title: "Thành công",
+              description: "Cập nhật loại món thành công",
+            });
           }
         }
       );

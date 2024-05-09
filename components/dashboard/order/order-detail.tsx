@@ -53,8 +53,11 @@ export default function OrderDetail(props: {invoice: OrderType}) {
           </div>
           {invoice.Customer && (
             <div className="space-y-2">
-              <p>Điểm tích lũy lần này: {invoice.Customer.customer_point}</p>
-              <p>Tổng điểm tích lũy: {invoice.Customer.customer_point}</p>
+              <p>Điểm tích lũy lần này: {invoice.order_total / 1000}</p>
+              <p>
+                Tổng điểm tích lũy:{" "}
+                {invoice.customer_old_point + invoice.order_total / 1000}
+              </p>
             </div>
           )}
         </div>

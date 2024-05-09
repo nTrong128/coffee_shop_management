@@ -15,11 +15,13 @@ export async function CreateOrder(props: {
   pointValue?: number;
   staff_id: string;
   customer_id: string;
+  customer_old_point: number;
 }) {
   const data = await prisma.order.create({
     data: {
       customer_id: props.customer_id ? props.customer_id : null,
       order_total: props.total,
+      customer_old_point: props.customer_old_point,
       order_received: props.received,
       order_note: props.order_note,
       staff_id: props.staff_id,

@@ -93,6 +93,7 @@ type OrderType = {
   order_total: number;
   order_received: number;
   order_note: string;
+  customer_old_point: number;
   User: UserType;
   createAt: Date;
   Order_Detail: OrderItem[];
