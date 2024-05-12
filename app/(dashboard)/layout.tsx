@@ -8,8 +8,8 @@ import {Toaster} from "@/components/ui/toaster";
 
 const inter = Inter({subsets: ["latin"]});
 export const metadata: Metadata = {
-  title: "Coffee Shop Management System",
-  description: "Coffee Shop Management System",
+  title: "Hệ thống quản lý quán cà phê",
+  description: "Hệ thống quản lý quán cà phê - NextJS 14",
 };
 
 interface DashBoardLayoutPros {

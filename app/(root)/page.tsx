@@ -38,7 +38,9 @@ export default function Home() {
                 alt="Avatar"
                 className="mx-auto aspect-square rounded-full overflow-hidden object-cover object-center"
                 height="100"
-                src={"/images/mr-teo.jpg"}
+                src={
+                  "https://files.edgestore.dev/hkry4u6qgdduv0pb/publicFiles/_public/3f0452d4-8519-4429-8d16-b053f558fabd.jpg"
+                }
                 width="100"
               />
               <div className="space-y-4">

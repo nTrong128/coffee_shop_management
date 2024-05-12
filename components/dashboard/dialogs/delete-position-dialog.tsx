@@ -1,10 +1,7 @@
 "use client";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
-import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
-import {DialogContent, DialogTitle} from "@/components/ui/dialog";
 import {PositionType} from "@/types";
-import EditPositionForm from "../form/edit-position-form";
 import {TrashIcon} from "lucide-react";
 
 import {
