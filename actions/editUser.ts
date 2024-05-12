@@ -30,6 +30,15 @@ export const UpdateUser = async (
     return {error: "Tài khoản không tồn tại."};
   }
 
+  const existedEmail = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  if (existedEmail && existedEmail.username !== username) {
+    return {error: "Email đã được sử dụng."};
+  }
+
   await prisma.user.update({
     where: {
       username,

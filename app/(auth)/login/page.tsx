@@ -48,8 +48,8 @@ const LoginForm = () => {
   return (
     <CardWrapper
       headerLabel="Đăng nhập"
-      backButtonLabel="Chưa có tài khoản?"
-      backButtonLink="/register">
+      backButtonLabel="Quay lại trang chủ"
+      backButtonLink="/">
       {/* //TODO: forget Password Route should be here */}
       <div className="flex flex-col items-center justify-between">
         <Form {...form}>

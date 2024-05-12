@@ -88,12 +88,19 @@ export function ConfirmOrder({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full" asChild>
         <Button
-          disabled={cashReceived <= 0}
+          disabled={
+            cashReceived <
+            cart.reduce(
+              (acc, product) =>
+                acc + product.OrderItem.product_price * product.quantity,
+              0
+            )
+          }
           className="w-full bg-green-500 text-white py-8 mt-2 text-2xl hover:bg-green-700">
           Thanh toán
         </Button>
       </DialogTrigger>
-      <DialogContent className="gap-y-2 text-xl max-w-3xl overflow-y-scroll max-h-dvh">
+      <DialogContent className="gap-y-2 text-xl max-w-3xl overflow-y-scroll max-h-[80%] mx-4">
         <p className="text-2xl font-semibold">Xác nhận đơn hàng</p>
 
         <div

@@ -15,8 +15,7 @@ export function AreaChartHero(prop: {data: any}) {
     <div className="mx-2">
       <div className="flex gap-4">
         <Button
-          variant={"outline"}
-          disabled={active === 7}
+          variant={active === 7 ? "outline" : "default"}
           onClick={() => {
             setContent(weekly_data);
             setActive(7);
@@ -24,8 +23,7 @@ export function AreaChartHero(prop: {data: any}) {
           7 ngày vừa qua
         </Button>
         <Button
-          variant={"outline"}
-          disabled={active === 30}
+          variant={active === 30 ? "outline" : "default"}
           onClick={() => {
             setContent(data);
             setActive(30);
@@ -38,7 +36,7 @@ export function AreaChartHero(prop: {data: any}) {
         data={content}
         categories={["income", "consume"]}
         index="date"
-        colors={["red", "blue"]}
+        colors={["blue", "red"]}
         yAxisWidth={60}
         valueFormatter={formatCurrency}
         onValueChange={(v) => console.log(v)}

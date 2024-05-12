@@ -9,7 +9,7 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import {formatDateTime} from "@/lib/DateTime";
-import {OrderItem, UserType} from "@/types";
+import {CustomerType, OrderItem, UserType} from "@/types";
 import {useRouter} from "next/navigation";
 
 type OrderType = {
@@ -20,6 +20,9 @@ type OrderType = {
   User: UserType | any;
   createAt: Date;
   Order_Detail: OrderItem[];
+  Customer: {
+    customer_name: string;
+  } | null;
 };
 
 export function OrderTable(props: {order: OrderType[]}) {
@@ -38,6 +41,7 @@ export function OrderTable(props: {order: OrderType[]}) {
           <TableHead>Mã hóa đơn</TableHead>
           <TableHead>Thời gian</TableHead>
           <TableHead>Người lập</TableHead>
+          <TableHead>Khách hàng</TableHead>
           <TableHead>Chi tiết</TableHead>
           <TableHead>Tổng cộng</TableHead>
           <TableHead>Ghi chú</TableHead>
@@ -53,6 +57,11 @@ export function OrderTable(props: {order: OrderType[]}) {
               </TableCell>
               <TableCell>{formatDateTime(order.createAt)}</TableCell>
               <TableCell>{order.User.name}</TableCell>
+              <TableCell>
+                {order.Customer
+                  ? order.Customer.customer_name
+                  : "Khách vãng lai"}
+              </TableCell>
               <TableCell>
                 {order.Order_Detail.map((item: any) => (
                   <div key={item.productId}>

@@ -31,8 +31,8 @@ export default async function Home() {
           <div className="flex justify-between p-2 py-6 bg-blue-100 rounded ">
             <Landmark className="text-blue-500" />
             <div>
-              <p className="text-gray-500">Doanh thu</p>
-              <p className="font-bold text-lg">
+              <p className="text-gray-500 text-end">Doanh thu</p>
+              <p className="font-bold text-lg text-end">
                 {formatCurrency(data.income as number)}
               </p>
             </div>
@@ -40,22 +40,22 @@ export default async function Home() {
           <div className="flex justify-between p-2 py-6 bg-red-100 rounded ">
             <ShoppingCart className="text-red-500" />
             <div>
-              <p className="text-gray-500">Số đơn</p>
-              <p className="font-bold text-lg">{data.order}</p>
+              <p className="text-gray-500 text-end">Số đơn</p>
+              <p className="font-bold text-lg text-end">{data.order}</p>
             </div>
           </div>
           <div className="flex justify-between p-2 py-6 bg-yellow-100 rounded ">
             <Users className="text-yellow-500" />
             <div>
-              <p className="text-gray-500">Số khách mới</p>
-              <p className="font-bold text-lg">{data.customer}</p>
+              <p className="text-gray-500 text-end">Số khách mới</p>
+              <p className="font-bold text-lg text-end">{data.customer}</p>
             </div>
           </div>
           <div className="flex justify-between p-2 py-6 bg-green-100 rounded ">
             <Landmark className="text-green-500" />
             <div>
-              <p className="text-gray-500">Chi tiêu</p>
-              <p className="font-bold text-lg">
+              <p className="text-gray-500 text-end">Chi tiêu</p>
+              <p className="font-bold text-lg text-end">
                 {data.consume ? formatCurrency(data.consume) : "Không có"}
               </p>
             </div>
@@ -64,9 +64,9 @@ export default async function Home() {
       </section>
 
       {/* Chart Product Sumarize */}
-      <section className="py-4 px-4 border rounded-md">
-        <div className="flex shadow-lg m-4 flex-wrap">
-          <div className="flex-1 min-w-[600px] shadow-sm">
+      <section className="py-4 mx-4 border rounded-md">
+        <div className="block lg:flex shadow-lg m-4 flex-wrap">
+          <div className="flex-1 shadow-sm">
             <p className="text-lg text-center font-bold">
               Biểu đồ doanh số theo món gần đây
             </p>
@@ -79,14 +79,14 @@ export default async function Home() {
             <DonutChartHero data={productType} index="name" category="value" />
           </div>
         </div>
-        <div className="mt-10 flex space-x-10 flex-wrap">
+        <div className="mt-10 flex flex-wrap">
           <div className="mx-auto">
             <p className="text-lg text-center font-bold">
               Biểu đồ số lượng mua theo món trong tháng
             </p>
             <BarChartHero data={product_report} sum={sum_order} />
           </div>
-          <div className="flex-1 min-w-[600px] shadow-sm">
+          <div className="flex-1 shadow-sm">
             <LineChartHero data={order_report} />
           </div>
         </div>

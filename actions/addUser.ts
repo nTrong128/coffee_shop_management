@@ -29,6 +29,14 @@ export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
   if (existingUser) {
     return {error: "Tên tài khoản đã được sử dụng."};
   }
+  const existedEmail = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  if (existedEmail) {
+    return {error: "Email đã được sử dụng."};
+  }
 
   await prisma.user.create({
     data: {
@@ -41,6 +49,7 @@ export const addNewUser = async (values: z.infer<typeof AddUserSchema>) => {
       user_birth: userBirthISO,
       user_phone,
       wage_rate,
+      position: "clw3v5qod0002c9co798dfua1",
     },
   });
 

@@ -4,6 +4,7 @@ import * as z from "zod";
 import {signIn} from "@/auth";
 import {LoginSchema} from "@/schemas";
 import {AuthError} from "next-auth";
+import {getUserByUsername} from "@/data/account";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -12,6 +13,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
   // return {success: "Đăng nhập thành công."}
   const {username, password} = validatedFields.data;
+  const user = await getUserByUsername(username);
+  if (!user) {
+    return {error: "Tài khoản không tồn tại."};
+  }
+  if (!user.user_status) {
+    return {error: "Tài khoản đã bị khóa."};
+  }
+
   try {
     await signIn("credentials", {
       username,

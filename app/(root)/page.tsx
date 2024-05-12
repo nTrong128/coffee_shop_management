@@ -30,60 +30,7 @@ export default function Home() {
             />
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-          <div className="container grid items-center gap-6 px-4 md:px-6">
-            <Image
-              alt="Image"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
-              height="310"
-              src="/placeholder.svg"
-              width="550"
-            />
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                  Giao diện thân thiện người dùng
-                </h2>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-          <div className="container grid items-center gap-6 px-4 md:px-6">
-            <Image
-              alt="Image"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
-              height="310"
-              src="/placeholder.svg"
-              width="550"
-            />
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                  Dễ dàng tạo và quản lý đơn hàng
-                </h2>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-          <div className="container grid items-center gap-6 px-4 md:px-6">
-            <Image
-              alt="Image"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
-              height="310"
-              src="/placeholder.svg"
-              width="550"
-            />
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                  Tích hợp quản lý nhân viên
-                </h2>
-              </div>
-            </div>
-          </div>
-        </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32 border-t">
           <div className="container grid items-center gap-6 px-4 md:px-6">
             <div className="mx-auto grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">

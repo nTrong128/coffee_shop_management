@@ -16,9 +16,8 @@ export default async function MenuPage() {
   const customer_data = customer.data;
   return (
     <>
-      <div className="grid grid-cols-10 gap-8">
-        <MenuAndOrder data={data} customer={customer_data as CustomerType[]} />
-      </div>
+      <MenuAndOrder data={data} customer={customer_data as CustomerType[]} />
+
       <p
         className="text-3xl font-bold text-center w-full  my-4
       

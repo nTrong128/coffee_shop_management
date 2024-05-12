@@ -1,10 +1,8 @@
 "use client";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
-import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
-import {DialogContent, DialogTitle} from "@/components/ui/dialog";
-import {PositionType} from "@/types";
-import EditPositionForm from "../form/edit-position-form";
+
+import {GiftType, PositionType} from "@/types";
 import {TrashIcon} from "lucide-react";
 
 import {
@@ -18,29 +16,30 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {DeletePosition} from "@/actions/Position";
 import {useToast} from "@/components/ui/use-toast";
-export function DeletePositionDialog(prop: {position: PositionType}) {
+import {DeleteGiftById} from "@/actions/gift";
+
+export function DeleteExchageDialog(prop: {gift: GiftType}) {
   const [open, setOpen] = useState(false);
-  const position = prop.position;
+  const gift = prop.gift;
   const [isPendding, setPendding] = useState(false);
   const {toast} = useToast();
 
   const handleDeletePosition = async () => {
     setPendding(true);
-    const res = DeletePosition(position.position_id);
+    const res = DeleteGiftById(gift.gift_id);
     const data = await res;
     if (data.success) {
       toast({
-        title: "Xoá chức vụ thành công",
-        description: `Chức vụ ${position.position_name} đã được xoá khỏi hệ thống`,
+        title: "Xoá quà thành công",
+        description: `Quà ${gift.gift_name} đã được xoá khỏi hệ thống`,
       });
       setOpen(false);
       return;
     }
     toast({
-      title: "Xoá chức vụ thất bại",
-      description: `Đã có lỗi xảy ra khi xoá chức vụ ${position.position_name}`,
+      title: "Xoá quà thất bại",
+      description: `Đã có lỗi xảy ra khi xoá chức vụ ${gift.gift_name}`,
     });
   };
 
@@ -49,8 +48,8 @@ export function DeletePositionDialog(prop: {position: PositionType}) {
       <AlertDialogTrigger asChild>
         <Button
           className="rounded-full text-red-700 bg-red-100"
-          size="icon"
           variant="secondary">
+          Xóa
           <TrashIcon size={24} />
         </Button>
       </AlertDialogTrigger>
@@ -60,9 +59,9 @@ export function DeletePositionDialog(prop: {position: PositionType}) {
             Bạn có chắc muốn xoá sản phẩm này?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Hành động này sẽ xoá vĩnh viễn chức vụ{" "}
+            Hành động này sẽ xoá vĩnh viễn quà{" "}
             <span className="font-bold text-stone-800 italic">
-              {position.position_name}
+              {gift.gift_name}
             </span>
             . Bạn có chắc chắn muốn tiếp tục?
           </AlertDialogDescription>

@@ -8,7 +8,7 @@ import {CartType, CustomerType, Product, Type_ListProduct} from "@/types";
 import Image from "next/image";
 import {useState} from "react";
 import {ConfirmOrder} from "../dialogs/confirm-order-dialog";
-import {ShoppingBag} from "lucide-react";
+import {CircleX, ShoppingBag} from "lucide-react";
 import {ChooseCustomer} from "./choose-customer";
 
 export function MenuAndOrder(props: {
@@ -59,8 +59,9 @@ export function MenuAndOrder(props: {
     filter === "All"
       ? data
       : data.filter((product) => product.product_type_name === filter);
+  const [searchText, setSearchText] = useState("");
 
-  const [openConfirmOrder, setopenConfirmOrder] = useState(false);
+  const filteredProductsSearch = filteredProducts.filter((product) => {});
   const AddItem = (product: Product) => {
     setCart((cart) =>
       cart.map((item) =>
@@ -94,13 +95,13 @@ export function MenuAndOrder(props: {
   };
 
   return (
-    <>
-      <section className="col-span-6 bg-white p-8 rounded-xl shadow">
+    <main className="block grid-cols-3 2xl:grid mx-auto">
+      <section className="col-span-2 bg-white p-8 rounded-xl shadow">
         <h1 className="text-4xl font-bold mb-6 flex items-center">
           <ShoppingBag className="scale-150" /> <p className="px-2">Tạo đơn</p>
         </h1>
-        <div className="flex mb-8 justify-between">
-          <div className="flex gap-x-4">
+        <div className="flex mb-8 justify-between flex-wrap gap-4">
+          <div className="flex gap-x-4 flex-wrap">
             <Button
               variant={"ghost"}
               className={
@@ -129,11 +130,15 @@ export function MenuAndOrder(props: {
           </div>
           <Input
             type="text"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
             placeholder="Tìm kiếm..."
-            className="w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
+            className="w-full sm:w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
           />
         </div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 xl:grid-cols-4 sm:grid-cols-3 gap-2">
           {filteredProducts.map((productType) =>
             productType.product_list.map((product) => (
               <Card key={product.product_id}>
@@ -150,10 +155,10 @@ export function MenuAndOrder(props: {
                       src={product.product_image || "/placeholder.svg"}
                       width={220}
                     />
-                    <p className="font-semibold text-xl sm:text-2xl my-2">
+                    <p className="font-semibold text-xl sm:text-2xl my-2 text-wrap">
                       {product.product_name}
                     </p>
-                    <p className="text-sm leading-none my-2">
+                    <p className="text-sm leading-none my-2 hidden sm:block">
                       {product.product_desc}
                     </p>
                     <p className="text-lg">
@@ -166,7 +171,8 @@ export function MenuAndOrder(props: {
           )}
         </div>
       </section>
-      <aside className="bg-white col-span-4 p-8 rounded-xl shadow">
+
+      <aside className=" bg-white p-8 rounded-xl shadow">
         <div className="flex justify-between">
           <span className="text-2xl font-semibold mb-4">Đơn hàng</span>
           {cart.length > 0 && (
@@ -175,6 +181,8 @@ export function MenuAndOrder(props: {
               onClick={() => {
                 setCart([]);
                 setOrderNote("");
+                setCustomerOrder(null);
+                setCashReceived(0);
               }}>
               Hủy, tạo đơn mới
             </Button>
@@ -220,13 +228,24 @@ export function MenuAndOrder(props: {
 
         {cart.length > 0 && (
           <>
-            {/* //TODO ADD CUSTOMER HERE */}
             <div className="flex justify-between my-2">
               <span className="text-xl font-semibold">Khách hàng:</span>
-              <ChooseCustomer
-                customer={customer}
-                setCustomerOrder={setCustomerOrder}
-              />
+              <div className="flex items-center gap-x-2">
+                {customerOrder && (
+                  <Button
+                    onClick={() => setCustomerOrder(null)}
+                    className=" rounded-full hover:text-red-700 hover:bg-red-100 mx-2"
+                    size={"icon"}
+                    variant={"ghost"}>
+                    <CircleX />
+                  </Button>
+                )}
+                <ChooseCustomer
+                  customer={customer}
+                  customerOrder={customerOrder}
+                  setCustomerOrder={setCustomerOrder}
+                />
+              </div>
             </div>
 
             <div className="flex justify-between items-center mb-2">
@@ -235,6 +254,7 @@ export function MenuAndOrder(props: {
               <Input
                 className="text-xl text-right font-semibold w-1/3"
                 type="number"
+                min={0}
                 onKeyUp={(e: any) => {
                   setCashReceived(e.target.value * 1000);
                 }}
@@ -291,6 +311,6 @@ export function MenuAndOrder(props: {
           </>
         )}
       </aside>
-    </>
+    </main>
   );
 }

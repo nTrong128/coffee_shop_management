@@ -80,6 +80,16 @@ export const DeletePosition = async (position_id: string) => {
       position_deleted: true,
     },
   });
+
+  await prisma.user.updateMany({
+    where: {
+      position: position_id,
+    },
+    data: {
+      position: "clw3v5qod0002c9co798dfua1",
+    },
+  });
+
   revalidatePath("/position");
   return {success: "Xóa chức vụ thành công."};
 };

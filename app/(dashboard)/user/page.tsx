@@ -45,7 +45,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {Badge} from "@/components/ui/badge";
@@ -53,13 +52,7 @@ import Image from "next/image";
 import {formatDate, formatDateISO} from "@/lib/DateTime";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FaUser} from "react-icons/fa";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import UpdateAvatarForm from "@/components/shared/AvatarUpdateForm";
+
 import {
   Form,
   FormControl,
@@ -88,6 +81,8 @@ import {DeleteUser} from "@/actions/deleteUser";
 import {UpdateUser} from "@/actions/editUser";
 import {getAllPosition} from "@/actions/Position";
 import {useToast} from "@/components/ui/use-toast";
+import {ResetPassword} from "@/components/dashboard/dialogs/reset-password";
+import {ChangeStateAccount} from "@/components/dashboard/dialogs/change-state-account";
 
 export default function UserPage() {
   const rowsPerPage = 4;
@@ -183,9 +178,14 @@ export default function UserPage() {
           setError("");
           toast({
             title: "Thêm người dùng thành công",
-            description: "Người dùng đã được thêm vào hệ thống.",
+            description: data.success,
           });
+          return;
         }
+        toast({
+          title: "Thêm người dùng không thành công",
+          description: data.error,
+        });
       });
     });
   };
@@ -204,6 +204,7 @@ export default function UserPage() {
             title: "Xoá người dùng thành công",
             description: "Người dùng đã được xoá khỏi hệ thống.",
           });
+          return;
         } else {
           toast({
             title: "Xoá người dùng không thành công",
@@ -227,7 +228,12 @@ export default function UserPage() {
             title: "Cập nhật thông tin thành công",
             description: "Thông tin người dùng đã được cập nhật.",
           });
+          return;
         }
+        toast({
+          title: "Cập nhật thông tin không thành công",
+          description: data.error,
+        });
       });
     });
   };
@@ -281,10 +287,9 @@ export default function UserPage() {
                     {user.Position ? user.Position.position_name : "Chưa có"}
                   </TableCell>
                   <TableCell className="">{user.role}</TableCell>
-                  <TableCell className="pl-10">
-                    {(user.user_status && (
-                      <CheckCircle className="text-green-500" />
-                    )) || <XCircle className="text-red-500" />}
+                  <TableCell className="pl-10 flex flex-wrap items-center gap-x-4">
+                    <ChangeStateAccount user={user} getData={getData} />
+                    {user.user_status && <ResetPassword user={user} />}
                   </TableCell>
                   <TableCell className="w-[100px]">
                     <div className="flex items-center gap-x-2">
@@ -329,7 +334,6 @@ export default function UserPage() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                {/* // TODO: ADD BUTTON PAGINATION{(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)} */}
                 <PaginationPrevious
                   className={
                     startIndex === 0
@@ -511,7 +515,6 @@ export default function UserPage() {
       </Dialog>
       {/* ADD USER DIALOG */}
       <Dialog open={openAddUserDialog} onOpenChange={setOpenAddUserDialog}>
-        <DialogTrigger asChild></DialogTrigger>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Thêm nhân viên mới</DialogTitle>
@@ -858,7 +861,7 @@ export default function UserPage() {
                         defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger disabled={isPendding} {...field}>
-                            <SelectValue />
+                            <SelectValue placeholder="Chọn chức vụ" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>

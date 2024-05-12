@@ -106,10 +106,14 @@ export async function ProductTypeReport() {
     _count: {
       product_id: true,
     },
+    where: {
+      product_deleted: false,
+    },
   });
 
   const productType = await prisma.product_Type.findMany({
     where: {
+      product_type_deleted: false,
       product_type_id: {
         in: data.map((item) => item.product_type!),
       },
@@ -120,12 +124,12 @@ export async function ProductTypeReport() {
       (type) => type.product_type_id === countItem.product_type
     );
     return {
-      name: typeDetails ? typeDetails.product_type_name! : "Không rõ",
+      name: typeDetails ? typeDetails.product_type_name! : "",
       value: countItem._count.product_id,
     };
   });
-
-  return mappedData;
+  const returnData = mappedData.filter((item) => item.name !== "");
+  return returnData;
 }
 
 type Income = {

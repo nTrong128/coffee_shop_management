@@ -1,5 +1,6 @@
 "use client";
 import {DonutChart, Legend} from "@tremor/react";
+import {useState} from "react";
 
 export function DonutChartHero(prop: {
   data: any;
@@ -40,6 +41,9 @@ export function DonutChartHero(prop: {
   };
   const names = data.map((item: any) => item.name);
   const dataFormatter = (number: number) => `Tổng số: ${number}`;
+
+  const [value, setValue] = useState("");
+
   return (
     <div className="my-10">
       <DonutChart
@@ -53,7 +57,9 @@ export function DonutChartHero(prop: {
       />
       <Legend
         categories={names}
-        colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
+        onClickLegendItem={(e) => {
+          value === e ? setValue("") : setValue(e);
+        }}
         className="max-w-xs mx-auto"
       />
     </div>

@@ -5,6 +5,8 @@ import {Gift} from "lucide-react";
 import Image from "next/image";
 import {useState} from "react";
 import {ExchangeGiftDialog} from "./exchange-gift";
+import {UpdateExchangeGift} from "./update-exchange-dialog";
+import {DeleteExchageDialog} from "./delete-exchange-dialog";
 
 export function ExchangeTable(props: {
   gifts: GiftType[];
@@ -54,8 +56,8 @@ export function ExchangeTable(props: {
               </div>
             </div>
             <div className="flex justify-around mx-4 mt-4 gap-4">
-              <Button className="w-1/2">Chỉnh sửa</Button>
-              <Button className="w-1/2">Xóa</Button>
+              <UpdateExchangeGift gift={gift} />
+              <DeleteExchageDialog gift={gift} />
             </div>
           </div>
         ))}

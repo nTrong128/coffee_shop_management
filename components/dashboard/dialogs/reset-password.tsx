@@ -1,11 +1,7 @@
 "use client";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
-import {Dialog, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
-import {DialogContent, DialogTitle} from "@/components/ui/dialog";
-import {PositionType} from "@/types";
-import EditPositionForm from "../form/edit-position-form";
-import {TrashIcon} from "lucide-react";
+import {UserType} from "@/types";
 
 import {
   AlertDialog,
@@ -18,52 +14,56 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {DeletePosition} from "@/actions/Position";
 import {useToast} from "@/components/ui/use-toast";
-export function DeletePositionDialog(prop: {position: PositionType}) {
+import {resetPassword} from "@/actions/changePassword";
+
+export function ResetPassword(prop: {user: UserType}) {
   const [open, setOpen] = useState(false);
-  const position = prop.position;
+  const user = prop.user;
   const [isPendding, setPendding] = useState(false);
   const {toast} = useToast();
 
   const handleDeletePosition = async () => {
     setPendding(true);
-    const res = DeletePosition(position.position_id);
+    const res = resetPassword(user.username as string);
     const data = await res;
     if (data.success) {
       toast({
         title: "Xoá chức vụ thành công",
-        description: `Chức vụ ${position.position_name} đã được xoá khỏi hệ thống`,
+        description: `Tài khoản ${user.username} của ${user.name} đã được khôi phục mật khẩu mặc định`,
       });
       setOpen(false);
+      setPendding(false);
       return;
     }
     toast({
       title: "Xoá chức vụ thất bại",
-      description: `Đã có lỗi xảy ra khi xoá chức vụ ${position.position_name}`,
+      description: `Đã có lỗi xảy ra khi khôi phục mật khẩu tài khoản ${user.username}`,
     });
+    setPendding(false);
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button
-          className="rounded-full text-red-700 bg-red-100"
-          size="icon"
+          className="rounded-full text-green-700 bg-green-100"
           variant="secondary">
-          <TrashIcon size={24} />
+          Reset Password
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Bạn có chắc muốn xoá sản phẩm này?
+            Bạn có chắc muốn khôi phục mật khẩu tài khoản này?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Hành động này sẽ xoá vĩnh viễn chức vụ{" "}
-            <span className="font-bold text-stone-800 italic">
-              {position.position_name}
-            </span>
+            Hành động này sẽ khôi phục mật khẩu mặc định cho tài khoản{" "}
+            <span className=" font-bold text-stone-800">{user.username}</span>{" "}
+            của{" "}
+            <span className=" font-bold text-stone-800 italic">
+              {user.name}
+            </span>{" "}
             . Bạn có chắc chắn muốn tiếp tục?
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -75,7 +75,7 @@ export function DeletePositionDialog(prop: {position: PositionType}) {
             <Button
               disabled={isPendding}
               onClick={handleDeletePosition}
-              className="bg-red-700 hover:bg-red-800">
+              className="bg-green-700 hover:bg-green-800">
               Xác nhận
             </Button>
           </AlertDialogAction>

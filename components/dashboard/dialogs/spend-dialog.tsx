@@ -48,7 +48,7 @@ export function SpendModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Thêm chi tiêu mới</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg max-h-screen">

@@ -43,7 +43,7 @@ export const NavBar = () => {
           <Button
             asChild
             className={pathname === "/customer" ? green : outline}>
-            <Link href="/customer">Khánh hàng</Link>
+            <Link href="/customer">Khách hàng</Link>
           </Button>
           <Button
             asChild
@@ -98,7 +98,7 @@ export const NavBar = () => {
           <li
             className="mx-4 hover:text-indigo-600 first:font-bold"
             onClick={() => setState(false)}>
-            <Link href="/customer">Khánh hàng</Link>
+            <Link href="/customer">Khách hàng</Link>
           </li>
           <li
             className="mx-4 hover:text-indigo-600 first:font-bold"

@@ -66,6 +66,11 @@ export async function GetAllOrder() {
         },
       },
       User: true,
+      Customer: {
+        select: {
+          customer_name: true,
+        },
+      },
     },
     orderBy: {
       createAt: "desc",

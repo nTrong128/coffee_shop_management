@@ -29,10 +29,13 @@ import {FormSuccess} from "@/components/auth/success-form";
 
 export function ChooseCustomer(prop: {
   customer: CustomerType[];
+  customerOrder: CustomerType | null;
   setCustomerOrder: (customer: CustomerType) => void;
 }) {
   const customers = prop.customer;
-  const [customer, setCustomer] = useState<CustomerType | null>(null);
+  const customer = prop.customerOrder;
+  const setCustomer = prop.setCustomerOrder;
+  // const [customer, setCustomer] = useState<CustomerType | null>(null);
   const [searchText, setSearchText] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpenChange = (newOpen: boolean) => {
@@ -115,7 +118,6 @@ export function ChooseCustomer(prop: {
                   key={customer.customer_id}
                   onClick={() => {
                     setCustomer(customer);
-                    prop.setCustomerOrder(customer);
                     handleOpenChange(false);
                   }}>
                   <TableCell>{index + 1}</TableCell>

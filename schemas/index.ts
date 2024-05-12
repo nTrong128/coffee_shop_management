@@ -3,12 +3,12 @@ import * as z from "zod";
 export const RegisterSchema = z
   .object({
     email: z.string().email().min(6, {
-      message: "Tài khoản phải từ 6 ký tự.",
+      message: "Email không hợp lệ.",
     }),
     username: z
       .string()
       .min(6, {
-        message: "Tài khoản phải từ 6 ký tự.",
+        message: "Tài khoản phải từ 4 ký tự.",
       })
       .refine(
         (s) => !s.includes(" "),
@@ -16,8 +16,8 @@ export const RegisterSchema = z
       ),
     password: z.string(),
     retype_password: z.string(),
-    name: z.string().min(4, {
-      message: "Tên phải từ 4 ký tự.",
+    name: z.string().min(1, {
+      message: "Tên không được để trống.",
     }),
   })
   .superRefine((data, ctx) => {
@@ -81,20 +81,20 @@ export const LoginSchema = z.object({
 });
 
 export const AddUserSchema = z.object({
-  name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
+  name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
   username: z
     .string()
-    .min(6, {
-      message: "Tài khoản phải từ 6 ký tự.",
+    .min(1, {
+      message: "Tài khoản không được để trống.",
     })
     .refine(
       (s) => !s.includes(" "),
       "Tên tài khoản không được có khoảng trống!"
     ),
-  email: z.string().email().min(6, {
-    message: "Email phải từ 6 kí tự.",
+  email: z.string().email().min(4, {
+    message: "Email không hợp lệ",
   }),
   role: z.enum(["USER", "ADMIN"]),
   user_phone: z
@@ -105,8 +105,8 @@ export const AddUserSchema = z.object({
     .min(10, {
       message: "Số điện thoại phải là 10 ký tự.",
     }),
-  user_address: z.string().min(5, {
-    message: "Địa chỉ phải từ 5 ký tự.",
+  user_address: z.string().min(1, {
+    message: "Địa chỉ không được để trống.",
   }),
   user_birth: z.string(),
   wage_rate: z.number(),
@@ -115,11 +115,11 @@ export const AddUserSchema = z.object({
 
 export const UpdateUserSchema = z.object({
   position_id: z.string().optional(),
-  name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
+  name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
-  email: z.string().email().min(6, {
-    message: "Email phải từ 6 kí tự.",
+  email: z.string().email().min(4, {
+    message: "Email không hợp lệ.",
   }),
   role: z.enum(["USER", "ADMIN"]),
   user_phone: z
@@ -130,8 +130,8 @@ export const UpdateUserSchema = z.object({
     .min(10, {
       message: "Số điện thoại phải là 10 ký tự.",
     }),
-  user_address: z.string().min(5, {
-    message: "Địa chỉ phải từ 5 ký tự.",
+  user_address: z.string().min(1, {
+    message: "Địa chỉ không được để trống.",
   }),
   user_birth: z.string(),
   wage_rate: z.preprocess(
@@ -148,17 +148,17 @@ export const UpdateUserSchema = z.object({
 });
 
 export const AddProductTypeSchema = z.object({
-  name: z.string().min(3, {
-    message: "Tên phải từ 4 ký tự.",
+  name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
-  desc: z.string().min(10, {
-    message: "Mô tả phải từ 10 ký tự.",
+  desc: z.string().min(11, {
+    message: "Mô tả không được để trống.",
   }),
 });
 
 export const AddProductSchema = z.object({
-  product_name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
+  product_name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
   product_price: z.preprocess(
     (val) => {
@@ -173,8 +173,8 @@ export const AddProductSchema = z.object({
   ),
   product_desc: z
     .string()
-    .min(10, {
-      message: "Mô tả phải từ 10 ký tự.",
+    .min(1, {
+      message: "Mô tả không được để trống.",
     })
     .or(z.string().optional()),
   product_type: z.string(),
@@ -182,8 +182,8 @@ export const AddProductSchema = z.object({
 });
 
 export const AddCustomerSchema = z.object({
-  customer_name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
+  customer_name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
   customer_point: z
     .preprocess((val) => {
@@ -278,11 +278,11 @@ export const ChangePasswordSchema = z
   });
 
 export const UpdatePersonalInformation = z.object({
-  name: z.string().min(4, {
-    message: "Tên phải từ 4 ký tự.",
+  name: z.string().min(1, {
+    message: "Tên không được để trống.",
   }),
-  email: z.string().email().min(6, {
-    message: "Email phải từ 6 kí tự.",
+  email: z.string().email().min(4, {
+    message: "Email không hợp lệ.",
   }),
   user_phone: z
     .string()
@@ -292,8 +292,8 @@ export const UpdatePersonalInformation = z.object({
     .min(10, {
       message: "Số điện thoại phải là 10 ký tự.",
     }),
-  user_address: z.string().min(5, {
-    message: "Địa chỉ phải từ 5 ký tự.",
+  user_address: z.string().min(1, {
+    message: "Địa chỉ không được để trống.",
   }),
   user_birth: z.string(),
 });

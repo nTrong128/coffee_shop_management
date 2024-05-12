@@ -28,6 +28,9 @@ export async function GetAllGift() {
     orderBy: {
       createAt: "desc",
     },
+    where: {
+      gift_deleted: false,
+    },
   });
   return {
     data,
@@ -45,6 +48,31 @@ export async function GetGiftById(id: string) {
   };
 }
 
+export async function UpdateGiftById(
+  id: string,
+  values: z.infer<typeof AddGiftSchema>
+) {
+  const validatedFields = AddGiftSchema.safeParse(values);
+  if (!validatedFields.success) {
+    return {error: "Thông tin không hợp lệ."};
+  }
+
+  const data = await prisma.gift.update({
+    data: values,
+    where: {
+      gift_id: id,
+    },
+  });
+  if (!data) {
+    return {error: "Không tìm thấy thông tin quà tặng."};
+  }
+
+  revalidatePath("/exchange");
+  return {
+    success: "Cập nhật thành công.",
+  };
+}
+
 export async function DeleteGiftById(id: string) {
   const data = await prisma.gift.update({
     data: {
@@ -56,9 +84,9 @@ export async function DeleteGiftById(id: string) {
   });
 
   revalidatePath("/exchange");
-  {
-    success: "Xóa thành công.";
-  }
+  return {
+    success: "Xóa thành công.",
+  };
 }
 
 export async function ExchangeGift(values: {
