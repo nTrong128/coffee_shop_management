@@ -36,12 +36,16 @@ export function DeletePositionDialog(prop: {position: PositionType}) {
         description: `Chức vụ ${position.position_name} đã được xoá khỏi hệ thống`,
       });
       setOpen(false);
+      setPendding(false);
       return;
     }
     toast({
       title: "Xoá chức vụ thất bại",
-      description: `Đã có lỗi xảy ra khi xoá chức vụ ${position.position_name}`,
+      description:
+        data.error ||
+        ` Đã có lỗi xảy ra khi xoá chức vụ ${position.position_name}`,
     });
+    setPendding(false);
   };
 
   return (

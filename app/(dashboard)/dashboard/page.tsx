@@ -68,7 +68,7 @@ export default async function Home() {
         <div className="block lg:flex shadow-lg m-4 flex-wrap">
           <div className="flex-1 shadow-sm">
             <p className="text-lg text-center font-bold">
-              Biểu đồ doanh số theo món gần đây
+              Biểu đồ doanh thu và chi tiêu gần đây
             </p>
             <AreaChartHero data={financial_res} />
           </div>

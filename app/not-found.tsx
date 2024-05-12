@@ -12,7 +12,7 @@ export default function NotFound() {
           height={560}
           alt="404"
         />
-        <p className="text-center">KHÔNG TÌM THẤY TRANG</p>
+        <p className="text-center text-4xl">KHÔNG TÌM THẤY TRANG</p>
         <p>Trang bạn yêu cầu không tìm thấy hoặc có lỗi xảy ra.</p>
 
         <Button className="mx-auto">

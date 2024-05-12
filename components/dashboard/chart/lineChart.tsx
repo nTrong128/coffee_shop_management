@@ -26,7 +26,7 @@ export function LineChartHero(prop: {data: any[]}) {
   };
   return (
     <>
-      <h3 className="text-lg font-medium text-center text-tremor-content-strong dark:text-dark-tremor-content-strong">
+      <h3 className="text-lg font-bold text-center text-tremor-content-strong dark:text-dark-tremor-content-strong">
         Số lượng hóa đơn theo ngày trong 30 ngày vừa qua
       </h3>
       <LineChart

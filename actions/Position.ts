@@ -71,7 +71,10 @@ export const DeletePosition = async (position_id: string) => {
   const existingPosition = await getPositionById(position_id);
 
   if (existingPosition.data?.position_name === "Quản lý") {
-    return {error: "Không thể xóa chức vụ Admin."};
+    return {error: "Không thể xóa chức vụ Quản lý/Admin."};
+  }
+  if (existingPosition.data?.position_name === "Nhân viên") {
+    return {error: "Không thể xóa chức vụ Nhân viên."};
   }
 
   await prisma.position.update({
