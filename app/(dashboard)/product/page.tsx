@@ -62,11 +62,16 @@ import {formatCurrency} from "@/lib/formatCurrency";
 import Image from "next/image";
 import {useEdgeStore} from "@/lib/edgestore";
 import {useToast} from "@/components/ui/use-toast";
+import {useCurrentUser} from "@/hooks/use-current-user";
+import {Role} from "@/types";
 
 const ProductPage = () => {
   const {edgestore} = useEdgeStore();
   const {toast} = useToast();
+  const user = useCurrentUser();
+
   const [error, setError] = useState<string | undefined>("");
+
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
   const [data, setData] = useState<Type_ListProduct[]>([]);
@@ -87,6 +92,14 @@ const ProductPage = () => {
   const [openAddProductDialog, setOpenAddProductDialog] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<any | File>();
+  const [searchText, setSearchText] = useState("");
+
+  const filteredData = data.map((productType) => ({
+    ...productType,
+    product_list: productType.product_list.filter((product) =>
+      product.product_name.toLowerCase().includes(searchText.toLowerCase())
+    ),
+  }));
 
   const handleDeleteProduct = async (id: string) => {
     setError("");
@@ -209,12 +222,23 @@ const ProductPage = () => {
             <CardTitle>Quản lý món</CardTitle>
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
-            <Button onClick={() => setOpenAddProductDialog(true)}>
-              Thêm món
-            </Button>
+            {user?.role === Role.ADMIN && (
+              <Button onClick={() => setOpenAddProductDialog(true)}>
+                Thêm món
+              </Button>
+            )}
           </div>
         </CardHeader>
       </Card>
+      <Input
+        type="text"
+        value={searchText}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+        }}
+        placeholder="Tìm kiếm..."
+        className="w-full sm:w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
+      />
       <Table>
         <TableHeader>
           <TableRow>
@@ -224,15 +248,14 @@ const ProductPage = () => {
             <TableHead>Mô tả</TableHead>
             <TableHead>Loại</TableHead>
             <TableHead>Giá</TableHead>
-            <TableHead className="w-[250px]">Tác vụ</TableHead>
+            {user?.role === Role.ADMIN && <TableHead>Thao tác</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((productType) =>
+          {filteredData.map((productType) =>
             productType.product_list.map((product) => (
               <TableRow key={product.product_id}>
                 <TableCell className="items-center">{index++}</TableCell>
-
                 <TableCell>
                   {(product.product_image && (
                     <Image
@@ -248,32 +271,34 @@ const ProductPage = () => {
                 <TableCell>{product.product_desc}</TableCell>
                 <TableCell>{productType.product_type_name}</TableCell>
                 <TableCell>{formatCurrency(product.product_price)}</TableCell>
-                <TableCell>
-                  <Button
-                    className="rounded-full text-blue-700 bg-blue-100 mx-2"
-                    size="icon"
-                    variant="ghost">
-                    <FileEditIcon
-                      className="w-6 h-6"
+                {user?.role === Role.ADMIN && (
+                  <TableCell>
+                    <Button
+                      className="rounded-full text-blue-700 bg-blue-100 mx-2"
+                      size="icon"
+                      variant="ghost">
+                      <FileEditIcon
+                        className="w-6 h-6"
+                        onClick={() => {
+                          setSelected(product);
+                          setOpenEditDialog(true);
+                        }}
+                      />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                    <Button
+                      className="rounded-full text-red-700 bg-red-100"
+                      size="icon"
+                      variant="ghost"
                       onClick={() => {
                         setSelected(product);
-                        setOpenEditDialog(true);
-                      }}
-                    />
-                    <span className="sr-only">Edit</span>
-                  </Button>
-                  <Button
-                    className="rounded-full text-red-700 bg-red-100"
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => {
-                      setSelected(product);
-                      setOpen(true);
-                    }}>
-                    <TrashIcon className="w-6 h-6" />
-                    <span className="sr-only">Delete</span>
-                  </Button>
-                </TableCell>
+                        setOpen(true);
+                      }}>
+                      <TrashIcon className="w-6 h-6" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))
           )}
@@ -327,7 +352,7 @@ const ProductPage = () => {
           setSelected(null);
           setOpenEditDialog(false);
         }}>
-        <DialogContent className="sm:max-w-lg overflow-y-scroll max-h-screen">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
           </DialogHeader>
@@ -475,7 +500,7 @@ const ProductPage = () => {
       <Dialog
         open={openAddProductDialog}
         onOpenChange={setOpenAddProductDialog}>
-        <DialogContent className="sm:max-w-lg overflow-y-scroll max-h-screen">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Thêm món mới</DialogTitle>
           </DialogHeader>

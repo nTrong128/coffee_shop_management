@@ -5,9 +5,7 @@ import {error} from "console";
 export async function getAllCustomer() {
   const data = await prisma.customer.findMany({
     orderBy: {customer_name: "asc"},
-    where: {
-      customer_deleted: false,
-    },
+    where: {},
   });
   return {
     data,

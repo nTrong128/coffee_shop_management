@@ -61,7 +61,12 @@ export function MenuAndOrder(props: {
       : data.filter((product) => product.product_type_name === filter);
   const [searchText, setSearchText] = useState("");
 
-  const filteredProductsSearch = filteredProducts.filter((product) => {});
+  const filteredProductsSearch = filteredProducts.map((productType) => ({
+    ...productType,
+    product_list: productType.product_list.filter((product) =>
+      product.product_name.toLowerCase().includes(searchText.toLowerCase())
+    ),
+  }));
   const AddItem = (product: Product) => {
     setCart((cart) =>
       cart.map((item) =>
@@ -139,7 +144,7 @@ export function MenuAndOrder(props: {
           />
         </div>
         <div className="grid grid-cols-2 xl:grid-cols-4 sm:grid-cols-3 gap-2">
-          {filteredProducts.map((productType) =>
+          {filteredProductsSearch.map((productType) =>
             productType.product_list.map((product) => (
               <Card key={product.product_id}>
                 <CardContent

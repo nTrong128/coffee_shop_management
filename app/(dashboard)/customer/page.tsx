@@ -52,7 +52,6 @@ import * as z from "zod";
 import {AddCustomerSchema} from "@/schemas";
 import {useForm} from "react-hook-form";
 import {FormError} from "@/components/auth/error-form";
-import {DeleteUser} from "@/actions/deleteUser";
 import {getAllCustomer} from "@/actions/getCustomer";
 import {addCustomer} from "@/actions/addCustomer";
 import {UpdateCustomer} from "@/actions/updateCustomer";
@@ -62,8 +61,8 @@ import {DeleteCustomer} from "@/actions/deleteCustomer";
 
 export default function UserPage() {
   const router = useRouter();
-  const rowsPerPage = 4;
   const [data, setData] = useState<CustomerType[]>([]);
+  const rowsPerPage = 5;
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(rowsPerPage);
   const {toast} = useToast();
@@ -87,6 +86,13 @@ export default function UserPage() {
 
   const [error, setError] = useState<string | undefined>("");
   const [isPendding, startTransition] = useTransition();
+  const [searchText, setSearchText] = useState("");
+  const filteredData = data.filter((customer) => {
+    return (
+      customer.customer_name.toLowerCase().includes(searchText.toLowerCase()) ||
+      customer.customer_phone?.toLowerCase().includes(searchText.toLowerCase())
+    );
+  });
 
   const form = useForm<z.infer<typeof AddCustomerSchema>>({
     resolver: zodResolver(AddCustomerSchema),
@@ -189,6 +195,15 @@ export default function UserPage() {
           </div>
         </CardHeader>
         <CardContent className="p-0 overflow-y-auto">
+          <Input
+            type="text"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            placeholder="Tìm kiếm..."
+            className="my-4 mx-2 w-full sm:w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
+          />
           <Table>
             <TableHeader>
               <TableRow>
@@ -202,7 +217,7 @@ export default function UserPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.slice(startIndex, endIndex).map((customer) => (
+              {filteredData.slice(startIndex, endIndex).map((customer) => (
                 <TableRow key={customer.customer_id}>
                   <TableCell className=""></TableCell>
                   <TableCell className="">{customer.customer_name}</TableCell>

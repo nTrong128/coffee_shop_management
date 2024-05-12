@@ -3,10 +3,20 @@ import {CircleDollarSign} from "lucide-react";
 import {SpendModal} from "@/components/dashboard/dialogs/spend-dialog";
 import {getAllPosition} from "@/actions/Position";
 import {PositionTable} from "@/components/dashboard/table/position-table";
-import {PositionType} from "@/types";
+import {PositionType, Role} from "@/types";
 import {AddPositionDialog} from "@/components/dashboard/dialogs/add-position-dialog";
+import {useCurrentUser} from "@/hooks/use-current-user";
+import {auth} from "@/auth";
 
 export default async function PositionPage() {
+  const user = await auth();
+  if (user?.user.role === Role.USER) {
+    return (
+      <div className="text-center text-5xl text-red-600">
+        BẠN KHÔNG CÓ QUYỀN TRUY CẬP TRANG NÀY
+      </div>
+    );
+  }
   const res = await getAllPosition();
   const position = res.data;
   return (

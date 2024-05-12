@@ -83,6 +83,7 @@ import {getAllPosition} from "@/actions/Position";
 import {useToast} from "@/components/ui/use-toast";
 import {ResetPassword} from "@/components/dashboard/dialogs/reset-password";
 import {ChangeStateAccount} from "@/components/dashboard/dialogs/change-state-account";
+import {useCurrentUser} from "@/hooks/use-current-user";
 
 export default function UserPage() {
   const rowsPerPage = 4;
@@ -165,6 +166,14 @@ export default function UserPage() {
       editDetailForm.reset();
     }
   }, [editDetailForm, selected]);
+  const user = useCurrentUser();
+  if (user?.role === Role.USER) {
+    return (
+      <div className="text-center text-5xl text-red-600">
+        BẠN KHÔNG CÓ QUYỀN TRUY CẬP TRANG NÀY
+      </div>
+    );
+  }
   const onSubmitAddUser = (values: z.infer<typeof AddUserSchema>) => {
     setError("");
 
@@ -262,6 +271,7 @@ export default function UserPage() {
                 <TableHead>STT</TableHead>
                 <TableHead></TableHead>
                 <TableHead>Họ và Tên</TableHead>
+                <TableHead>Điện thoại</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Chức Vụ</TableHead>
                 <TableHead>Loại tài khoản</TableHead>
@@ -282,6 +292,7 @@ export default function UserPage() {
                     </Avatar>
                   </TableCell>
                   <TableCell className="">{user.name}</TableCell>
+                  <TableCell className="">{user.user_phone}</TableCell>
                   <TableCell className="">{user.email}</TableCell>
                   <TableCell className="">
                     {user.Position ? user.Position.position_name : "Chưa có"}
@@ -418,7 +429,7 @@ export default function UserPage() {
           setSelected(null);
           setOpenDetailDialog(false);
         }}>
-        <DialogContent className="sm:max-w-3xl">
+        <DialogContent className="sm:max-w-3xl max-h-[85%] overflow-y-scroll">
           <DialogHeader>
             <div />
             <DialogTitle className="text-2xl">{selected?.name}</DialogTitle>
@@ -515,7 +526,7 @@ export default function UserPage() {
       </Dialog>
       {/* ADD USER DIALOG */}
       <Dialog open={openAddUserDialog} onOpenChange={setOpenAddUserDialog}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Thêm nhân viên mới</DialogTitle>
             <DialogDescription>
@@ -709,7 +720,7 @@ export default function UserPage() {
       </Dialog>
       {/* EDIT USER DIALOG */}
       <Dialog open={openEditDialog} onOpenChange={SetOpenEditDialog}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
             <DialogDescription>

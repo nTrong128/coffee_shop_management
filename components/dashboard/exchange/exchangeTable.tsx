@@ -1,19 +1,20 @@
 "use client";
 import {Button} from "@/components/ui/button";
-import {CustomerType, GiftType} from "@/types";
+import {CustomerType, GiftType, Role} from "@/types";
 import {Gift} from "lucide-react";
 import Image from "next/image";
 import {useState} from "react";
 import {ExchangeGiftDialog} from "./exchange-gift";
 import {UpdateExchangeGift} from "./update-exchange-dialog";
 import {DeleteExchageDialog} from "./delete-exchange-dialog";
+import {useCurrentUser} from "@/hooks/use-current-user";
 
 export function ExchangeTable(props: {
   gifts: GiftType[];
   customers: CustomerType[];
 }) {
   const gifts = props.gifts;
-
+  const user = useCurrentUser();
   const [selected, setSelected] = useState<GiftType>();
   const [open, setOpen] = useState(false);
   return (
@@ -55,10 +56,12 @@ export function ExchangeTable(props: {
                 <p className="italic mt-2">{gift.gift_desc}</p>
               </div>
             </div>
-            <div className="flex justify-around mx-4 mt-4 gap-4">
-              <UpdateExchangeGift gift={gift} />
-              <DeleteExchageDialog gift={gift} />
-            </div>
+            {user?.role === Role.ADMIN && (
+              <div className="flex justify-around mx-4 mt-4 gap-4">
+                <UpdateExchangeGift gift={gift} />
+                <DeleteExchageDialog gift={gift} />
+              </div>
+            )}
           </div>
         ))}
       </div>

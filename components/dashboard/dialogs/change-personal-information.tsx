@@ -23,7 +23,7 @@ export function ChangePersonalInformation(prop: {user: UserType}) {
           <Button>Cập nhật thông tin cá nhân</Button>
         </div>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Cập nhật thông tin cá nhân</DialogTitle>
           <DialogDescription>

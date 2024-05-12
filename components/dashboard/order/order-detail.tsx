@@ -28,7 +28,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
         <div className="p-4 flex justify-between">
           <div className="space-y-4 pt-4">
             <p className="text-2xl">
-              Số hóa đơn: #{invoice.order_id.substring(0, 10).toUpperCase()}
+              Số hóa đơn: #{invoice.order_id.substring(0, 8).toUpperCase()}
             </p>
             <p>Ngày: {formatDateTime(invoice.createAt)}</p>
             <div className="py-6">

@@ -19,7 +19,7 @@ export function NewExchangeDialog() {
       <DialogTrigger asChild>
         <Button>Thêm quà đổi thưởng</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Thêm quà đổi thưởng</DialogTitle>
           <DialogDescription>

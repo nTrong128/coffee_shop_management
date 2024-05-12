@@ -13,7 +13,7 @@ export function AddPositionDialog() {
       <DialogTrigger asChild>
         <Button>Thêm chức vụ mới</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg max-h-screen">
+      <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Thêm chức vụ mới vào hệ thống</DialogTitle>
         </DialogHeader>

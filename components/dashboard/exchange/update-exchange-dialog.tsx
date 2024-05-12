@@ -26,7 +26,7 @@ export function UpdateExchangeGift(prop: {gift: GiftType}) {
           <Edit size={24} />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Thêm quà đổi thưởng</DialogTitle>
           <DialogDescription>

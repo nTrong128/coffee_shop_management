@@ -51,7 +51,7 @@ export function SpendModal() {
       <DialogTrigger asChild>
         <Button>Thêm chi tiêu mới</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg max-h-screen">
+      <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Thêm chi tiêu mới vào hệ thống</DialogTitle>
         </DialogHeader>

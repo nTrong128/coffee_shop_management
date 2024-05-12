@@ -21,7 +21,7 @@ export function UpdatePositionDialog(prop: {position: PositionType}) {
           {/* <TrashIcon className="w-6 h-6" /> */}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg max-h-screen">
+      <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Cập nhật chức vụ</DialogTitle>
         </DialogHeader>

@@ -21,8 +21,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {useEffect, useRef, useState, useTransition} from "react";
-import {ProductType_Type} from "@/types";
+import {useEffect, useState, useTransition} from "react";
+import {ProductType_Type, Role} from "@/types";
 import {DeleteProdcutType} from "@/actions/deleteProductType";
 import {FormError} from "@/components/auth/error-form";
 import {FormSuccess} from "@/components/auth/success-form";
@@ -49,6 +49,7 @@ import {EditProductType} from "@/actions/editProductType";
 import {Textarea} from "@/components/ui/textarea";
 import {addProductType} from "@/actions/addProductType";
 import {useToast} from "@/components/ui/use-toast";
+import {useCurrentUser} from "@/hooks/use-current-user";
 const Product = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -68,10 +69,24 @@ const Product = () => {
   }, []);
 
   const {toast} = useToast();
+  const user = useCurrentUser();
+
   const [open, setOpen] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openAddTypeDialog, setOpenAddTypeDialog] = useState(false);
   const [selected, setSelected] = useState<ProductType_Type | null>(null);
+  const [searchText, setSearchText] = useState("");
+  const filteredData = data.filter((product_type) => {
+    return (
+      (product_type.product_type_name ?? "")
+        .toLowerCase()
+        .includes(searchText.toLowerCase()) ||
+      (product_type.product_type_desc ?? "")
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+  });
+
   const handleDeleteDialog = (ProductType: ProductType_Type) => {
     setSelected(ProductType);
     setOpen(true);
@@ -187,47 +202,62 @@ const Product = () => {
           </div>
           <div className="flex flex-1 gap-2 md:ml-auto md:justify-end md:gap-4 lg:gap-6">
             {/* <AddProductTypeDialog /> */}
-            <Button onClick={handleAddTypeDialog}>Thêm loại món</Button>
+            {user?.role === Role.ADMIN && (
+              <Button onClick={handleAddTypeDialog}>Thêm loại món</Button>
+            )}
           </div>
         </CardHeader>
         <CardContent className="p-0 overflow-y-auto">
-          <Table>
+          <Input
+            type="text"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            placeholder="Tìm kiếm..."
+            className="mx-2 my-4 w-full sm:w-5/12 rounded-full px-4 py-2 border border-gray-300 focus:ring-2"
+          />
+          <Table className="border max-w-7xl mx-auto">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[50px]">STT</TableHead>
                 <TableHead className="w-[250px]">Tên Loại</TableHead>
                 <TableHead>Mô tả</TableHead>
-                <TableHead className="w-[250px]">Tác Vụ</TableHead>
+                {user?.role === Role.ADMIN && (
+                  <TableHead className="w-[250px]">Tác Vụ</TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((product_type, index) => (
+              {filteredData.map((product_type, index) => (
                 <TableRow key={product_type.product_type_id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{product_type.product_type_name}</TableCell>
                   <TableCell>{product_type.product_type_desc}</TableCell>
-                  <TableCell className="flex gap-2">
-                    <Button
-                      className="rounded-full text-blue-700 bg-blue-100"
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        handleEditDialog(product_type);
-                      }}>
-                      <FileEditIcon className="w-6 h-6" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
-                    <Button
-                      className="rounded-full text-red-700 bg-red-100"
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        handleDeleteDialog(product_type);
-                      }}>
-                      <TrashIcon className="w-6 h-6" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
-                  </TableCell>
+                  {user?.role === Role.ADMIN && (
+                    <TableCell className="flex gap-2">
+                      <Button
+                        className="rounded-full text-blue-700 bg-blue-100"
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => {
+                          handleEditDialog(product_type);
+                        }}>
+                        <FileEditIcon className="w-6 h-6" />
+                        <span className="sr-only">Edit</span>
+                      </Button>
+                      <Button
+                        className="rounded-full text-red-700 bg-red-100"
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => {
+                          handleDeleteDialog(product_type);
+                        }}>
+                        <TrashIcon className="w-6 h-6" />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
@@ -281,7 +311,7 @@ const Product = () => {
           setSelected(null);
           setOpenEditDialog(false);
         }}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
           </DialogHeader>
@@ -341,7 +371,7 @@ const Product = () => {
         </DialogContent>
       </Dialog>
       <Dialog open={openAddTypeDialog} onOpenChange={setOpenAddTypeDialog}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Thêm loại món mới</DialogTitle>
           </DialogHeader>
