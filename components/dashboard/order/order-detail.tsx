@@ -24,7 +24,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
       <Button size={"lg"} className="my-2" onClick={() => router.back()}>
         Quay lại
       </Button>
-      <div id="invoice-details" className="shadow-md border-t p-4">
+      <div id="invoice" className="shadow-md border-t p-4">
         <div className="p-4 flex justify-between">
           <div className="space-y-4 pt-4">
             <p className="text-2xl">
@@ -83,9 +83,8 @@ export default function OrderDetail(props: {invoice: OrderType}) {
                     </TableCell>
                   </TableRow>
                 ))}
-              </TableBody>
-
-              <TableFooter>
+                <br />
+                <br />
                 <TableRow>
                   <TableCell className="font-semibold" colSpan={3}>
                     Tạm tính
@@ -94,15 +93,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
                     {invoice.order_total} VNĐ
                   </TableCell>
                 </TableRow>
-                {/* //TODO: THÊM KHUYẾN MÃI */}
-                {/* <TableRow>
-                  <TableCell className="font-semibold" colSpan={3}>
-                    Khuyến mãi
-                  </TableCell>
-                  <TableCell className="text-right font-semibold">
-                    5 %
-                  </TableCell>
-                </TableRow> */}
+
                 <TableRow>
                   <TableCell className="font-semibold" colSpan={3}>
                     Tổng cộng
@@ -127,7 +118,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
                     {invoice.order_received - invoice.order_total} VNĐ
                   </TableCell>
                 </TableRow>
-              </TableFooter>
+              </TableBody>
             </Table>
             <div className="border-t">
               <p className="p-4 italic">Ghi chú: {invoice.order_note}</p>
@@ -136,7 +127,7 @@ export default function OrderDetail(props: {invoice: OrderType}) {
         </div>
       </div>
       <div className="flex justify-end p-4">
-        <Button onClick={() => printDiv("invoice-details")} size={"lg"}>
+        <Button onClick={() => printDiv("invoice")} size={"lg"}>
           In hóa đơn
         </Button>
       </div>

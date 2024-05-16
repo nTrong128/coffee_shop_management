@@ -24,6 +24,11 @@ export const NavBar = () => {
             <Menu />
           </button>
           <div className="hidden gap-x-2 xl:flex">
+            <Button
+              asChild
+              className={pathname === "/dashboard" ? green : outline}>
+              <Link href="/dashboard">Tổng quan</Link>
+            </Button>
             <Button asChild className={pathname === "/menu" ? green : outline}>
               <Link href="/menu">Tạo đơn</Link>
             </Button>
@@ -62,38 +67,43 @@ export const NavBar = () => {
           }`}>
           <ul className="justify-center items-center space-y-4 mx-4">
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
+              onClick={() => setState(false)}>
+              <Link href="/dashboard">Tổng quan </Link>
+            </li>
+            <li
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/menu">Tạo đơn</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/product">Quản Lý Món</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/product-type">Quản Lý Loại</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/spend">Chi tiêu</Link>
             </li>
 
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/customer">Khách hàng</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/exchange">Đổi thưởng</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/order">Hóa đơn</Link>
             </li>
@@ -163,54 +173,54 @@ export const NavBar = () => {
           }`}>
           <ul className="justify-center items-center space-y-4 mx-4">
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/dashboard">Tổng Quan</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/menu">Tạo đơn</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/product">Quản Lý Món</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/product-type">Quản Lý Loại</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/spend">Chi tiêu</Link>
             </li>
 
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/customer">Khách hàng</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/exchange">Đổi thưởng</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/order">Hóa đơn</Link>
             </li>
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/position">Chức vụ</Link>
             </li>
 
             <li
-              className="mx-4 hover:text-indigo-600 first:font-bold"
+              className="mx-4 hover:text-indigo-600 "
               onClick={() => setState(false)}>
               <Link href="/user">Nhân Viên</Link>
             </li>

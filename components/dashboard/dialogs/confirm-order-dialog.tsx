@@ -162,9 +162,10 @@ export function ConfirmOrder({
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
 
-                <TableFooter>
+                  <br />
+                  <br />
+                  <br />
                   <TableRow>
                     <TableCell className="font-semibold" colSpan={3}>
                       Tạm tính
@@ -229,7 +230,7 @@ export function ConfirmOrder({
                       }
                     </TableCell>
                   </TableRow>
-                </TableFooter>
+                </TableBody>
               </Table>
               <div className="border-t">
                 <p className="p-4 italic">Ghi chú: {orderNote}</p>
