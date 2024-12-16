@@ -1,16 +1,16 @@
 "use client";
 
-import {Menu, MoonStar} from "lucide-react";
+import { Menu, MoonStar } from "lucide-react";
 import Link from "next/link";
-import {useState} from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 
 export default function Header() {
   const [state, setState] = useState(false);
   const menus = [
-    {title: "Truy cập vào hệ thống", path: "/login"},
-    {title: "Liên hệ", path: "#contact"},
+    { title: "Truy cập vào hệ thống", path: "/login" },
+    { title: "Liên hệ", path: "#contact" },
   ];
   return (
     <header>
@@ -19,6 +19,7 @@ export default function Header() {
           <div className="flex items-center justify-between pb-3 md:pb-5 md:block">
             <Link href="/" className="flex items-center">
               <Image
+                loading="lazy"
                 alt="Logo"
                 height={100}
                 src={"/images/logo.svg"}
@@ -29,7 +30,8 @@ export default function Header() {
             <div>
               <button
                 className="text-gray-700 outline-none p-2 rounded-md md:hidden focus:border-gray-400 focus:border"
-                onClick={() => setState(!state)}>
+                onClick={() => setState(!state)}
+              >
                 <Menu />
               </button>
             </div>
@@ -37,12 +39,14 @@ export default function Header() {
           <div
             className={`flex justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
               state ? "block" : "hidden"
-            }`}>
+            }`}
+          >
             <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
               {menus.map((item, idx) => (
                 <li
                   key={idx}
-                  className="text-gray-600 mx-4 hover:text-indigo-600 first:font-bold">
+                  className="text-gray-600 mx-4 hover:text-indigo-600 first:font-bold"
+                >
                   <Link href={item.path}>{item.title}</Link>
                 </li>
               ))}

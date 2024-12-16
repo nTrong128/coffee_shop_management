@@ -5,14 +5,14 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import {Label} from "@/components/ui/label";
-import {formatDate} from "@/lib/DateTime";
+import { Label } from "@/components/ui/label";
+import { formatDate } from "@/lib/DateTime";
 import Image from "next/image";
-import {ChangePasswordDialog} from "../dialogs/change-password-dialog";
-import {UpdateAvatar} from "../dialogs/update-avatar";
-import {ChangePersonalInformation} from "../dialogs/change-personal-information";
+import { ChangePasswordDialog } from "../dialogs/change-password-dialog";
+import { UpdateAvatar } from "../dialogs/update-avatar";
+import { ChangePersonalInformation } from "../dialogs/change-personal-information";
 
-export function Profile(prop: {user: any}) {
+export function Profile(prop: { user: any }) {
   const user = prop.user;
   return (
     <Card className="w-full mx-auto">
@@ -24,6 +24,7 @@ export function Profile(prop: {user: any}) {
         <div className="mb-8">
           <div className="text-center space-y-4 flex flex-col items-center">
             <Image
+              loading="lazy"
               src={user.image || "/images/placeholderAvatar.jpg"}
               alt="avatar"
               width={120}

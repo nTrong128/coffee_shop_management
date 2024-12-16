@@ -1,5 +1,5 @@
 "use client";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,14 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {OrderType} from "@/types";
+import { OrderType } from "@/types";
 import Image from "next/image";
-import {useRouter} from "next/navigation";
-import {printDiv} from "@/lib/print-div";
-import {formatDateTime} from "@/lib/DateTime";
+import { useRouter } from "next/navigation";
+import { printDiv } from "@/lib/print-div";
+import { formatDateTime } from "@/lib/DateTime";
 
-export default function OrderDetail(props: {invoice: OrderType}) {
-  const {invoice} = props;
+export default function OrderDetail(props: { invoice: OrderType }) {
+  const { invoice } = props;
   const router = useRouter();
   return (
     <div className="p-4">
@@ -37,7 +37,13 @@ export default function OrderDetail(props: {invoice: OrderType}) {
           </div>
           {/* Logo and address */}
           <div className="text-end items-end flex flex-col">
-            <Image src="/images/logo.svg" alt="logo" width={100} height={100} />
+            <Image
+              loading="lazy"
+              src="/images/logo.svg"
+              alt="logo"
+              width={100}
+              height={100}
+            />
             <p className="text-3xl">Quán cà phê XYZ</p>
             <p>Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</p>
           </div>

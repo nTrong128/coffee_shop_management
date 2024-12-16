@@ -1,15 +1,15 @@
 "use client";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {formatCurrency} from "@/lib/formatCurrency";
-import {CartType, CustomerType, Product, Type_ListProduct} from "@/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { formatCurrency } from "@/lib/formatCurrency";
+import { CartType, CustomerType, Product, Type_ListProduct } from "@/types";
 import Image from "next/image";
-import {useState} from "react";
-import {ConfirmOrder} from "../dialogs/confirm-order-dialog";
-import {CircleX, ShoppingBag} from "lucide-react";
-import {ChooseCustomer} from "./choose-customer";
+import { useState } from "react";
+import { ConfirmOrder } from "../dialogs/confirm-order-dialog";
+import { CircleX, ShoppingBag } from "lucide-react";
+import { ChooseCustomer } from "./choose-customer";
 
 export function MenuAndOrder(props: {
   data: Type_ListProduct[];
@@ -26,9 +26,9 @@ export function MenuAndOrder(props: {
       setCart((cart) =>
         cart.map((item) =>
           item.OrderItem.product_id === product.product_id
-            ? {...item, quantity: item.quantity + 1}
-            : item
-        )
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        ),
       );
       return;
     }
@@ -64,16 +64,16 @@ export function MenuAndOrder(props: {
   const filteredProductsSearch = filteredProducts.map((productType) => ({
     ...productType,
     product_list: productType.product_list.filter((product) =>
-      product.product_name.toLowerCase().includes(searchText.toLowerCase())
+      product.product_name.toLowerCase().includes(searchText.toLowerCase()),
     ),
   }));
   const AddItem = (product: Product) => {
     setCart((cart) =>
       cart.map((item) =>
         item.OrderItem.product_id === product.product_id
-          ? {...item, quantity: item.quantity + 1}
-          : item
-      )
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
     );
   };
   const DeleteItem = (product: Product) => {
@@ -81,11 +81,11 @@ export function MenuAndOrder(props: {
       cart.some(
         (item) =>
           item.OrderItem.product_id === product.product_id &&
-          item.quantity === 1
+          item.quantity === 1,
       )
     ) {
       setCart((cart) =>
-        cart.filter((item) => item.OrderItem.product_id !== product.product_id)
+        cart.filter((item) => item.OrderItem.product_id !== product.product_id),
       );
       return;
     }
@@ -93,9 +93,9 @@ export function MenuAndOrder(props: {
     setCart((cart) =>
       cart.map((item) =>
         item.OrderItem.product_id === product.product_id
-          ? {...item, quantity: item.quantity - 1}
-          : item
-      )
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
     );
   };
 
@@ -114,7 +114,8 @@ export function MenuAndOrder(props: {
                   ? "bg-green-500 text-white rounded-full  hover:bg-green-600 hover:text-white"
                   : "" + "rounded-full"
               }
-              onClick={() => handleFilterChange("All")}>
+              onClick={() => handleFilterChange("All")}
+            >
               Tất cả
             </Button>
             {data.map((productType) => (
@@ -128,7 +129,8 @@ export function MenuAndOrder(props: {
                 onClick={() => {
                   handleFilterChange(productType.product_type_name as String);
                 }}
-                variant="ghost">
+                variant="ghost"
+              >
                 {productType.product_type_name}
               </Button>
             ))}
@@ -150,9 +152,11 @@ export function MenuAndOrder(props: {
                 <CardContent
                   onClick={() => {
                     handleAddToCart(product);
-                  }}>
+                  }}
+                >
                   <div>
                     <Image
+                      loading="lazy"
                       alt="Product Image"
                       className="mt-6 mx-auto aspect-square object-cover border border-gray-200 rounded-lg dark:border-gray-800"
                       height={220}
@@ -172,7 +176,7 @@ export function MenuAndOrder(props: {
                   </div>
                 </CardContent>
               </Card>
-            ))
+            )),
           )}
         </div>
       </section>
@@ -188,7 +192,8 @@ export function MenuAndOrder(props: {
                 setOrderNote("");
                 setCustomerOrder(null);
                 setCashReceived(0);
-              }}>
+              }}
+            >
               Hủy, tạo đơn mới
             </Button>
           )}
@@ -201,13 +206,15 @@ export function MenuAndOrder(props: {
             cart.map((product) => (
               <div
                 key={product.OrderItem.product_id}
-                className="grid grid-cols-3">
+                className="grid grid-cols-3"
+              >
                 <span className="">{product.OrderItem.product_name}</span>
                 <div className="flex flex-row justify-evenly items-center">
                   <Button
                     onClick={() => DeleteItem(product.OrderItem)}
                     variant={"ghost"}
-                    className="bg-gray-200 hover:bg-gray-400 rounded-full">
+                    className="bg-gray-200 hover:bg-gray-400 rounded-full"
+                  >
                     -
                   </Button>
                   <Input
@@ -218,7 +225,8 @@ export function MenuAndOrder(props: {
                   <Button
                     onClick={() => AddItem(product.OrderItem)}
                     variant={"ghost"}
-                    className="bg-gray-200 hover:bg-gray-400 rounded-full">
+                    className="bg-gray-200 hover:bg-gray-400 rounded-full"
+                  >
                     +
                   </Button>
                 </div>
@@ -241,7 +249,8 @@ export function MenuAndOrder(props: {
                     onClick={() => setCustomerOrder(null)}
                     className=" rounded-full hover:text-red-700 hover:bg-red-100 mx-2"
                     size={"icon"}
-                    variant={"ghost"}>
+                    variant={"ghost"}
+                  >
                     <CircleX />
                   </Button>
                 )}
@@ -274,8 +283,8 @@ export function MenuAndOrder(props: {
                       (acc, product) =>
                         acc +
                         product.OrderItem.product_price * product.quantity,
-                      0
-                    )
+                      0,
+                    ),
                   ) as string
                 }
               </span>
@@ -292,8 +301,8 @@ export function MenuAndOrder(props: {
                           (acc, product) =>
                             acc +
                             product.OrderItem.product_price * product.quantity,
-                          0
-                        )
+                          0,
+                        ),
                     ) as string
                   }
                 </span>

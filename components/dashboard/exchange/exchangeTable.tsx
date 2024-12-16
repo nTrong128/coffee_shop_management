@@ -1,13 +1,13 @@
 "use client";
-import {Button} from "@/components/ui/button";
-import {CustomerType, GiftType, Role} from "@/types";
-import {Gift} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CustomerType, GiftType, Role } from "@/types";
+import { Gift } from "lucide-react";
 import Image from "next/image";
-import {useState} from "react";
-import {ExchangeGiftDialog} from "./exchange-gift";
-import {UpdateExchangeGift} from "./update-exchange-dialog";
-import {DeleteExchageDialog} from "./delete-exchange-dialog";
-import {useCurrentUser} from "@/hooks/use-current-user";
+import { useState } from "react";
+import { ExchangeGiftDialog } from "./exchange-gift";
+import { UpdateExchangeGift } from "./update-exchange-dialog";
+import { DeleteExchageDialog } from "./delete-exchange-dialog";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export function ExchangeTable(props: {
   gifts: GiftType[];
@@ -26,19 +26,22 @@ export function ExchangeTable(props: {
         {gifts.map((gift: GiftType) => (
           <div
             key={gift.gift_id}
-            className="flex flex-col justify-between rounded-2xl p-4 m-2 shadow-md">
+            className="flex flex-col justify-between rounded-2xl p-4 m-2 shadow-md"
+          >
             <div
               className="flex flex-col gap-y-4 hover:opacity-75"
               onClick={() => {
                 setSelected(gift);
                 setOpen(true);
-              }}>
+              }}
+            >
               <p className="text-3xl font-semibold text-center my-2">
                 {gift.gift_name}
               </p>
               <div className="h-72">
                 {gift.gift_image ? (
                   <Image
+                    loading="lazy"
                     className="mx-auto"
                     alt="quà"
                     src={gift?.gift_image}

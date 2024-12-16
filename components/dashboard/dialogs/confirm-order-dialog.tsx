@@ -1,7 +1,7 @@
 "use client";
-import {CreateOrder} from "@/actions/order";
-import {Button} from "@/components/ui/button";
-import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
+import { CreateOrder } from "@/actions/order";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -11,15 +11,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {useCurrentUser} from "@/hooks/use-current-user";
-import {formatDateTime} from "@/lib/DateTime";
-import {formatCurrency} from "@/lib/formatCurrency";
-import {CartType, CustomerType} from "@/types";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { formatDateTime } from "@/lib/DateTime";
+import { formatCurrency } from "@/lib/formatCurrency";
+import { CartType, CustomerType } from "@/types";
 import Image from "next/image";
-import {printDiv} from "@/lib/print-div";
+import { printDiv } from "@/lib/print-div";
 
-import {useState, useTransition} from "react";
-import {useToast} from "@/components/ui/use-toast";
+import { useState, useTransition } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ConfirmOrderProps {
   cart: CartType[];
@@ -36,7 +36,7 @@ export function ConfirmOrder({
   setCart,
   customer,
 }: ConfirmOrderProps) {
-  const {toast} = useToast();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const orderItem = cart.map((item) => {
     return {
@@ -59,7 +59,7 @@ export function ConfirmOrder({
         total: cart.reduce(
           (acc, product) =>
             acc + product.OrderItem.product_price * product.quantity,
-          0
+          0,
         ),
         order_note: orderNote,
         staff_id: staff_id,
@@ -82,7 +82,7 @@ export function ConfirmOrder({
     cart.reduce(
       (acc, product) =>
         acc + product.OrderItem.product_price * product.quantity,
-      0
+      0,
     ) / 1000;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -93,10 +93,11 @@ export function ConfirmOrder({
             cart.reduce(
               (acc, product) =>
                 acc + product.OrderItem.product_price * product.quantity,
-              0
+              0,
             )
           }
-          className="w-full bg-green-500 text-white py-8 mt-2 text-2xl hover:bg-green-700">
+          className="w-full bg-green-500 text-white py-8 mt-2 text-2xl hover:bg-green-700"
+        >
           Thanh toán
         </Button>
       </DialogTrigger>
@@ -105,7 +106,8 @@ export function ConfirmOrder({
 
         <div
           id="invoice-details"
-          className="shadow-md border-t p-4 overflow-y-scroll">
+          className="shadow-md border-t p-4 overflow-y-scroll"
+        >
           <div className="p-4 flex justify-between">
             <div className="space-y-4 pt-5">
               <p>Ngày: {formatDateTime(new Date())}</p>
@@ -115,6 +117,7 @@ export function ConfirmOrder({
             </div>
             <div className="text-end items-end flex flex-col">
               <Image
+                loading="lazy"
                 src="/images/logo.svg"
                 alt="logo"
                 width={100}
@@ -178,8 +181,8 @@ export function ConfirmOrder({
                               acc +
                               product.OrderItem.product_price *
                                 product.quantity,
-                            0
-                          )
+                            0,
+                          ),
                         ) as string
                       }
                     </TableCell>
@@ -197,8 +200,8 @@ export function ConfirmOrder({
                               acc +
                               product.OrderItem.product_price *
                                 product.quantity,
-                            0
-                          )
+                            0,
+                          ),
                         ) as string
                       }
                     </TableCell>
@@ -224,8 +227,8 @@ export function ConfirmOrder({
                                 acc +
                                 product.OrderItem.product_price *
                                   product.quantity,
-                              0
-                            )
+                              0,
+                            ),
                         ) as string
                       }
                     </TableCell>
@@ -246,13 +249,15 @@ export function ConfirmOrder({
             // TODO: Add print function
             className="w-45 py-8 text-xl
               bg-zinc-700
-              ">
+              "
+          >
             Xác nhận và in hóa đơn
           </Button>
           <Button
             disabled={isPending}
             onClick={() => onSubmit(false)}
-            className="w-45 bg-green-500 text-white py-8 text-xl hover:bg-green-700">
+            className="w-45 bg-green-500 text-white py-8 text-xl hover:bg-green-700"
+          >
             Xác nhận đơn hàng
           </Button>
         </div>

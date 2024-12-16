@@ -1,7 +1,7 @@
 "use client";
-import {CardTitle, CardHeader, Card} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {FileEditIcon, List, Trash2, TrashIcon, X} from "lucide-react";
+import { CardTitle, CardHeader, Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FileEditIcon, List, Trash2, TrashIcon, X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,8 +13,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import {FormError} from "@/components/auth/error-form";
-import {FormSuccess} from "@/components/auth/success-form";
+import { FormError } from "@/components/auth/error-form";
+import { FormSuccess } from "@/components/auth/success-form";
 import {
   Form,
   FormControl,
@@ -23,7 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -47,27 +47,27 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import {AddProductSchema} from "@/schemas";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {Textarea} from "@/components/ui/textarea";
-import {addProduct} from "@/actions/addProduct";
-import {EditProduct} from "@/actions/EditProduct";
-import {getAllProductTypeWithProducts} from "@/actions/getProductType";
-import {useEffect, useState, useTransition} from "react";
-import {Product, Type_ListProduct} from "@/types";
-import {DeleteProduct} from "@/actions/deleteProduct";
-import {formatCurrency} from "@/lib/formatCurrency";
+import { AddProductSchema } from "@/schemas";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Textarea } from "@/components/ui/textarea";
+import { addProduct } from "@/actions/addProduct";
+import { EditProduct } from "@/actions/EditProduct";
+import { getAllProductTypeWithProducts } from "@/actions/getProductType";
+import { useEffect, useState, useTransition } from "react";
+import { Product, Type_ListProduct } from "@/types";
+import { DeleteProduct } from "@/actions/deleteProduct";
+import { formatCurrency } from "@/lib/formatCurrency";
 import Image from "next/image";
-import {useEdgeStore} from "@/lib/edgestore";
-import {useToast} from "@/components/ui/use-toast";
-import {useCurrentUser} from "@/hooks/use-current-user";
-import {Role} from "@/types";
+import { useEdgeStore } from "@/lib/edgestore";
+import { useToast } from "@/components/ui/use-toast";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { Role } from "@/types";
 
 const ProductPage = () => {
-  const {edgestore} = useEdgeStore();
-  const {toast} = useToast();
+  const { edgestore } = useEdgeStore();
+  const { toast } = useToast();
   const user = useCurrentUser();
 
   const [error, setError] = useState<string | undefined>("");
@@ -97,7 +97,7 @@ const ProductPage = () => {
   const filteredData = data.map((productType) => ({
     ...productType,
     product_list: productType.product_list.filter((product) =>
-      product.product_name.toLowerCase().includes(searchText.toLowerCase())
+      product.product_name.toLowerCase().includes(searchText.toLowerCase()),
     ),
   }));
 
@@ -140,7 +140,7 @@ const ProductPage = () => {
     },
   });
   const onSubmitAddProductDialog = async (
-    values: z.infer<typeof AddProductSchema>
+    values: z.infer<typeof AddProductSchema>,
   ) => {
     setError("");
 
@@ -259,6 +259,7 @@ const ProductPage = () => {
                 <TableCell>
                   {(product.product_image && (
                     <Image
+                      loading="lazy"
                       className="rounded-lg border"
                       src={product.product_image}
                       alt="Product Image"
@@ -276,7 +277,8 @@ const ProductPage = () => {
                     <Button
                       className="rounded-full text-blue-700 bg-blue-100 mx-2"
                       size="icon"
-                      variant="ghost">
+                      variant="ghost"
+                    >
                       <FileEditIcon
                         className="w-6 h-6"
                         onClick={() => {
@@ -293,14 +295,15 @@ const ProductPage = () => {
                       onClick={() => {
                         setSelected(product);
                         setOpen(true);
-                      }}>
+                      }}
+                    >
                       <TrashIcon className="w-6 h-6" />
                       <span className="sr-only">Delete</span>
                     </Button>
                   </TableCell>
                 )}
               </TableRow>
-            ))
+            )),
           )}
         </TableBody>
       </Table>
@@ -310,7 +313,8 @@ const ProductPage = () => {
           if (isOpen === true) return;
           setSelected(null);
           setOpen(false);
-        }}>
+        }}
+      >
         {/* DELETE PRODUCT DIALOG */}
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -335,7 +339,8 @@ const ProductPage = () => {
                 onClick={() =>
                   handleDeleteProduct(selected?.product_id as string)
                 }
-                className="bg-red-700 hover:bg-red-800">
+                className="bg-red-700 hover:bg-red-800"
+              >
                 Xác nhận
               </Button>
             </AlertDialogAction>
@@ -351,7 +356,8 @@ const ProductPage = () => {
           if (isOpen === true) return;
           setSelected(null);
           setOpenEditDialog(false);
-        }}>
+        }}
+      >
         <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
@@ -366,7 +372,7 @@ const ProductPage = () => {
                 <FormField
                   control={form.control}
                   name="product_name"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tên món</FormLabel>
                       <FormControl>
@@ -383,7 +389,7 @@ const ProductPage = () => {
                 <FormField
                   control={form.control}
                   name="product_price"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Giá tiền</FormLabel>
                       <FormControl>
@@ -401,12 +407,13 @@ const ProductPage = () => {
                 <FormField
                   control={form.control}
                   name="product_type"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tên loại</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}>
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger disabled={isPendding} {...field}>
                             <SelectValue placeholder="Chọn loại món" />
@@ -418,7 +425,8 @@ const ProductPage = () => {
                             {data.map((type) => (
                               <SelectItem
                                 key={type.product_type_id}
-                                value={type.product_type_id}>
+                                value={type.product_type_id}
+                              >
                                 {type.product_type_name}
                               </SelectItem>
                             ))}
@@ -432,7 +440,7 @@ const ProductPage = () => {
                 <FormField
                   control={form.control}
                   name="product_desc"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Mô tả loại</FormLabel>
                       <FormControl>
@@ -449,7 +457,7 @@ const ProductPage = () => {
                 <FormField
                   control={form.control}
                   name="product_image"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Ảnh sản phẩm</FormLabel>
                       <FormControl>
@@ -476,7 +484,8 @@ const ProductPage = () => {
                       />
                       <Button
                         className="text-red-700 bg-red-100 hover:text-red-800 hover:bg-red-200"
-                        onClick={() => setSelectedImage(undefined)}>
+                        onClick={() => setSelectedImage(undefined)}
+                      >
                         <Trash2 className="mr-2" /> Xóa ảnh này
                       </Button>
                     </div>
@@ -488,7 +497,8 @@ const ProductPage = () => {
                   disabled={isPendding}
                   type="submit"
                   size="lg"
-                  className=" mt-6 w-full">
+                  className=" mt-6 w-full"
+                >
                   Cập nhật
                 </Button>
               </form>
@@ -499,7 +509,8 @@ const ProductPage = () => {
       {/* ADD PRODUCT DIALOG */}
       <Dialog
         open={openAddProductDialog}
-        onOpenChange={setOpenAddProductDialog}>
+        onOpenChange={setOpenAddProductDialog}
+      >
         <DialogContent className="sm:max-w-lg max-h-[80%] overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Thêm món mới</DialogTitle>
@@ -507,13 +518,12 @@ const ProductPage = () => {
           <div className="space-y-4">
             <Form {...formAddProduct}>
               <form
-                onSubmit={formAddProduct.handleSubmit(
-                  onSubmitAddProductDialog
-                )}>
+                onSubmit={formAddProduct.handleSubmit(onSubmitAddProductDialog)}
+              >
                 <FormField
                   control={formAddProduct.control}
                   name="product_name"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tên sản phẩm</FormLabel>
                       <FormControl>
@@ -530,7 +540,7 @@ const ProductPage = () => {
                 <FormField
                   control={formAddProduct.control}
                   name="product_price"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Giá tiền</FormLabel>
                       <FormControl>
@@ -553,12 +563,13 @@ const ProductPage = () => {
                 <FormField
                   control={formAddProduct.control}
                   name="product_type"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tên loại</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}>
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger disabled={isPendding} {...field}>
                             <SelectValue placeholder="Chọn loại món" />
@@ -570,7 +581,8 @@ const ProductPage = () => {
                             {data.map((type) => (
                               <SelectItem
                                 key={type.product_type_id}
-                                value={type.product_type_id}>
+                                value={type.product_type_id}
+                              >
                                 {type.product_type_name}
                               </SelectItem>
                             ))}
@@ -584,7 +596,7 @@ const ProductPage = () => {
                 <FormField
                   control={formAddProduct.control}
                   name="product_desc"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem className="mt-4">
                       <FormLabel>Mô tả món</FormLabel>
                       <FormControl>
@@ -601,7 +613,7 @@ const ProductPage = () => {
                 <FormField
                   control={formAddProduct.control}
                   name="product_image"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Ảnh sản phẩm</FormLabel>
                       <FormControl>
@@ -627,7 +639,8 @@ const ProductPage = () => {
                     />
                     <Button
                       className="text-red-700 bg-transparent hover:text-red-800 hover:bg-red-100 rounded-full"
-                      onClick={() => setSelectedImage(undefined)}>
+                      onClick={() => setSelectedImage(undefined)}
+                    >
                       <Trash2 />
                     </Button>
                   </div>
@@ -638,7 +651,8 @@ const ProductPage = () => {
                   disabled={isPendding}
                   type="submit"
                   size="lg"
-                  className=" mt-6 w-full">
+                  className=" mt-6 w-full"
+                >
                   Thêm
                 </Button>
               </form>
